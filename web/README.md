@@ -4,6 +4,11 @@ Versión web del detector, para que los compañeros revisen una migración sin
 instalar nada. Se pega la ficha del personaje y el análisis se hace **en el
 navegador**: no se envía nada a ningún servidor.
 
+**Publicada en:** <https://kevinmoth.github.io/MigrationSentinel/>
+
+Cada push a `main` publica esta carpeta automáticamente mediante
+`.github/workflows/pages.yml` (GitHub Pages, origen «GitHub Actions»).
+
 ## Cómo se usa
 
 1. Abrir la página de la migración.

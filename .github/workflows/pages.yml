@@ -1,4 +1,4 @@
-name: Publicar en GitHub Pages
+﻿name: Publicar en GitHub Pages
 
 on:
   push:
@@ -22,19 +22,19 @@ jobs:
       url: ${{ steps.despliegue.outputs.page_url }}
     steps:
       - name: Traer el repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configurar Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
         with:
           # Habilita Pages la primera vez, sin tocar ajustes a mano.
           enablement: true
 
       - name: Empaquetar la web
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: web
 
       - name: Desplegar
         id: despliegue
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
