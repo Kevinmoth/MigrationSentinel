@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verificador de migraciones · WoW 3.3.5</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="fuentes.css">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<header class="cabecera">
+  <div class="marca">
+    <img src="logo.gif" alt="Logo" class="logo" width="62" height="62">
+    <div>
+      <h1>Verificador de migraciones</h1>
+      <p>WoW 3.3.5 · revisa las inconsistencias de un personaje antes de aceptarlo</p>
+    </div>
+  </div>
+  <span class="sello">Normas 3.3.5</span>
+</header>
+
+<main class="rejilla">
+  <section class="panel">
+    <h2>1 · Copia la ficha</h2>
+    <p class="ayuda">
+      Abre la página de la migración, pulsa <kbd>Ctrl</kbd> + <kbd>A</kbd> y luego
+      <kbd>Ctrl</kbd> + <kbd>C</kbd>. Pega el texto aquí.
+    </p>
+    <textarea id="texto" spellcheck="false"
+      placeholder="Pega aquí el contenido de la página de la migración…"></textarea>
+    <div class="acciones">
+      <button id="analizar" class="primario">Analizar personaje</button>
+      <button id="ejemplo" class="secundario">Cargar ejemplo</button>
+      <button id="limpiar" class="secundario">Limpiar</button>
+      <span id="estado" class="estado"></span>
+    </div>
+    <p class="nota-pie">
+      Todo el análisis se hace en tu navegador. No se envía nada a ningún servidor.
+    </p>
+  </section>
+
+  <section class="panel" id="salida" hidden>
+    <div id="resultado"></div>
+  </section>
+</main>
+
+<script src="datos.js"></script>
+<script src="motor.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

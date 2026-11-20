@@ -1,0 +1,20 @@
+# Perfiles de migración: datos de jugadores, no se versionan
+*_logon_warmane_com_*.json
+*_usa_wowaura_com_*.json
+*_wow_wowaura_com_*.json
+MigracionesPerfiles/
+perfiles/
+
+# Material de trabajo local
+__pycache__/
+*.py[cod]
+*.bak
+*.csv
+/contexto.txt
+/cipipaste.txt
+/logo.gif
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store

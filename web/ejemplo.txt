@@ -1,0 +1,525 @@
+Logo Logo
+
+Staff
+Migraciones Thalassa
+Buscar Personaje
+Filtro
+0
+En Espera
+0
+Confirmadas
+1205
+Canceladas
+57788
+Realizadas
+133867
+Migraciones Aegwynn
+Foro
+Bugtracker
+Matecitos
+Interfaz
+Volver Atrás
+Migraciones - Información del Personaje: Dilocko - (Thalassa)
+Dilocko - (Thalassa)
+Dilocko
+Pícaro - Orco
+Información del personaje
+Nombre del PJ en el Servidor Remoto
+Cheekoo
+Servidor del que Provienes
+logon.warmane.com
+
+Locale
+esMX
+
+Build
+12340
+
+Reino
+Onyxia
+
+Genero
+Femenino
+
+Clase
+Pícaro
+
+Raza
+Orco
+
+Nivel
+80
+
+Oro
+4451 de oro, 83 de plata y 90 de cobre
+
+Muertes
+313
+
+Puntos de Honor
+9779
+
+Puntos de Arena
+0
+
+Migrador Logs
+Información
+La migración ha sido cancelada, porque no cumple con los requisitos.
+
+#	Estado	Fecha
+1	(WEB) Jugador entra en migración	2026-11-18 06:45:53
+2	(WEB) Ajustado el nombre del personaje con datos remotos	2026-11-18 06:45:53
+3	(WEB) Ajustado el realmlist con datos remotos	2026-11-18 06:45:53
+4	(WEB) Volcado de inventario completado	2026-11-18 06:45:53
+5	(WEB) La migración ha entrado en el filtro.	2026-11-18 06:45:53
+Problemas con los Objetos de la Migración
+Los objetos destacados en color violeta son objetos que tienen conflictos, ya que su ID de objeto es inferior a 40.000
+#	EntryID	Nombre del Objeto	Cantidad	ItemLevel	Enlace Armería	Opciones
+1	6948	Piedra de hogar	1	1	Ver Objeto	ACEPTADO
+2	16000	Tubo de torio	5	39	Ver Objeto	ACEPTADO
+3	39690	Activador de explosivo volátil	20	72	Ver Objeto	ACEPTADO
+4	50653	Capa de destripador de La Cámara de las Sombras	1	277	Ver Objeto	-
+5	6219	Llave de tuerca arcoluz	1	10	Ver Objeto	ACEPTADO
+6	50333	Guardamuñecas máximos de Toskk	1	264	Ver Objeto	-
+7	41599	Bolsa de tejido de Escarcha	0	80	Ver Objeto	-
+8	39690	Activador de explosivo volátil	2	72	Ver Objeto	ACEPTADO
+9	40684	Espejo de verdad	1	200	Ver Objeto	-
+10	42774	Diente de Arngrim	1	1	Ver Objeto	-
+11	50402	Sortija Cinérea de venganza infinita	1	277	Ver Objeto	-
+12	2901	Pico de minero	1	4	Ver Objeto	ACEPTADO
+13	34057	Cristal abisal	2	80	Ver Objeto	CANCELADO
+14	33470	Tela de tejido de Escarcha	20	70	Ver Objeto	ACEPTADO
+15	34054	Polvo infinito	5	70	Ver Objeto	ACEPTADO
+16	47284	Botines de caminante del hielo	1	245	Ver Objeto	-
+17	4371	Tubo de bronce	10	21	Ver Objeto	ACEPTADO
+18	23781	Pólvora elemental	20	60	Ver Objeto	ACEPTADO
+19	50676	Separador de costillas	1	277	Ver Objeto	-
+20	39682	Condensador sobrecargado	4	70	Ver Objeto	ACEPTADO
+21	4377	Pólvora potente	20	25	Ver Objeto	ACEPTADO
+22	47267	Ballesta de calavera de la Muerte	1	245	Ver Objeto	-
+23	33292	Yelmo sacralizado	1	1	Ver Objeto	ACEPTADO
+24	4305	Madeja de paño de seda	20	35	Ver Objeto	ACEPTADO
+25	4305	Madeja de paño de seda	20	35	Ver Objeto	ACEPTADO
+26	33445	Té de mentamiel	1	85	Ver Objeto	ACEPTADO
+27	5956	Martillo de herrero	1	1	Ver Objeto	ACEPTADO
+28	42994	Filete de gusano rinolicioso	14	80	Ver Objeto	-
+29	4305	Madeja de paño de seda	4	35	Ver Objeto	ACEPTADO
+30	50776	Arco de hueso Njorndar	1	251	Ver Objeto	-
+31	50067	Cincho suturado de Astrylian	1	264	Ver Objeto	-
+32	4377	Pólvora potente	4	25	Ver Objeto	ACEPTADO
+33	50203	Supurasangre	1	232	Ver Objeto	-
+34	47568	Carabina de puntería certera	1	219	Ver Objeto	-
+35	43102	Orbe congelado	3	80	Ver Objeto	-
+36	41599	Bolsa de tejido de Escarcha	0	80	Ver Objeto	-
+37	35627	Sombra eterna	1	75	Ver Objeto	ACEPTADO
+38	4306	Paño de seda	1	30	Ver Objeto	ACEPTADO
+39	10505	Pólvora sólida	10	35	Ver Objeto	ACEPTADO
+40	4305	Madeja de paño de seda	5	35	Ver Objeto	ACEPTADO
+41	35622	Agua eterna	1	75	Ver Objeto	ACEPTADO
+42	50088	Guanteletes de Hoja de las Sombras	1	251	Ver Objeto	-
+43	42164	Cuerno de Hodir	1	1	Ver Objeto	-
+44	46106	Lanza Argenta	1	1	Ver Objeto	-
+45	10559	Tubo de mitril	6	39	Ver Objeto	ACEPTADO
+46	50858	Leotardos de cuero empapados de peste	1	251	Ver Objeto	-
+47	43235	Veneno hiriente	7	78	Ver Objeto	-
+48	47266	Furia sangrienta	1	245	Ver Objeto	-
+49	35625	Vida eterna	1	75	Ver Objeto	ACEPTADO
+50	42424	Pico con punta de diamante	1	0	Ver Objeto	-
+51	47242	Trofeo de la Cruzada	1	80	Ver Objeto	-
+52	10498	Microajustador giromático	1	35	Ver Objeto	ACEPTADO
+53	41599	Bolsa de tejido de Escarcha	0	80	Ver Objeto	-
+54	39683	Tubo de acero gélido reforzado	6	70	Ver Objeto	ACEPTADO
+55	23768	Bengala de humo blanco	20	1	Ver Objeto	ACEPTADO
+56	15994	Trasto de torio	10	52	Ver Objeto	ACEPTADO
+57	12359	Barra de torio	8	50	Ver Objeto	ACEPTADO
+58	4404	Contacto de plata	20	18	Ver Objeto	ACEPTADO
+59	1705	Piedra lunar inferior	3	30	Ver Objeto	ACEPTADO
+60	23768	Bengala de humo blanco	20	1	Ver Objeto	ACEPTADO
+61	23768	Bengala de humo blanco	20	1	Ver Objeto	ACEPTADO
+62	47734	Marca de Supremacía	1	245	Ver Objeto	-
+63	36928	Piedra de terror	1	80	Ver Objeto	CANCELADO
+64	52025	Marca de santificación de vencedor	1	80	Ver Objeto	-
+65	33470	Tela de tejido de Escarcha	7	70	Ver Objeto	ACEPTADO
+66	37705	Agua cristalizada	1	75	Ver Objeto	ACEPTADO
+67	1210	Gema de las Sombras	7	20	Ver Objeto	ACEPTADO
+68	4382	Marco de bronce	3	29	Ver Objeto	ACEPTADO
+69	36916	Barra de cobalto	4	72	Ver Objeto	ACEPTADO
+70	4375	Cacharros zumbones de bronce	10	25	Ver Objeto	ACEPTADO
+71	4375	Cacharros zumbones de bronce	2	25	Ver Objeto	ACEPTADO
+72	2321	Hilo refinado	18	20	Ver Objeto	ACEPTADO
+73	4382	Marco de bronce	10	29	Ver Objeto	ACEPTADO
+74	3860	Barra de mitril	1	40	Ver Objeto	ACEPTADO
+75	42780	Reliquia de Ulduar	44	1	Ver Objeto	-
+76	23768	Bengala de humo blanco	20	1	Ver Objeto	ACEPTADO
+77	10561	Envoltura de mitril	4	43	Ver Objeto	ACEPTADO
+78	51013	Bolsa de entrañas desechada	1	251	Ver Objeto	-
+79	23782	Envoltura de hierro vil	5	60	Ver Objeto	ACEPTADO
+80	15992	Pólvora densa	13	50	Ver Objeto	ACEPTADO
+81	50105	Espaldares de Hoja de las Sombras	1	251	Ver Objeto	-
+82	50087	Coraza de Hoja de las Sombras	1	251	Ver Objeto	-
+83	36916	Barra de cobalto	18	72	Ver Objeto	ACEPTADO
+84	41599	Bolsa de tejido de Escarcha	0	80	Ver Objeto	-
+85	47730	Anillo de piedraluz diestro	1	245	Ver Objeto	-
+86	42769	Lanza de Hodir	1	1	Ver Objeto	-
+87	43233	Veneno mortal	9	80	Ver Objeto	-
+88	50198	Escorpión incrustado de agujas	1	232	Ver Objeto	-
+89	47266	Furia sangrienta	1	245	Ver Objeto	-
+90	50764	Chal de seda nerubiana	1	251	Ver Objeto	-
+91	42479	Colmillo de huargo etéreo	1	1	Ver Objeto	-
+92	3775	Veneno entorpecedor	14	20	Ver Objeto	ACEPTADO
+93	50852	Collera pútrida de Precioso	1	251	Ver Objeto	-
+94	39681	Puñado de tornillos de cobalto	18	71	Ver Objeto	ACEPTADO
+95	4363	Modulador de cobre	18	13	Ver Objeto	ACEPTADO
+96	45820	Broche de la noche plañidera	1	226	Ver Objeto	-
+97	37700	Aire cristalizado	2	75	Ver Objeto	ACEPTADO
+98	23768	Bengala de humo blanco	10	1	Ver Objeto	ACEPTADO
+99	15994	Trasto de torio	10	52	Ver Objeto	ACEPTADO
+100	37700	Aire cristalizado	6	75	Ver Objeto	ACEPTADO
+101	10505	Pólvora sólida	19	35	Ver Objeto	ACEPTADO
+102	43231	Veneno instantáneo	7	79	Ver Objeto	-
+103	1529	Jade	3	35	Ver Objeto	ACEPTADO
+Emblemas del personaje
+#	ID	Nombre	Cantidad	Enlace Armería
+2	43228	Fragmento de vigilante de piedra	366	Ver Emblema
+3	43589	Marca de Honor de Conquista del Invierno	4	Ver Emblema
+4	43307	Puntos de arena	0	Ver Emblema
+5	43308	Puntos de honor	9779	Ver Emblema
+7	45624	Emblema de conquista	20	Ver Emblema
+8	49426	Emblema de escarcha	84	Ver Emblema
+9	40752	Emblema de heroísmo	86	Ver Emblema
+10	47241	Emblema de triunfo	130	Ver Emblema
+11	40753	Emblema de valor	89	Ver Emblema
+13	44990	Sello de Campeón	9	Ver Emblema
+Habilidades
+#	Máximo	Actual	Nombre	Enlace Armería
+1	0	0	Habilidades de clase	
+2	1	1	Asesinato	
+3	1	1	Combate	
+4	400	13	Ganzúa	
+5	1	1	Sutileza	
+6	0	0	Profesiones	
+7	450	405	Ingeniería	Ver Habilidad
+8	225	161	Sastrería	Ver Habilidad
+9	0	0	Habilidades secundarias	
+10	225	225	Equitación con entry: 34090	
+11	0	0	Habilidades con armas	
+12	400	1	Arcos	
+13	400	86	Armas arrojadizas	
+14	400	1	Armas de fuego	
+15	400	1	Ballestas	
+16	400	400	Dagas	
+17	400	400	Defensa	
+18	400	400	Espadas	
+19	400	400	Hachas	
+20	400	82	Mazas	
+21	400	400	Sin armas	
+22	0	0	Armaduras disponibles	
+23	1	1	Cuero	
+24	1	1	Tela	
+25	0	0	Idiomas	
+26	300	300	Idioma: orco	
+Reputaciones
+#	Nombre	Puntuación
+1	Clásicas	0
+2	Centauros del clan Gelkis	2000
+3	Centauros del clan Magram	2000
+4	Círculo Cenarion	1968
+5	El Alba Argenta	1910
+6	Srs. del Agua de Hydraxis	62
+7	Cártel Bonvapor	500
+8	Bahía del Botín	1582
+9	Gadgetzan	2677
+10	Trinquete	1582
+11	Vista Eterna	1582
+12	Fuerzas de la Horda	0
+13	Clan Lobo Gélido	192
+14	Escoltas Grito de Guerra	135
+15	Los Rapiñadores	50
+16	Horda	3500
+17	Cima del Trueno	4849
+18	Ciudad de Lunargenta	2036
+19	Entrañas	2136
+20	Orgrimmar	8363
+21	Trols Lanza Negra	6860
+22	The Burning Crusade	0
+23	El Consorcio	500
+24	Expedición Cenarion	1800
+25	Los Maghar	-494
+26	Thrallmar	2105
+27	Ciudad de Shattrath	0
+28	Bajo Arrabal	0
+29	Los Aldor	0
+30	Wrath of the Lich King	0
+31	Caballeros de la Espada de Ébano	42999
+32	Cruzada Argenta	2125
+33	El Acuerdo del Reposo del Dragón	42240
+34	El Veredicto Cinéreo	42999
+35	Kirin Tor	1020
+36	Los Hijos de Hodir	31275
+37	Los Kaluak	750
+38	Expedición de la Horda	42999
+39	La Mano de la Venganza	42999
+40	Los Atracasol	42999
+41	Los taunka	42999
+42	Ofensiva Grito de Guerra	42999
+Monturas y Compañeros
+#	ID	Enlace Armería
+0	70613	Ver Montura/Compañero
+0	42609	Ver Montura/Compañero
+0	32243	Ver Montura/Compañero
+0	48025	Ver Montura/Compañero
+0	64658	Ver Montura/Compañero
+0	23252	Ver Montura/Compañero
+Hechizos de Clase
+#	ID	Enlace Armería
+1	57934	Ver Hechizo
+2	48691	Ver Hechizo
+3	31224	Ver Hechizo
+4	1842	Ver Hechizo
+5	6774	Ver Hechizo
+6	57993	Ver Hechizo
+7	8647	Ver Hechizo
+8	54197	Ver Hechizo
+9	48668	Ver Hechizo
+10	1776	Ver Hechizo
+11	48672	Ver Hechizo
+12	2094	Ver Hechizo
+13	13750	Ver Hechizo
+14	1725	Ver Hechizo
+15	5938	Ver Hechizo
+16	51723	Ver Hechizo
+17	13877	Ver Hechizo
+18	2836	Ver Hechizo
+19	3910	Ver Hechizo
+20	48638	Ver Hechizo
+21	26889	Ver Hechizo
+22	1784	Ver Hechizo
+23	921	Ver Hechizo
+24	3127	Ver Hechizo
+25	1860	Ver Hechizo
+26	48657	Ver Hechizo
+27	11305	Ver Hechizo
+28	48674	Ver Hechizo
+29	48676	Ver Hechizo
+30	51722	Ver Hechizo
+31	51724	Ver Hechizo
+32	51690	Ver Hechizo
+33	1766	Ver Hechizo
+34	1833	Ver Hechizo
+35	48659	Ver Hechizo
+36	26669	Ver Hechizo
+37	8643	Ver Hechizo
+Logros
+#	ID	Nombre del logro	Fecha	Enlace Armería
+1	6	Nivel 10	22-02-2026	Ver Logro
+2	7	Nivel 20	28-02-2026	Ver Logro
+3	8	Nivel 30	04-03-2026	Ver Logro
+4	9	Nivel 40	07-03-2026	Ver Logro
+5	10	Nivel 50	13-03-2026	Ver Logro
+6	11	Nivel 60	14-03-2026	Ver Logro
+7	12	Nivel 70	24-03-2026	Ver Logro
+8	13	Nivel 80	03-04-2026	Ver Logro
+9	16	¿Alguien ha pedido un bocadillo de nudillos?	17-05-2026	Ver Logro
+10	116	Oficial profesional	01-03-2026	Ver Logro
+11	166	Victoria en la Garganta Grito de Guerra	03-04-2026	Ver Logro
+12	168	Perfección en la Garganta Grito de Guerra	03-04-2026	Ver Logro
+13	208	Victoria en el Ojo de la Tormenta	04-04-2026	Ver Logro
+14	211	Gloria de la tormenta	04-04-2026	Ver Logro
+15	212	Rematar la tormenta	04-04-2026	Ver Logro
+16	229	La parca	03-04-2026	Ver Logro
+17	238	Una muerte con honor	03-04-2026	Ver Logro
+18	245	Hace falta clase	04-04-2026	Ver Logro
+19	255	Tráeme la cabeza de... esto, vaya	20-10-2026	Ver Logro
+20	292	Llamada siniestra	20-10-2026	Ver Logro
+21	295	Fiesta de la Cerveza Temible	20-09-2026	Ver Logro
+22	453	Capataz	04-04-2026	Ver Logro
+23	454	Rastreador	03-04-2026	Ver Logro
+24	468	Bruto	04-04-2026	Ver Logro
+25	477	Fortaleza de Utgarde	24-03-2026	Ver Logro
+26	478	El Nexo	24-03-2026	Ver Logro
+27	479	La Matanza de Stratholme	03-04-2026	Ver Logro
+28	480	Azjol-Nerub	24-03-2026	Ver Logro
+29	482	Fortaleza de Drak'Tharon	24-03-2026	Ver Logro
+30	483	El Bastión Violeta	24-03-2026	Ver Logro
+31	484	Gundrak	26-03-2026	Ver Logro
+32	485	Cámaras de Piedra	28-03-2026	Ver Logro
+33	486	Cámaras de Relámpagos	03-04-2026	Ver Logro
+34	487	El Oculus	05-04-2026	Ver Logro
+35	488	Pináculo de Utgarde	04-04-2026	Ver Logro
+36	489	Heroico: Fortaleza de Utgarde	05-04-2026	Ver Logro
+37	490	Heroico: El Nexo	09-04-2026	Ver Logro
+38	491	Heroico: Azjol-Nerub	06-04-2026	Ver Logro
+39	493	Heroico: La Fortaleza de Drak'Tharon	02-05-2026	Ver Logro
+40	494	Heroico: El Bastión Violeta	09-04-2026	Ver Logro
+41	496	Heroico: Cámaras de Piedra	12-04-2026	Ver Logro
+42	497	Heroico: Cámaras de Relámpagos	13-04-2026	Ver Logro
+43	498	Heroico: El Oculus	05-04-2026	Ver Logro
+44	499	Heroico: El Pináculo de Utgarde	15-09-2026	Ver Logro
+45	500	Heroico: La Matanza de Stratholme	23-04-2026	Ver Logro
+46	503	50 misiones completadas	13-03-2026	Ver Logro
+47	504	100 misiones completadas	24-03-2026	Ver Logro
+48	505	250 misiones completadas	03-04-2026	Ver Logro
+49	513	100 muertes con honor	04-04-2026	Ver Logro
+50	522	A alguien le gusto	23-04-2026	Ver Logro
+51	523	5 reputaciones Exaltado	25-10-2026	Ver Logro
+52	556	Épico	06-11-2026	Ver Logro
+53	557	Superior	23-04-2026	Ver Logro
+54	558	Avaricioso	04-04-2026	Ver Logro
+55	562	El Arrabal Arácnido (10 j.)	11-05-2026	Ver Logro
+56	563	El Arrabal Arácnido (25 j.)	10-04-2026	Ver Logro
+57	564	El Arrabal de los Ensamblajes (10 j.)	11-05-2026	Ver Logro
+58	565	El Arrabal de los Ensamblajes (25 j.)	10-04-2026	Ver Logro
+59	566	El Arrabal de la Peste (10 j.)	11-05-2026	Ver Logro
+60	567	El Arrabal de la Peste (25 j.)	10-04-2026	Ver Logro
+61	568	El Arrabal Militar (10 j.)	11-05-2026	Ver Logro
+62	569	El Arrabal Militar (25 j.)	10-04-2026	Ver Logro
+63	572	La muerte de Sapphiron (10 j.)	11-05-2026	Ver Logro
+64	573	La muerte de Sapphiron (25 j.)	10-04-2026	Ver Logro
+65	574	La derrota de Kel'Thuzad (10 j.)	11-05-2026	Ver Logro
+66	575	La derrota de Kel'Thuzad (25 j.)	10-04-2026	Ver Logro
+67	576	La caída de Naxxramas (10 j.)	11-05-2026	Ver Logro
+68	577	La caída de Naxxramas (25 j.)	10-04-2026	Ver Logro
+69	621	Representa	06-04-2026	Ver Logro
+70	622	La caída del Tejehechizos (10 j.)	09-04-2026	Ver Logro
+71	623	La caída del Tejehechizos (25 j.)	20-05-2026	Ver Logro
+72	625	Vencer al Vuelo Negro (25 j.)	25-05-2026	Ver Logro
+73	628	Minas de la Muerte	28-02-2026	Ver Logro
+74	629	Sima Ígnea	23-02-2026	Ver Logro
+75	632	Cavernas de Brazanegra	28-02-2026	Ver Logro
+76	634	Gnomeregan	04-03-2026	Ver Logro
+77	639	Zul'Farrak	13-03-2026	Ver Logro
+78	641	Templo Sumergido	12-03-2026	Ver Logro
+79	647	Murallas del Fuego Infernal	15-03-2026	Ver Logro
+80	650	La Sotiénaga	16-03-2026	Ver Logro
+81	705	Maestro armero	10-09-2026	Ver Logro
+82	731	Experto profesional	22-10-2026	Ver Logro
+83	732	Artesano profesional	22-10-2026	Ver Logro
+84	733	Maestro profesional	24-10-2026	Ver Logro
+85	734	Gran maestro profesional	24-10-2026	Ver Logro
+86	854	Cráter de Un'Goro	13-03-2026	Ver Logro
+87	889	A todo gas	08-03-2026	Ver Logro
+88	890	Hacia la azul y salvaje lejanía	24-03-2026	Ver Logro
+89	891	¡Arre!	28-02-2026	Ver Logro
+90	939	Montes como elekk blancos	17-03-2026	Ver Logro
+91	964	¿Bajas?	24-03-2026	Ver Logro
+92	973	5 misiones diarias completadas	02-06-2026	Ver Logro
+93	979	La tarea de la máscara	20-10-2026	Ver Logro
+94	980	Riendas de Jinete decapitado	31-10-2026	Ver Logro
+95	1005	Conoce a tu enemigo	04-04-2026	Ver Logro
+96	1007	El Acuerdo del Reposo del Dragón	09-09-2026	Ver Logro
+97	1009	Caballeros de la Espada de Ébano	23-04-2026	Ver Logro
+98	1011	Los vientos del Norte	11-09-2026	Ver Logro
+99	1017	¿Puedo quedármela?	23-04-2026	Ver Logro
+100	1176	Pienso en mi dinero	03-04-2026	Ver Logro
+101	1177	Pienso en mi dinero	17-05-2026	Ver Logro
+102	1297	Hadronox rechazado	08-04-2026	Ver Logro
+103	1308	Victoria en la Playa de los Ancestros	04-04-2026	Ver Logro
+104	1310	Asalta la playa	04-04-2026	Ver Logro
+105	1658	Campeón de los baldíos helados	25-05-2026	Ver Logro
+106	1717	Victoria en Conquista del Invierno	04-04-2026	Ver Logro
+107	1721	Archavon el Vigía de Piedra (25j.)	21-05-2026	Ver Logro
+108	1727	La torre inclinada	04-04-2026	Ver Logro
+109	1817	Matar el tiempo	23-04-2026	Ver Logro
+110	1834	Descarga de relámpago	13-04-2026	Ver Logro
+111	1856	Hazle un buen remiendo (10 j.)	11-05-2026	Ver Logro
+112	1857	Hazle un buen remiendo (25 j.)	10-04-2026	Ver Logro
+113	1858	Aracnofobia (10 j.)	11-05-2026	Ver Logro
+114	1859	Aracnofobia (25 j.)	10-04-2026	Ver Logro
+115	1860	¡Me voy de aquí!	06-04-2026	Ver Logro
+116	1862	La rápida muerte de Volazj	13-04-2026	Ver Logro
+117	1866	¡Qué pena!	12-04-2026	Ver Logro
+118	1867	Muerte calculada	13-04-2026	Ver Logro
+119	1868	Haz que cuente	05-04-2026	Ver Logro
+120	1873	Tralarí, tralarí, nos encanta Skadi	08-04-2026	Ver Logro
+121	1874	No tenemos toda la eternidad (10 j.)	09-04-2026	Ver Logro
+122	1996	Baila por tu vida (10 j.)	11-05-2026	Ver Logro
+123	2036	Frío intenso	09-04-2026	Ver Logro
+124	2042	Antipedacitos	13-04-2026	Ver Logro
+125	2052	Ayuda crepuscular (25 j.)	25-05-2026	Ver Logro
+126	2053	Dúo crepuscular (25 j.)	25-05-2026	Ver Logro
+127	2058	Serpientes. ¿Por qué serpientes?	24-04-2026	Ver Logro
+128	2085	50 fragmentos de vigilante de piedra	29-03-2026	Ver Logro
+129	2086	100 fragmentos de vigilante de piedra	07-04-2026	Ver Logro
+130	2087	250 fragmentos de vigilante de piedra	23-04-2026	Ver Logro
+131	2088	500 fragmentos de vigilante de piedra	22-10-2026	Ver Logro
+132	2139	Baila por tu vida (25 j.)	10-04-2026	Ver Logro
+133	2140	Mamá me dijo que te pegara (25 j.)	10-04-2026	Ver Logro
+134	2150	Doble personalidad	09-04-2026	Ver Logro
+135	2153	Un baile con el vacío	09-04-2026	Ver Logro
+136	2154	Brann totalmente nuevo	12-05-2026	Ver Logro
+137	2156	A mi chica le encanta Skadi	15-09-2026	Ver Logro
+138	2716	Doble especialización de talentos	13-05-2026	Ver Logro
+139	2886	El asedio de Ulduar (10 j.)	17-05-2026	Ver Logro
+140	2887	El asedio de Ulduar (25 j.)	26-05-2026	Ver Logro
+141	2890	Los vigilantes de Ulduar (10 j.)	01-06-2026	Ver Logro
+142	2907	Garaje de tres plazas (10 j.)	08-06-2026	Ver Logro
+143	2911	Cerrado (10 j.)	17-05-2026	Ver Logro
+144	2912	Cerrado (25 j.)	26-05-2026	Ver Logro
+145	2919	Un afeitado rápido (10 j.)	17-05-2026	Ver Logro
+146	2921	Un afeitado rápido (25 j.)	26-05-2026	Ver Logro
+147	2929	Avivar las llamas (25 j.)	26-05-2026	Ver Logro
+148	2930	Avivar las llamas (10 j.)	27-05-2026	Ver Logro
+149	2931	Apoca la ingeniería (10 j.)	01-06-2026	Ver Logro
+150	2934	Apoca Bombas de gravedad (10 j.)	17-05-2026	Ver Logro
+151	2936	Apoca Bombas de gravedad (25 j.)	26-05-2026	Ver Logro
+152	2937	Hay que desarmar más deprisa (10 j.)	27-05-2026	Ver Logro
+153	2961	Soporta el frío (10 j.)	01-06-2026	Ver Logro
+154	2963	Mis amigos son unos frescos (10 j.)	17-05-2026	Ver Logro
+155	2967	Aquí hace frío (10 j.)	01-06-2026	Ver Logro
+156	2969	Pasar todo el invierno beneficiado (10 j.)	17-05-2026	Ver Logro
+157	2970	Pasar todo el invierno beneficiado (25 j.)	26-05-2026	Ver Logro
+158	2973	Me enfrentaré con todos (10 j.)	17-05-2026	Ver Logro
+159	2977	Con Sif (10 j.)	27-05-2026	Ver Logro
+160	3058	Rompecorazones (10 j.)	01-06-2026	Ver Logro
+161	3136	Emalon el Vigía de la Tormenta (10 j.)	10-05-2026	Ver Logro
+162	3137	Emalon el Vigía de la Tormenta (25 j.)	21-05-2026	Ver Logro
+163	3176	Pierde tu ilusión (10 j.)	27-05-2026	Ver Logro
+164	3182	Ya decía yo que este alijo era poco común (10 j.)	08-06-2026	Ver Logro
+165	3778	Prueba del Campeón	18-09-2026	Ver Logro
+166	3799	Sal y pimienta (10 j.)	10-09-2026	Ver Logro
+167	3815	Sal y pimienta (25 j.)	25-09-2026	Ver Logro
+168	3838	Emblema de mazmorra y banda	05-04-2026	Ver Logro
+169	3839	25 emblemas de mazmorras y bandas	08-04-2026	Ver Logro
+170	3840	50 emblemas de mazmorras y bandas	10-04-2026	Ver Logro
+171	3841	100 emblemas de mazmorras y bandas	23-04-2026	Ver Logro
+172	3842	250 emblemas de mazmorras y bandas	26-05-2026	Ver Logro
+173	3843	500 emblemas de mazmorras y bandas	27-09-2026	Ver Logro
+174	3916	La Llamada de la Cruzada (25 j.)	10-09-2026	Ver Logro
+175	3917	La Llamada de la Cruzada (10 j.)	10-09-2026	Ver Logro
+176	3936	No uno, sino dos jormungar (10 j.)	09-10-2026	Ver Logro
+177	3997	360 grados de púas de dolor (25 j.)	05-10-2026	Ver Logro
+178	4297	Heroico: Prueba del Campeón	06-11-2026	Ver Logro
+179	4476	Buscar más	05-04-2026	Ver Logro
+180	4477	Buscar mucho más	09-04-2026	Ver Logro
+181	4478	Buscar muchísimo más	23-04-2026	Ver Logro
+182	4516	La Forja de Almas	09-09-2026	Ver Logro
+183	4517	El Foso de Saron	09-09-2026	Ver Logro
+184	4518	Las Cámaras de Reflexión	11-09-2026	Ver Logro
+185	4519	Heroico: La Forja de Almas	10-09-2026	Ver Logro
+186	4520	Heroico: El Foso de Saron	09-09-2026	Ver Logro
+187	4521	Heroico: Las Cámaras de Reflexión	11-09-2026	Ver Logro
+188	4523	Tres caras	11-09-2026	Ver Logro
+189	4524	Solo once campanadas	01-10-2026	Ver Logro
+190	4526	No nos retiramos: avanzamos en otra dirección	11-09-2026	Ver Logro
+191	4527	Las Cámaras de Alaescarcha (10 j.)	11-10-2026	Ver Logro
+192	4528	Los Talleres de la Peste (10 j.)	11-10-2026	Ver Logro
+193	4529	La Sala Carmesí (10 j.)	11-10-2026	Ver Logro
+194	4531	Asaltar la Ciudadela (10 j.)	11-09-2026	Ver Logro
+195	4534	Deshuesado (10 j.)	24-09-2026	Ver Logro
+196	4537	Mira la que he montado (10 j.)	11-09-2026	Ver Logro
+197	4538	Bailando con mocos (10 j.)	21-10-2026	Ver Logro
+198	4539	Devórame otra vez (10 j.)	21-10-2026	Ver Logro
+199	4582	El hombre que susurraba a los orbes (10 j.)	11-10-2026	Ver Logro
+200	4585	Toravon el Vigía de Hielo (10 j.)	10-09-2026	Ver Logro
+201	4586	Toravon el Vigía de Hielo (25 j.)	10-09-2026	Ver Logro
+202	4598	El Veredicto Cinéreo	25-10-2026	Ver Logro
+203	4604	Asaltar la Ciudadela (25 j.)	28-09-2026	Ver Logro
+204	4605	Los Talleres de la Peste (25 j.)	18-10-2026	Ver Logro
+205	4606	La Sala Carmesí (25 j.)	18-10-2026	Ver Logro
+206	4607	Las Cámaras de Alaescarcha (25 j.)	18-10-2026	Ver Logro
+207	4613	Mira la que he montado (25 j.)	18-10-2026	Ver Logro
+208	4618	Devórame otra vez (25 j.)	25-10-2026	Ver Logro
+209	4785	Emblemático	24-03-2026	Ver Logro
+© 2011 - 2026 © Comunidad NaerZone Todos los derechos reservados.
+NaerZone Utils
+💾 Guardar Perfil
