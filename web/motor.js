@@ -118,9 +118,13 @@ function parsear(texto) {
 
   const p = {
     nombre: "", reino: "", clase: "", raza: "", nivel: 0,
+    remoto: "", servidorOrigen: "", reinoOrigen: "", genero: "",
+    locale: "", build: "",
     hk: 0, honor: 0, arena: 0, oro: 0,
     logros: new Map(), nombres: new Map(),
-    objetos: [], reps: [], extraido: null, errores: [],
+    objetos: [], reps: [], emblemas: [], habilidades: [],
+    monturas: [], hechizos: [], logs: [],
+    extraido: null, errores: [],
   };
 
   const cab = /Información del Personaje:\s*(.+?)\s*-\s*\(([^)]+)\)/.exec(texto);
@@ -128,7 +132,7 @@ function parsear(texto) {
     p.nombre = cab[1].trim();
     p.reino = cab[2].trim();
   }
-  const estado = lineas.find((l) => /^La migración ha (sido|entrado)/i.test(l));
+  const estado = lineas.find((l) => /^La migración ha (sido|entrado)/i.test(l) && !/^\(WEB\)/.test(l));
   p.estadoMigracion = estado || "";
 
   let seccion = "";
@@ -136,6 +140,7 @@ function parsear(texto) {
     const s = lineas[i];
     if (!s) continue;
 
+    if (s === "Migrador Logs") { seccion = "logs"; continue; }
     if (s === "Problemas con los Objetos de la Migración") { seccion = "objetos"; continue; }
     if (s === "Emblemas del personaje") { seccion = "emblemas"; continue; }
     if (s === "Habilidades") { seccion = "habilidades"; continue; }
@@ -152,6 +157,12 @@ function parsear(texto) {
     if (s === "Puntos de Honor") { p.honor = numero(sig); continue; }
     if (s === "Puntos de Arena") { p.arena = numero(sig); continue; }
     if (s === "Oro") { p.oro = numero(sig); continue; }
+    if (s === "Genero") { p.genero = sig; continue; }
+    if (s === "Locale") { p.locale = sig; continue; }
+    if (s === "Build") { p.build = sig; continue; }
+    if (s === "Reino") { p.reinoOrigen = sig; continue; }
+    if (s === "Nombre del PJ en el Servidor Remoto") { p.remoto = sig; continue; }
+    if (s === "Servidor del que Provienes") { p.servidorOrigen = sig; continue; }
 
     if (seccion === "logros") {
       const m = /^(\d+)\t(\d+)\t(.+?)\t(\d{1,2}-\d{1,2}-\d{4})\b/.exec(s);
@@ -165,12 +176,39 @@ function parsear(texto) {
         continue;
       }
     } else if (seccion === "objetos") {
-      const m = /^(\d+)\t(\d+)\t(.+?)\t(\d+)\t(\d+)\t/.exec(s);
+      const m = /^(\d+)\t(\d+)\t(.+?)\t(\d+)\t(\d+)\t([^\t]*)\t?([^\t]*)/.exec(s);
       if (m) {
         p.objetos.push({
           id: Number(m[2]), nombre: m[3].trim(),
           cantidad: numero(m[4]), ilvl: numero(m[5]),
+          opcion: (m[7] || m[6] || "").trim(),
         });
+        continue;
+      }
+    } else if (seccion === "emblemas") {
+      const m = /^(\d+)\t(\d+)\t(.+?)\t(\d+)\t/.exec(s);
+      if (m) {
+        p.emblemas.push({ id: Number(m[2]), nombre: m[3].trim(), cantidad: numero(m[4]) });
+        continue;
+      }
+    } else if (seccion === "habilidades") {
+      const m = /^(\d+)\t(\d+)\t(\d+)\t(.+?)\t/.exec(s);
+      if (m) {
+        p.habilidades.push({ max: numero(m[2]), actual: numero(m[3]), nombre: m[4].trim() });
+        continue;
+      }
+    } else if (seccion === "monturas") {
+      const m = /^(\d+)\t(\d+)\t/.exec(s);
+      if (m) { p.monturas.push(Number(m[2])); continue; }
+    } else if (seccion === "hechizos") {
+      const m = /^(\d+)\t(\d+)\t/.exec(s);
+      if (m) { p.hechizos.push(Number(m[2])); continue; }
+    } else if (seccion === "logs") {
+      const m = /^(\d+)\t(.+?)\t(\d{4}-\d{2}-\d{2}(?:[ T]\d{2}:\d{2}(?::\d{2})?)?)/.exec(s);
+      if (m) {
+        p.logs.push({ estado: m[2].trim(), fecha: m[3] });
+        const d = m[3].slice(0, 10);
+        if (!p.extraido || d > p.extraido) p.extraido = d;
         continue;
       }
     } else if (seccion === "reps") {
@@ -181,7 +219,7 @@ function parsear(texto) {
       }
     }
 
-    const f = /^(\d{4})-(\d{2})-(\d{2})[ T]\d{2}:\d{2}/.exec(s);
+    const f = /(\d{4})-(\d{2})-(\d{2})[ T]\d{2}:\d{2}/.exec(s);
     if (f) {
       const d = f[1] + "-" + f[2] + "-" + f[3];
       if (!p.extraido || d > p.extraido) p.extraido = d;
@@ -216,7 +254,8 @@ function rMetas(p) {
             ": " + lista(falta.slice(0, 4), p);
   if (faltas.length > 1) det += " · además, " + (faltas.length - 1) + " meta(s) más incompletas";
   return { titulo: "Meta de logros incompleta", detalle: det, fuerza: 0.95,
-           familia: "normas", nota: "componentes exigidos según el catálogo 3.3.5" };
+           familia: "normas", ids: [a, ...falta],
+           nota: "componentes exigidos según el catálogo 3.3.5" };
 }
 
 function rMetaFechas(p) {
@@ -231,21 +270,25 @@ function rMetaFechas(p) {
   const [a, ultima, fecha] = malas[0];
   return { titulo: "Meta fechada antes que sus componentes",
            detalle: "«" + nombre(a, p) + "» es del " + fecha + ", pero su último componente es del " + ultima,
-           fuerza: 0.95, familia: "normas",
+           fuerza: 0.95, familia: "normas", ids: [a],
            nota: "una meta se concede al completar su último requisito" };
 }
 
 function rEscaleras(p) {
   const rotas = [];
+  const ids = [];
   for (const [nom, cadena] of ESCALERAS) {
     if (!cadena.every((i) => p.logros.has(i))) continue;
     const fechas = cadena.map((i) => p.logros.get(i));
-    if (fechas.some((f, i) => i > 0 && f < fechas[i - 1])) rotas.push(nom);
+    if (fechas.some((f, i) => i > 0 && f < fechas[i - 1])) {
+      rotas.push(nom);
+      ids.push(...cadena);
+    }
   }
   if (!rotas.length) return null;
   return { titulo: "Escalera con fechas fuera de orden",
            detalle: "Series acumulativas que retroceden: " + rotas.join(", "),
-           fuerza: 0.85, familia: "normas",
+           fuerza: 0.85, familia: "normas", ids,
            nota: "cada tramo exige el anterior, así que su fecha no puede ser anterior" };
 }
 
@@ -255,7 +298,7 @@ function rReputaciones(p) {
     if (p.logros.has(aid) && exaltadas < minimo) {
       return { titulo: "Logro de reputaciones sin las reputaciones",
                detalle: "«" + texto + "» exige " + minimo + " Exaltadas y solo tiene " + exaltadas,
-               fuerza: 0.90, familia: "normas",
+               fuerza: 0.90, familia: "normas", ids: [aid],
                nota: "se cuentan las reputaciones actuales del perfil" };
     }
   }
@@ -268,7 +311,7 @@ function rHK(p) {
     const [a, m] = pasados.sort((x, y) => y[1] - x[1])[0];
     return { titulo: "Logro de muertes con honor sin las muertes",
              detalle: "«" + nombre(a, p) + "» exige " + m + " HK y el perfil registra " + p.hk,
-             fuerza: 0.95, familia: "normas",
+             fuerza: 0.95, familia: "normas", ids: [a],
              nota: "el campo «Muertes» de la página son muertes con honor (HK)" };
   }
   const faltan = HK_LOGROS.filter(([a, m]) => !p.logros.has(a) && p.hk >= m);
@@ -288,7 +331,7 @@ function rEmblemaVs(p) {
     ? "Emblematic (" + p.logros.get(EMBLEMATIC) + ") es " + (-d) + " día(s) ANTERIOR al primer emblema (" + p.logros.get(EMBLEMA_1) + ")"
     : "Emblematic (" + p.logros.get(EMBLEMATIC) + ") llega " + d + " día(s) después del primer emblema (" + p.logros.get(EMBLEMA_1) + ")";
   return { titulo: "Emblematic descuadrado con el primer emblema", detalle: det,
-           fuerza: 0.90, familia: "emblema" };
+           fuerza: 0.90, familia: "emblema", ids: [EMBLEMATIC, EMBLEMA_1] };
 }
 
 function rEmblema80(p) {
@@ -296,7 +339,7 @@ function rEmblema80(p) {
   if (d !== null && d < 0) {
     return { titulo: "Emblematic antes del nivel 80",
              detalle: "Emblematic (" + p.logros.get(EMBLEMATIC) + ") es anterior al nivel 80 (" + p.logros.get(NIVEL_80) + ")",
-             fuerza: 0.85, familia: "emblema" };
+             fuerza: 0.85, familia: "emblema", ids: [EMBLEMATIC, NIVEL_80] };
   }
   return null;
 }
@@ -306,7 +349,7 @@ function rPrimerEmblema80(p) {
   if (d !== null && d < 0) {
     return { titulo: "Primer emblema antes del nivel 80",
              detalle: "El primer emblema (" + p.logros.get(EMBLEMA_1) + ") es anterior al nivel 80 (" + p.logros.get(NIVEL_80) + ")",
-             fuerza: 0.75, familia: "emblema" };
+             fuerza: 0.75, familia: "emblema", ids: [EMBLEMA_1, NIVEL_80] };
   }
   return null;
 }
@@ -317,7 +360,7 @@ function rEscaleraEmblemas(p) {
   if (fechas.every((f, i) => i === 0 || f >= fechas[i - 1])) return null;
   return { titulo: "Escalera de emblemas desordenada",
            detalle: "25/50/100/250/500 emblemas con fechas fuera de orden",
-           fuerza: 0.90, familia: "emblema" };
+           fuerza: 0.90, familia: "emblema", ids: ESCALERA_EMBLEMAS };
 }
 
 function r500Rapido(p) {
@@ -325,7 +368,7 @@ function r500Rapido(p) {
   if (d !== null && d < 7) {
     return { titulo: "500 emblemas en menos de una semana",
              detalle: "3843 (500 emblemas) solo " + d + " día(s) después del primero",
-             fuerza: 0.90, familia: "emblema" };
+             fuerza: 0.90, familia: "emblema", ids: [3843, EMBLEMA_1] };
   }
   return null;
 }
@@ -334,7 +377,7 @@ function rAlgalon(p) {
   if (p.logros.has(ALGALON) && !p.logros.has(GUARDIANES)) {
     return { titulo: "Algalon sin los Guardianes de Ulduar",
              detalle: "Algalon (3036) exige la llave del Planetario Celestial; no tiene 2890",
-             fuerza: 0.80, familia: "ulduar" };
+             fuerza: 0.80, familia: "ulduar", ids: [ALGALON, GUARDIANES] };
   }
   return null;
 }
@@ -344,7 +387,7 @@ function rMetaICC25(p) {
     const faltan = ALAS_ICC25.filter((i) => !p.logros.has(i));
     return { titulo: "Meta de ICC 25 sin sus alas",
              detalle: "Rey Exánime 25 (4608) sin los logros " + faltan.join(", "),
-             fuerza: 0.95, familia: "icc" };
+             fuerza: 0.95, familia: "icc", ids: [META_ICC25, ...ALAS_ICC25] };
   }
   return null;
 }
@@ -354,7 +397,7 @@ function rMetaICC10HC(p) {
     const faltan = ALAS_ICC10_HC.filter((i) => !p.logros.has(i));
     return { titulo: "Meta heroica de ICC 10 sin sus alas",
              detalle: "4636 sin los logros " + faltan.join(", "),
-             fuerza: 0.95, familia: "icc" };
+             fuerza: 0.95, familia: "icc", ids: [META_ICC10_HC, ...ALAS_ICC10_HC] };
   }
   return null;
 }
@@ -364,7 +407,7 @@ function r277(p) {
   if (piezas.length && !ALAS_ICC25_HC.some((i) => p.logros.has(i))) {
     return { titulo: "Botín 277 sin alas de ICC 25 heroico",
              detalle: piezas.length + " pieza(s) de ICC 25 HC sin ningún ala 25HC (hay tiendas: pesa poco)",
-             fuerza: 0.20, familia: "icc" };
+             fuerza: 0.20, familia: "icc", objs: piezas.map((x) => x.id) };
   }
   return null;
 }
@@ -375,7 +418,7 @@ function rNiveles(p) {
   if (fechas.every((f, i) => i === 0 || f >= fechas[i - 1])) return null;
   return { titulo: "Escalera de niveles desordenada",
            detalle: "Los logros de nivel 10-80 no siguen el orden",
-           fuerza: 0.90, familia: "progresion" };
+           fuerza: 0.90, familia: "progresion", ids: NIVELES };
 }
 
 function rDobleSpec(p) {
@@ -383,7 +426,7 @@ function rDobleSpec(p) {
   if (d !== null && d < 0) {
     return { titulo: "Doble especialización antes del nivel 40",
              detalle: "2716 (" + p.logros.get(DOBLE_SPEC) + ") antes del nivel 40 (" + p.logros.get(9) + ")",
-             fuerza: 0.90, familia: "progresion" };
+             fuerza: 0.90, familia: "progresion", ids: [DOBLE_SPEC, 9] };
   }
   return null;
 }
@@ -409,14 +452,14 @@ function rFechas(p) {
     if (futuros.length) {
       return { titulo: "Logros con fecha futura",
                detalle: futuros.length + " logro(s) posteriores a la extracción del perfil",
-               fuerza: 0.99, familia: "progresion" };
+               fuerza: 0.99, familia: "progresion", ids: futuros.map((x) => x[0]) };
     }
   }
   const antiguos = [...p.logros.entries()].filter(([, f]) => f < "2008-10-14");
   if (antiguos.length) {
     return { titulo: "Logros anteriores a la existencia de los logros",
-             detalle: antiguos.length + " logro(s) fechados antes del parche 3.0.2",
-             fuerza: 0.99, familia: "progresion" };
+             detalle: antiguas.length + " logro(s) fechados antes del parche 3.0.2",
+             fuerza: 0.99, familia: "progresion", ids: antiguas.map((x) => x[0]) };
   }
   return null;
 }
@@ -458,7 +501,7 @@ function rObjetos(p) {
     const g = grupos.get(clave);
     if (!g.jefes.has(jefe)) g.jefes.set(jefe, []);
     g.jefes.get(jefe).push(o.nombre);
-    g.items.push([o.nombre, o.ilvl, jefe]);
+    g.items.push([o.nombre, o.ilvl, jefe, o.id]);
   }
   if (!grupos.size) return null;
 
@@ -497,17 +540,18 @@ function rObjetos(p) {
   if (partes.length > 2) det += "; y " + (partes.length - 2) + " ala(s) más";
   return { titulo: "Objetos sin el logro que los respalde", detalle: det,
            fuerza, familia: "objetos",
+           objs: [...grupos.values()].flatMap((g) => g.items.map((i) => i[3])),
            nota: "puede venir de tienda o de un jefe suelto; se anota como indicio" };
 }
 
 function rTOC(p) {
-  let piezas = 0;
+  const piezas = [];
   for (const o of p.objetos) {
     if (o.ilvl !== 258) continue;
     const f = FUENTES[String(o.id)];
     if (!f) continue;
     const j = (f.jefe || "").toLowerCase();
-    if (JEFES_TOC.some((k) => j.includes(k))) piezas++;
+    if (JEFES_TOC.some((k) => j.includes(k))) piezas.push(o.id);
   }
   if (piezas < 4) return null;
   let logros = 0;
@@ -519,9 +563,9 @@ function rTOC(p) {
   else if (logros === 0) fuerza = 0.40;
   else return null;
   return { titulo: "Equipo de la Cruzada sin logros de la Cruzada",
-           detalle: "lleva " + piezas + " objetos de la Cruzada 25 heroico (ilvl 258) y solo " +
+           detalle: "lleva " + piezas.length + " objetos de la Cruzada 25 heroico (ilvl 258) y solo " +
                     logros + " logro(s) de esa banda",
-           fuerza, familia: "objetos",
+           fuerza, familia: "objetos", objs: piezas,
            nota: "los logros de ToC son condicionales, pero tantas piezas sin la banda acreditada no cuadra" };
 }
 
@@ -573,7 +617,7 @@ function rBoE(p) {
   if (top.length > 3) detalle += ` y ${top.length - 3} más`;
   detalle += ` · ${prof} de profesiones, ${raid} de banda`;
 
-  return { titulo, detalle, fuerza, familia: "banco",
+  return { titulo, detalle, fuerza, familia: "banco", objs: [...distintos.keys()],
            nota: "los BoE se compran en la subasta: indica un personaje-banco (motivo de rechazo " +
                  "por política), no que los logros sean falsos" };
 }
