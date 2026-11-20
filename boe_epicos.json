@@ -1,0 +1,1819 @@
+{
+"37835": {
+"fuentes": [
+"Sagrario Rubí",
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Sagrario Rubí",
+"ilvl": 200,
+"nombre": "Je'Tze's Bell",
+"origen": "Raid",
+"slot": "Trinket"
+},
+"39194": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 200,
+"nombre": "Rusted-Link Spiked Gauntlets",
+"origen": "Raid",
+"slot": "Manos"
+},
+"39235": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 200,
+"nombre": "Bone-Framed Bracers",
+"origen": "Raid",
+"slot": "Muñecas"
+},
+"39283": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 200,
+"nombre": "Putrescent Bands",
+"origen": "Raid",
+"slot": "Muñecas"
+},
+"39310": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 200,
+"nombre": "Mantle of the Extensive Mind",
+"origen": "Raid",
+"slot": "Hombros"
+},
+"39472": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 200,
+"nombre": "Chain of Latent Energies",
+"origen": "Raid",
+"slot": "Cuello"
+},
+"39717": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Inexorable Sabatons",
+"origen": "Raid",
+"slot": "Pies"
+},
+"39733": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Gloves of Token Respect",
+"origen": "Raid",
+"slot": "Manos"
+},
+"39762": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Torn Web Wrapping",
+"origen": "Raid",
+"slot": "Cintura"
+},
+"40187": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Poignant Sabatons",
+"origen": "Raid",
+"slot": "Pies"
+},
+"40206": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Iron-Spring Jumpers",
+"origen": "Raid",
+"slot": "Pies"
+},
+"40246": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Boots of Impetuous Ideals",
+"origen": "Raid",
+"slot": "Pies"
+},
+"40270": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Boots of Septic Wounds",
+"origen": "Raid",
+"slot": "Pies"
+},
+"40282": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Slime Stream Bands",
+"origen": "Raid",
+"slot": "Muñecas"
+},
+"40302": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Benefactor's Gauntlets",
+"origen": "Raid",
+"slot": "Manos"
+},
+"40305": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Spaulders of Egotism",
+"origen": "Raid",
+"slot": "Hombros"
+},
+"40338": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Bindings of Yearning",
+"origen": "Raid",
+"slot": "Muñecas"
+},
+"40347": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Zeliek's Gauntlets",
+"origen": "Raid",
+"slot": "Manos"
+},
+"40362": {
+"fuentes": [
+"Naxxramas"
+],
+"grupo": "Naxxramas",
+"ilvl": 213,
+"nombre": "Gloves of Fast Reactions",
+"origen": "Raid",
+"slot": "Manos"
+},
+"40426": {
+"fuentes": [
+"Sagrario Obsidiana"
+],
+"grupo": "Sagrario Obsidiana",
+"ilvl": 200,
+"nombre": "Signet of the Accord",
+"origen": "Raid",
+"slot": "Anillo"
+},
+"40439": {
+"fuentes": [
+"Sagrario Obsidiana"
+],
+"grupo": "Sagrario Obsidiana",
+"ilvl": 213,
+"nombre": "Mantle of the Eternal Sentinel",
+"origen": "Raid",
+"slot": "Hombros"
+},
+"41168": {
+"fuentes": [
+"Engineering"
+],
+"grupo": "Engineering",
+"ilvl": 200,
+"nombre": "Armor Plated Combat Shotgun",
+"origen": "Profesión",
+"slot": "Distancia"
+},
+"41257": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Titansteel Destroyer",
+"origen": "Profesión",
+"slot": "Dos manos"
+},
+"41383": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Titansteel Bonecrusher",
+"origen": "Profesión",
+"slot": "Mano derecha"
+},
+"41384": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Titansteel Guardian",
+"origen": "Profesión",
+"slot": "Mano derecha"
+},
+"41386": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Spiked Titansteel Helm",
+"origen": "Profesión",
+"slot": "Cabeza"
+},
+"41387": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Tempered Titansteel Helm",
+"origen": "Profesión",
+"slot": "Cabeza"
+},
+"41388": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Brilliant Titansteel Helm",
+"origen": "Profesión",
+"slot": "Cabeza"
+},
+"41391": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Spiked Titansteel Treads",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"41392": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Tempered Titansteel Treads",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"41394": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Brilliant Titansteel Treads",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"41609": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 200,
+"nombre": "Wispcloak",
+"origen": "Profesión",
+"slot": "Capa"
+},
+"41610": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 200,
+"nombre": "Deathchill Cloak",
+"origen": "Profesión",
+"slot": "Capa"
+},
+"42100": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 200,
+"nombre": "Moonshroud Robe",
+"origen": "Profesión",
+"slot": "Pecho (túnica)"
+},
+"42101": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 200,
+"nombre": "Ebonweave Robe",
+"origen": "Profesión",
+"slot": "Pecho (túnica)"
+},
+"42102": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 200,
+"nombre": "Spellweave Robe",
+"origen": "Profesión",
+"slot": "Pecho (túnica)"
+},
+"42103": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 200,
+"nombre": "Moonshroud Gloves",
+"origen": "Profesión",
+"slot": "Manos"
+},
+"42111": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 200,
+"nombre": "Ebonweave Gloves",
+"origen": "Profesión",
+"slot": "Manos"
+},
+"42113": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 200,
+"nombre": "Spellweave Gloves",
+"origen": "Profesión",
+"slot": "Manos"
+},
+"42435": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Titansteel Shanker",
+"origen": "Profesión",
+"slot": "Una mano"
+},
+"42508": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Titansteel Shield Wall",
+"origen": "Profesión",
+"slot": "Escudo"
+},
+"42642": {
+"fuentes": [
+"Jewelcrafting"
+],
+"grupo": "Jewelcrafting",
+"ilvl": 200,
+"nombre": "Titanium Impact Band",
+"origen": "Profesión",
+"slot": "Anillo"
+},
+"42643": {
+"fuentes": [
+"Jewelcrafting"
+],
+"grupo": "Jewelcrafting",
+"ilvl": 200,
+"nombre": "Titanium Earthguard Ring",
+"origen": "Profesión",
+"slot": "Anillo"
+},
+"42644": {
+"fuentes": [
+"Jewelcrafting"
+],
+"grupo": "Jewelcrafting",
+"ilvl": 200,
+"nombre": "Titanium Spellshock Ring",
+"origen": "Profesión",
+"slot": "Anillo"
+},
+"42645": {
+"fuentes": [
+"Jewelcrafting"
+],
+"grupo": "Jewelcrafting",
+"ilvl": 200,
+"nombre": "Titanium Impact Choker",
+"origen": "Profesión",
+"slot": "Cuello"
+},
+"42646": {
+"fuentes": [
+"Jewelcrafting"
+],
+"grupo": "Jewelcrafting",
+"ilvl": 200,
+"nombre": "Titanium Earthguard Chain",
+"origen": "Profesión",
+"slot": "Cuello"
+},
+"42647": {
+"fuentes": [
+"Jewelcrafting"
+],
+"grupo": "Jewelcrafting",
+"ilvl": 200,
+"nombre": "Titanium Spellshock Necklace",
+"origen": "Profesión",
+"slot": "Cuello"
+},
+"43458": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Giantmaim Legguards",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"43459": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Giantmaim Bracers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"43461": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Revenant's Breastplate",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"43469": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Revenant's Treads",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"43481": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Trollwoven Spaulders",
+"origen": "Profesión",
+"slot": "Hombros"
+},
+"43484": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Trollwoven Girdle",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"43495": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Earthgiving Legguards",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"43502": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Earthgiving Boots",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"43565": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Durable Nerubhide Cape",
+"origen": "Profesión",
+"slot": "Capa"
+},
+"43566": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Ice Striker's Cloak",
+"origen": "Profesión",
+"slot": "Capa"
+},
+"43573": {
+"fuentes": [
+"Sagrario Rubí"
+],
+"grupo": "Sagrario Rubí",
+"ilvl": 200,
+"nombre": "Tears of Bitter Anguish",
+"origen": "Raid",
+"slot": "Trinket"
+},
+"43582": {
+"fuentes": [
+"Jewelcrafting"
+],
+"grupo": "Jewelcrafting",
+"ilvl": 213,
+"nombre": "Titanium Frostguard Ring",
+"origen": "Profesión",
+"slot": "Anillo"
+},
+"43583": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 213,
+"nombre": "Glacial Robe",
+"origen": "Profesión",
+"slot": "Pecho (túnica)"
+},
+"43584": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 213,
+"nombre": "Glacial Waistband",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"43585": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 213,
+"nombre": "Glacial Slippers",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"43586": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 213,
+"nombre": "Icebane Chestguard",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"43587": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 213,
+"nombre": "Icebane Girdle",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"43588": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 213,
+"nombre": "Icebane Treads",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"43590": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 213,
+"nombre": "Polar Vest",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"43591": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 213,
+"nombre": "Polar Cord",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"43592": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 213,
+"nombre": "Polar Boots",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"43593": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 213,
+"nombre": "Icy Scale Chestguard",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"43594": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 213,
+"nombre": "Icy Scale Belt",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"43595": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 213,
+"nombre": "Icy Scale Boots",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"44308": {
+"fuentes": [
+"Sagrario Rubí",
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Sagrario Rubí",
+"ilvl": 200,
+"nombre": "Signet of Edward the Odd",
+"origen": "Raid",
+"slot": "Anillo"
+},
+"44309": {
+"fuentes": [
+"Sagrario Rubí",
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Sagrario Rubí",
+"ilvl": 200,
+"nombre": "Sash of Jordan",
+"origen": "Raid",
+"slot": "Cintura"
+},
+"44310": {
+"fuentes": [
+"Sagrario Rubí",
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Sagrario Rubí",
+"ilvl": 200,
+"nombre": "Namlak's Supernumerary Sticker",
+"origen": "Raid",
+"slot": "Una mano"
+},
+"44311": {
+"fuentes": [
+"Sagrario Rubí",
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Sagrario Rubí",
+"ilvl": 200,
+"nombre": "Avool's Sword of Jin",
+"origen": "Raid",
+"slot": "Una mano"
+},
+"44312": {
+"fuentes": [
+"Sagrario Rubí",
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Sagrario Rubí",
+"ilvl": 200,
+"nombre": "Wapach's Spaulders of Solidarity",
+"origen": "Raid",
+"slot": "Hombros"
+},
+"44313": {
+"fuentes": [
+"Sagrario Rubí",
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Sagrario Rubí",
+"ilvl": 200,
+"nombre": "Zom's Crackling Bulwark",
+"origen": "Raid",
+"slot": "Escudo"
+},
+"44504": {
+"fuentes": [
+"Engineering"
+],
+"grupo": "Engineering",
+"ilvl": 200,
+"nombre": "Nesingwary 4000",
+"origen": "Profesión",
+"slot": "Distancia"
+},
+"44930": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Windripper Boots",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"44931": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 200,
+"nombre": "Windripper Leggings",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"45085": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 200,
+"nombre": "Titansteel Spellblade",
+"origen": "Profesión",
+"slot": "Mano derecha"
+},
+"45107": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 226,
+"nombre": "Iron Riveted War Helm",
+"origen": "Raid",
+"slot": "Cabeza"
+},
+"45141": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 226,
+"nombre": "Proto-hide Leggings",
+"origen": "Raid",
+"slot": "Piernas"
+},
+"45167": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 226,
+"nombre": "Lifeforge Breastplate",
+"origen": "Raid",
+"slot": "Pecho"
+},
+"45237": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 226,
+"nombre": "Phaelia's Vestments of the Sprouting Seed",
+"origen": "Raid",
+"slot": "Pecho (túnica)"
+},
+"45247": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 226,
+"nombre": "Signet of the Earthshaker",
+"origen": "Raid",
+"slot": "Anillo"
+},
+"45291": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 219,
+"nombre": "Combustion Bracers",
+"origen": "Raid",
+"slot": "Muñecas"
+},
+"45301": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 219,
+"nombre": "Bracers of the Smothering Inferno",
+"origen": "Raid",
+"slot": "Muñecas"
+},
+"45316": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 219,
+"nombre": "Armbraces of the Vibrant Flame",
+"origen": "Raid",
+"slot": "Muñecas"
+},
+"45322": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 219,
+"nombre": "Cloak of the Iron Council",
+"origen": "Raid",
+"slot": "Capa"
+},
+"45435": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 226,
+"nombre": "Cowl of the Absolute",
+"origen": "Raid",
+"slot": "Cabeza"
+},
+"45504": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 226,
+"nombre": "Darkcore Leggings",
+"origen": "Raid",
+"slot": "Piernas"
+},
+"45550": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 226,
+"nombre": "Belt of the Titans",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"45551": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 226,
+"nombre": "Indestructible Plate Girdle",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"45552": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 226,
+"nombre": "Plate Girdle of Righteousness",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"45553": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 226,
+"nombre": "Belt of Dragons",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"45554": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 226,
+"nombre": "Blue Belt of Chaos",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"45555": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 226,
+"nombre": "Death-warmed Belt",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"45556": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 226,
+"nombre": "Belt of Arctic Life",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"45557": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 226,
+"nombre": "Sash of Ancient Power",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"45558": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 226,
+"nombre": "Cord of the White Dawn",
+"origen": "Profesión",
+"slot": "Cintura"
+},
+"45559": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 226,
+"nombre": "Battlelord's Plate Boots",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"45560": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 226,
+"nombre": "Spiked Deathdealers",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"45561": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 226,
+"nombre": "Treads of Destiny",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"45562": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 226,
+"nombre": "Boots of Living Scale",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"45563": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 226,
+"nombre": "Lightning Grounded Boots",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"45564": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 226,
+"nombre": "Footpads of Silence",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"45565": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 226,
+"nombre": "Boots of Wintry Endurance",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"45566": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 226,
+"nombre": "Spellslinger's Slippers",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"45567": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 226,
+"nombre": "Savior's Slippers",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"45680": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 219,
+"nombre": "Armbands of the Construct",
+"origen": "Raid",
+"slot": "Muñecas"
+},
+"45709": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 219,
+"nombre": "Nimble Climber's Belt",
+"origen": "Raid",
+"slot": "Cintura"
+},
+"46009": {
+"fuentes": [
+"Ulduar"
+],
+"grupo": "Ulduar",
+"ilvl": 219,
+"nombre": "Bindings of the Depths",
+"origen": "Raid",
+"slot": "Muñecas"
+},
+"47570": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Saronite Swordbreakers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47571": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Saronite Swordbreakers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47572": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Titanium Spikeguards",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47573": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Titanium Spikeguards",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47574": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Sunforged Bracers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47575": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Sunforged Bracers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47576": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Crusader's Dragonscale Bracers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47577": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Crusader's Dragonscale Bracers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47579": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Black Chitin Bracers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47580": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Black Chitin Bracers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47581": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Bracers of Swift Death",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47582": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Bracers of Swift Death",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47583": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Moonshadow Armguards",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47584": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Moonshadow Armguards",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47585": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 245,
+"nombre": "Bejeweled Wizard's Bracers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47586": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 245,
+"nombre": "Bejeweled Wizard's Bracers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47587": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 245,
+"nombre": "Royal Moonshroud Bracers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47588": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 245,
+"nombre": "Royal Moonshroud Bracers",
+"origen": "Profesión",
+"slot": "Muñecas"
+},
+"47589": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Titanium Razorplate",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47590": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Titanium Razorplate",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47591": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Breastplate of the White Knight",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47592": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Breastplate of the White Knight",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47593": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Sunforged Breastplate",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47594": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 245,
+"nombre": "Sunforged Breastplate",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47595": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Crusader's Dragonscale Breastplate",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47596": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Crusader's Dragonscale Breastplate",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47597": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Ensorcelled Nerubian Breastplate",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47598": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Ensorcelled Nerubian Breastplate",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47599": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Knightbane Carapace",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47600": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Knightbane Carapace",
+"origen": "Profesión",
+"slot": "Pecho"
+},
+"47601": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Lunar Eclipse Robes",
+"origen": "Profesión",
+"slot": "Pecho (túnica)"
+},
+"47602": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 245,
+"nombre": "Lunar Eclipse Robes",
+"origen": "Profesión",
+"slot": "Pecho (túnica)"
+},
+"47603": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 245,
+"nombre": "Merlin's Robe",
+"origen": "Profesión",
+"slot": "Pecho (túnica)"
+},
+"47604": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 245,
+"nombre": "Merlin's Robe",
+"origen": "Profesión",
+"slot": "Pecho (túnica)"
+},
+"47605": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 245,
+"nombre": "Royal Moonshroud Robe",
+"origen": "Profesión",
+"slot": "Pecho (túnica)"
+},
+"47606": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 245,
+"nombre": "Royal Moonshroud Robe",
+"origen": "Profesión",
+"slot": "Pecho (túnica)"
+},
+"49890": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 264,
+"nombre": "Deathfrost Boots",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"49891": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 264,
+"nombre": "Leggings of Woven Death",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"49892": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 264,
+"nombre": "Lightweave Leggings",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"49893": {
+"fuentes": [
+"Tailoring"
+],
+"grupo": "Tailoring",
+"ilvl": 264,
+"nombre": "Sandals of Consecration",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"49894": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 264,
+"nombre": "Blessed Cenarion Boots",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"49895": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 264,
+"nombre": "Footpads of Impending Death",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"49896": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 264,
+"nombre": "Earthsoul Boots",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"49897": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 264,
+"nombre": "Rock-Steady Treads",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"49898": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 264,
+"nombre": "Legwraps of Unleashed Nature",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"49899": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 264,
+"nombre": "Bladeborn Leggings",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"49900": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 264,
+"nombre": "Lightning-Infused Leggings",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"49901": {
+"fuentes": [
+"Leatherworking"
+],
+"grupo": "Leatherworking",
+"ilvl": 264,
+"nombre": "Draconic Bonesplinter Legguards",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"49902": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 264,
+"nombre": "Puresteel Legplates",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"49903": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 264,
+"nombre": "Legplates of Painful Death",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"49904": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 264,
+"nombre": "Pillars of Might",
+"origen": "Profesión",
+"slot": "Piernas"
+},
+"49905": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 264,
+"nombre": "Protectors of Life",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"49906": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 264,
+"nombre": "Hellfrozen Bonegrinders",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"49907": {
+"fuentes": [
+"Blacksmithing"
+],
+"grupo": "Blacksmithing",
+"ilvl": 264,
+"nombre": "Boots of Kingly Upheaval",
+"origen": "Profesión",
+"slot": "Pies"
+},
+"49967": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Marrowgar's Frigid Eye",
+"origen": "Raid",
+"slot": "Anillo"
+},
+"49994": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "The Lady's Brittle Bracers",
+"origen": "Raid",
+"slot": "Muñecas"
+},
+"50020": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Raging Behemoth's Shoulderplates",
+"origen": "Raid",
+"slot": "Hombros"
+},
+"50038": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Carapace of Forgotten Kings",
+"origen": "Raid",
+"slot": "Pecho"
+},
+"50069": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Professor's Bloodied Smock",
+"origen": "Raid",
+"slot": "Cintura"
+},
+"50175": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Crypt Keeper's Bracers",
+"origen": "Raid",
+"slot": "Muñecas"
+},
+"50182": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Blood Queen's Crimson Choker",
+"origen": "Raid",
+"slot": "Cuello"
+},
+"50444": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Rowan's Rifle of Silver Bullets",
+"origen": "Raid",
+"slot": "Distancia"
+},
+"50447": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Harbinger's Bone Band",
+"origen": "Raid",
+"slot": "Anillo"
+},
+"50449": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Stiffened Corpse Shoulderpads",
+"origen": "Raid",
+"slot": "Hombros"
+},
+"50450": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Leggings of Dubious Charms",
+"origen": "Raid",
+"slot": "Piernas"
+},
+"50451": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Belt of the Lonely Noble",
+"origen": "Raid",
+"slot": "Cintura"
+},
+"50452": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Wodin's Lucky Necklace",
+"origen": "Raid",
+"slot": "Cuello"
+},
+"50453": {
+"fuentes": [
+"Ciudadela de la Corona de Hielo"
+],
+"grupo": "Ciudadela de la Corona de Hielo",
+"ilvl": 264,
+"nombre": "Ring of Rotting Sinew",
+"origen": "Raid",
+"slot": "Anillo"
+}
+}

@@ -68,6 +68,7 @@ const FAMILIAS = {
   icc: "Progresión ICC",
   progresion: "Progresión general",
   objetos: "Objetos sin respaldo",
+  banco: "Acumulación BoE (posible banco)",
 };
 
 // ---------------------------------------------------------------- utilidades
@@ -524,10 +525,63 @@ function rTOC(p) {
            nota: "los logros de ToC son condicionales, pero tantas piezas sin la banda acreditada no cuadra" };
 }
 
+function rBoE(p) {
+  // Acumulacion de objetos BoE: posible personaje banco.
+  // Un BoE se compra en la subasta o se fabrica con profesiones, asi que por si
+  // solo no prueba nada. Pero un personaje con media partida de BoE epicos de
+  // nivel 80 en el inventario no es un jugador: es un almacen.
+  if (!BOE) return null;
+  const distintos = new Map();
+  let unidades = 0;
+  const slots = new Set();
+  const origenes = new Map();
+
+  for (const o of p.objetos) {
+    const info = BOE[String(o.id)];
+    if (!info) continue;
+    const cant = o.cantidad || 0;
+    if (cant <= 0) continue;                 // fila con 0: el objeto no migra
+    distintos.set(o.id, { nombre: info.nombre || o.nombre, cant });
+    unidades += cant;
+    slots.add(info.slot || "");
+    const origen = info.origen || "?";
+    origenes.set(origen, (origenes.get(origen) || 0) + 1);
+  }
+
+  const n = distintos.size;
+  if (n < 8) return null;
+
+  let titulo, fuerza;
+  if (n >= 20) {
+    titulo = "Acumulación de objetos BoE (posible migración banco)";
+    fuerza = 0.80;
+  } else if (n >= 12) {
+    titulo = "Acumulación de objetos BoE";
+    fuerza = 0.45;
+  } else {
+    titulo = "Objetos BoE en el inventario";
+    fuerza = 0.25;
+  }
+
+  const top = [...distintos.values()].sort((a, b) => b.cant - a.cant || a.nombre.localeCompare(b.nombre));
+  const nombres = top.slice(0, 3).map((x) => "«" + x.nombre + "»").join(", ");
+  const repes = top.filter((x) => x.cant >= 2).length;
+  const prof = origenes.get("Profesión") || 0;
+  const raid = origenes.get("Raid") || 0;
+  let detalle = `${n} objeto(s) BoE de nivel 80 (${unidades} unidades, ${slots.size} ranura(s) distintas` +
+                (repes ? `, ${repes} repetido(s)` : "") + `): ${nombres}`;
+  if (top.length > 3) detalle += ` y ${top.length - 3} más`;
+  detalle += ` · ${prof} de profesiones, ${raid} de banda`;
+
+  return { titulo, detalle, fuerza, familia: "banco",
+           nota: "los BoE se compran en la subasta: indica un personaje-banco (motivo de rechazo " +
+                 "por política), no que los logros sean falsos" };
+}
+
 const REGLAS = [rMetas, rMetaFechas, rEscaleras, rReputaciones, rHK,
                 rEmblemaVs, rEmblema80, rPrimerEmblema80, rEscaleraEmblemas, r500Rapido,
                 rAlgalon, rMetaICC25, rMetaICC10HC, r277, rNiveles, rDobleSpec,
-                rRaides80, rFechas, rObjetos, rTOC];
+                rRaides80, rFechas, rObjetos, rTOC, rBoE];
 
 function analizar(p) {
   const hallazgos = [];

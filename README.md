@@ -73,11 +73,35 @@ Pesos principales:
 | Objeto del Rey Exánime sin su logro | 70 % |
 | Equipo de la Cruzada 258 sin logros de la banda | 40-75 % |
 | Varios jefes del ala sin el logro del ala | 30-60 % |
+| Acumulación de objetos BoE (20+ distintos) | 80 % |
+| Acumulación de BoE (12-19 / 8-11 distintos) | 45 % / 25 % |
 | Clon de otro perfil (solo escritorio) | 70-75 % |
 
 Los objetos se anotan como indicio, no como sentencia: las tiendas y la subasta
 permiten tener piezas sin haber pisado la banda. El peso sube cuando hay varios
 objetos del mismo ala o de un jefe único.
+
+### Objetos BoE acumulados: posible personaje banco
+
+Un BoE (ligado al equipar) se compra en la subasta o se fabrica con profesiones,
+así que por sí solo no prueba nada. Pero un personaje que arrastra media partida
+de BoE épicos de nivel 80 no es un jugador: es un almacén de equipo, y en una
+migración eso significa que el personaje venía usándose para mover equipo de un
+jugador a otro.
+
+La lista de BoE sale de `BoE_epicos_nivel80_todos - BoE épicos nivel 80.csv` (181
+objetos) y la regla cuenta los BoE **distintos** que el personaje lleva:
+
+| BoE distintos | Aviso | Fuerza |
+|---|---|---|
+| 20 o más | Acumulación de objetos BoE (**posible migración banco**) | 80 % |
+| 12-19 | Acumulación de objetos BoE | 45 % |
+| 8-11 | Objetos BoE en el inventario | 25 % |
+
+En el corpus de referencia, el 14 % de los perfiles no clonados llega a 8 BoE y
+30 de los 1.222 perfiles tienen 20 o más: son, casi todos, personajes-banco. El
+aviso dice explícitamente que es un motivo de rechazo por política, no una
+prueba de que los logros sean falsos.
 
 ## Estructura
 
@@ -88,7 +112,10 @@ convertir_json.py         volcado de perfiles a CSV
 logros_wotlk.json         catálogo de metas y sus componentes (1.237 logros)
 objetos_fuente.json       objeto -> jefe e ilvl (745 objetos)
 nombres_logros.json       ID de logro -> nombre
+boe_epicos.json           catálogo de objetos BoE de nivel 80 (181 objetos)
+BoE_epicos_nivel80_todos - BoE épicos nivel 80.csv   lista original de BoE (origen del catálogo)
 scripts/
+  generar_boe.py          regenera boe_epicos.json desde la CSV
   generar_datos_web.py    regenera web/datos.js desde los catálogos
 web/
   index.html              interfaz
@@ -111,11 +138,12 @@ workflow `.github/workflows/pages.yml`. No hay que compilar nada.
 - Para probar en local: `python -m http.server 8765` dentro de `web/` y abrir
   <http://localhost:8765>.
 
-Si se amplía el catálogo de logros u objetos, hay que regenerar los datos de la
-web:
+Si se amplía el catálogo de logros u objetos, o cambia la lista de BoE, hay que
+regenerar los datos:
 
 ```powershell
-python scripts/generar_datos_web.py
+python scripts/generar_boe.py         # boe_epicos.json desde la CSV de BoE
+python scripts/generar_datos_web.py   # web/datos.js desde todos los catálogos
 ```
 
 ## Límites
@@ -129,6 +157,9 @@ python scripts/generar_datos_web.py
 - Servidores como Aura permiten hacer heroico sin normal; esa secuencia no se
   penaliza.
 - Honor y puntos de arena a 0 no son indicio (se gastan o se reinician).
+- Los BoE se compran en la subasta: un personaje con muchos BoE puede ser un
+  banco legítimo, no un falsificador. La regla los marca como motivo de
+  rechazo por política, no como prueba de logros falsos.
 
 ## Datos de jugadores
 

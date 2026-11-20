@@ -26,6 +26,7 @@ COLUMNAS = [
     ("nivel", "Nv", 38),
     ("logros", "Logros", 55),
     ("objetos", "Obj", 45),
+    ("boe", "BoE", 42),
     ("familia", "Motivo principal", 165),
 ]
 
@@ -211,7 +212,8 @@ class App(tk.Tk):
                 continue
             self.tabla.insert("", "end", iid=str(i), tags=(e["nivel"],), values=(
                 "%.1f" % e["nota"], p["nombre"], p["reino"], p["clase"], p["nivel"] or "?",
-                e["metricas"]["logros"], e["metricas"]["objetos"], e["familia"] or "—"))
+                e["metricas"]["logros"], e["metricas"]["objetos"], e["metricas"]["boe"],
+                e["familia"] or "—"))
 
     def _ordenar(self, columna):
         if not self.filas:
@@ -221,7 +223,7 @@ class App(tk.Tk):
             p, e = par
             if columna == "nota":
                 return e["nota"]
-            if columna in ("logros", "objetos"):
+            if columna in ("logros", "objetos", "boe"):
                 return e["metricas"][columna]
             if columna == "nivel":
                 return p["nivel"]
@@ -258,7 +260,8 @@ class App(tk.Tk):
         with open(ruta, "w", newline="", encoding="utf-8-sig") as f:
             w = csv.writer(f, delimiter=";")
             w.writerow(["nota", "nivel", "motivo", "personaje", "reino", "clase", "raza",
-                        "nv", "logros", "objetos", "pruebas", "indicios", "anomalias", "archivo"])
+                        "nv", "logros", "objetos", "boe", "pruebas", "indicios", "anomalias",
+                        "archivo"])
             for p, e in self.filas:
                 pruebas = [h for h in e["hallazgos"] if h["fuerza"] >= 0.80]
                 indicios = [h for h in e["hallazgos"] if 0.50 <= h["fuerza"] < 0.80]
@@ -266,8 +269,8 @@ class App(tk.Tk):
                 fmt = lambda hs: " | ".join("%s: %s" % (h["titulo"], h["detalle"]) for h in hs)
                 w.writerow([e["nota"], e["nivel"], e["familia"], p["nombre"], p["reino"],
                             p["clase"], p["raza"], p["nivel"], e["metricas"]["logros"],
-                            e["metricas"]["objetos"], fmt(pruebas), fmt(indicios),
-                            fmt(anomalias), p["archivo"]])
+                            e["metricas"]["objetos"], e["metricas"]["boe"], fmt(pruebas),
+                            fmt(indicios), fmt(anomalias), p["archivo"]])
         self.mensaje.set("Exportado: %s" % Path(ruta).name)
 
 

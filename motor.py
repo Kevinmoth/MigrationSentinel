@@ -56,6 +56,7 @@ HK_LOGROS = [(238, 1), (513, 100), (515, 500), (516, 1000), (512, 5000),
 FAMILIAS = {
     "normas": "Normas de logros",
     "objetos": "Objetos sin respaldo",
+    "banco": "Acumulación BoE (posible banco)",
     "clon": "Clonación (señal)",
     "emblema": "Emblemas",
     "ulduar": "Ulduar",
@@ -70,6 +71,9 @@ CATALOGO = {}
 CATALOGO_VALIDO = {}
 NOMBRES = {}
 FUENTES = {}
+# Objetos BoE (ligados al equipar) de nivel 80: id -> datos del objeto.
+# Viene de la CSV de BoE épicos (scripts/generar_boe.py).
+BOE = {}
 
 # Jefe de ICC -> ala, y ala -> logro por tamaño/dificultad.
 ALAS_ICC = {
@@ -120,6 +124,16 @@ def _cargar_nombres():
         pass
 
 
+def _cargar_boe():
+    ruta = Path(__file__).with_name("boe_epicos.json")
+    if not ruta.exists():
+        return
+    try:
+        BOE.update({int(k): v for k, v in json.loads(ruta.read_text(encoding="utf-8")).items()})
+    except (ValueError, OSError):
+        pass
+
+
 def _nombre(aid):
     return NOMBRES.get(aid) or str(aid)
 
@@ -127,6 +141,7 @@ def _nombre(aid):
 _cargar_catalogo()
 _cargar_fuentes()
 _cargar_nombres()
+_cargar_boe()
 
 
 # --------------------------------------------------------------------------
@@ -165,11 +180,15 @@ def leer_perfil(ruta):
             nombres[aid] = a.get("nombre", "")
 
     objetos, ilvl = [], {}
+    cantidades = {}
     for o in datos.get("objetos", []) or []:
         eid, nv = _entero(o.get("entryId")), _entero(o.get("itemLevel"))
         if eid is not None and nv is not None:
             objetos.append((eid, nv, o.get("nombre", "")))
             ilvl[eid] = nv
+        if eid is not None:
+            # las filas con cantidad 0 son objetos que no llegan a migrar
+            cantidades[eid] = cantidades.get(eid, 0) + (_entero(o.get("cantidad")) or 0)
 
     monturas = set()
     for m in datos.get("monturas", []) or []:
@@ -208,6 +227,7 @@ def leer_perfil(ruta):
         "nombres": nombres,
         "objetos": objetos,
         "ilvl": ilvl,
+        "cantidades": cantidades,
         "monturas": monturas,
         "nombre_remoto": pj.get("nombreRemoto") or "",
         "realmlist": pj.get("realmlistOrigen") or "",
@@ -570,6 +590,66 @@ def r_toc(p):
             "nota": "los logros de ToC son condicionales, pero 15 piezas sin la banda acreditada no cuadra"}
 
 
+def r_boe(p):
+    """Acumulación de objetos BoE: posible personaje banco.
+
+    Un BoE (ligado al equipar) se compra en la subasta o se fabrica con
+    profesiones, así que por sí solo no prueba nada. Pero un personaje que
+    arrastra media partida de BoE épicos de nivel 80 no es un jugador normal:
+    es un almacén. En una migración eso significa que el personaje venía
+    usándose para mover equipo de un jugador a otro, y por eso se marca como
+    "posible migración banco".
+
+    El peso sube con la cantidad: hay gente que compra un BoE de vez en cuando
+    y gente que lleva el inventario entero lleno.
+    """
+    if not BOE:
+        return None
+    cantidades = p.get("cantidades") or {}
+    distintos, unidades, slots = {}, 0, set()
+    origenes = collections.Counter()
+    for eid, nv, nom in p["objetos"]:
+        info = BOE.get(eid)
+        if not info:
+            continue
+        cant = cantidades.get(eid)
+        if cant is None:
+            cant = 1                      # perfil sin el campo cantidad
+        if cant <= 0:
+            continue                     # fila con 0: el objeto no migra
+        distintos[eid] = (info.get("nombre") or nom or str(eid), cant)
+        unidades += cant
+        slots.add(info.get("slot") or "")
+        origenes[info.get("origen") or "?"] += 1
+
+    n = len(distintos)
+    if n < 8:
+        return None
+    if n >= 20:
+        fuerza = 0.80
+        titulo = "Acumulación de objetos BoE (posible migración banco)"
+    elif n >= 12:
+        fuerza = 0.45
+        titulo = "Acumulación de objetos BoE"
+    else:
+        fuerza = 0.25
+        titulo = "Objetos BoE en el inventario"
+
+    top = sorted(distintos.values(), key=lambda x: (-x[1], x[0]))
+    nombres = ", ".join("«%s»" % n for n, _c in top[:3])
+    repes = sum(1 for _n, c in top if c >= 2)
+    detalle = ("%d objeto(s) BoE de nivel 80 (%d unidades, %d ranura(s) distintas%s): %s"
+               % (n, unidades, len(slots),
+                  ", %d repetido(s)" % repes if repes else "", nombres))
+    if len(top) > 3:
+        detalle += " y %d más" % (len(top) - 3)
+    detalle += " · %d de profesiones, %d de banda" % (
+        origenes.get("Profesión", 0), origenes.get("Raid", 0))
+    return {"titulo": titulo, "detalle": detalle, "fuerza": fuerza, "familia": "banco",
+            "nota": "los BoE se compran en la subasta: indica un personaje-banco (motivo de "
+                    "rechazo por política), no que los logros sean falsos"}
+
+
 def r_niveles(p):
     if not all(i in p["logros"] for i in NIVELES):
         return None
@@ -626,7 +706,7 @@ REGLAS = [r_metas, r_meta_fechas, r_escaleras, r_reputaciones, r_hk,
           r_emblema_vs_emblema, r_emblema_antes_80, r_primer_emblema_antes_80,
           r_escalera_emblemas, r_500_rapido, r_algalon, r_meta_icc25, r_meta_icc10hc,
           r_277, r_niveles, r_doble_spec, r_raides_antes_80, r_fechas_imposibles,
-          r_objetos, r_toc]
+          r_objetos, r_toc, r_boe]
 
 
 # --------------------------------------------------------------------------
@@ -638,9 +718,13 @@ def metricas(p):
     por_dia = collections.Counter(p["logros"].values())
     anios = collections.Counter(f.year for f in p["logros"].values())
     ilv = [nv for _, nv, _ in p["objetos"]]
+    cantidades = p.get("cantidades") or {}
+    boe = {eid for eid, _nv, _nom in p["objetos"]
+           if eid in BOE and cantidades.get(eid, 1) > 0}
     return {
         "logros": len(p["logros"]),
         "objetos": len(p["objetos"]),
+        "boe": len(boe),
         "dias": len(fechas),
         "racha": max(por_dia.values()) if por_dia else 0,
         "hueco": hueco,

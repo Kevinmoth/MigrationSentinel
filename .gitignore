@@ -10,6 +10,8 @@ __pycache__/
 *.py[cod]
 *.bak
 *.csv
+# ...excepto la lista de BoE, que es el origen del catalogo
+!BoE_epicos_nivel80_todos*.csv
 /contexto.txt
 /cipipaste.txt
 /logo.gif

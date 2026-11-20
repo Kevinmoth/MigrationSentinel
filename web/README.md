@@ -52,6 +52,8 @@ Es una web estática: no necesita backend ni base de datos.
 - **Objetos de banda**: «posee X sin el logro que lo respalde», con la
   dificultad y el jefe según la base 3.3.5.
 - **Equipo de la Cruzada 25HC** sin logros de la Cruzada.
+- **Acumulación de objetos BoE**: 20 o más BoE épicos de nivel 80 → «posible
+  migración banco» (80 %); 12-19 → 45 %; 8-11 → 25 %.
 - **Fechas imposibles**: anteriores al 3.0.2 o posteriores a la extracción.
 
 No incluye la comparación entre perfiles (detección de clones): esa parte
@@ -75,8 +77,14 @@ ejemplo.txt    una ficha de ejemplo para probar
 ## Actualizar los datos
 
 `datos.js` se genera desde los catálogos de la herramienta local
-(`logros_wotlk.json`, `objetos_fuente.json`, `nombres_logros.json`). Si se
-amplía el catálogo, volver a generarlo en vez de editarlo a mano.
+(`logros_wotlk.json`, `objetos_fuente.json`, `nombres_logros.json`,
+`boe_epicos.json`). Si se amplía el catálogo, volver a generarlo en vez de
+editarlo a mano.
+
+```powershell
+python scripts/generar_boe.py         # boe_epicos.json desde la CSV de BoE
+python scripts/generar_datos_web.py   # datos.js desde todos los catálogos
+```
 
 ## Límites
 
@@ -85,3 +93,6 @@ amplía el catálogo, volver a generarlo en vez de editarlo a mano.
 - Las tiendas y la subasta permiten tener objetos sin haber pisado la banda.
 - Los logros de la Cruzada son condicionales (no por jefe), así que su
   ausencia solo pesa cuando hay muchas piezas de 258.
+- Los BoE se compran en la subasta: un personaje con 20+ BoE puede ser un banco
+  legítimo, no un falsificador. La regla los marca como motivo de rechazo por
+  política, no como prueba de logros falsos.
