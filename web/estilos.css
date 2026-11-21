@@ -352,6 +352,7 @@ button:active { transform: translateY(1px); }
 .perfil { display: grid; gap: 14px; }
 
 .ficha {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(230px, 1fr) 2fr;
   gap: 16px;
@@ -360,7 +361,8 @@ button:active { transform: translateY(1px); }
     var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 16px 18px;
+  /* el hueco de abajo es para el boton de copiar la fila de Excel */
+  padding: 16px 18px 32px;
 }
 @media (max-width: 640px) {
   .ficha { grid-template-columns: 1fr; }
@@ -411,6 +413,38 @@ button:active { transform: translateY(1px); }
 }
 .cifra.alerta { border-color: rgba(248, 113, 113, .5); background: rgba(248, 113, 113, .07); }
 .cifra.alerta b { color: var(--alto); }
+
+/* Copiar la fila de la hoja de trabajo: solo el icono, abajo a la derecha
+   de la ficha del personaje. */
+.copiar-excel {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--muted);
+}
+.copiar-excel:hover { color: var(--accent-hover); border-color: var(--accent); }
+.copiar-excel.copiado { color: var(--limpio); border-color: rgba(74, 222, 128, .55); }
+.copiar-aviso {
+  position: absolute;
+  right: 40px;
+  bottom: 12px;
+  font: 500 9.5px/1 var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--limpio);
+  opacity: 0;
+  transition: opacity .15s;
+  pointer-events: none;
+}
+.copiar-excel.copiado ~ .copiar-aviso { opacity: 1; }
 
 .tarjeta {
   background: var(--surface-2);

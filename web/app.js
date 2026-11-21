@@ -98,6 +98,37 @@ function resumenLinea(p, r) {
   return `${p.nombre || "?"} — ${p.reino || "?"} (${p.clase || "?"} ${p.raza || "?"}, nivel ${p.nivel || "?"})`;
 }
 
+// Fila para la hoja de trabajo: un dato por columna, en el orden que pide el
+// Excel. Se copia en una sola linea con tabuladores, asi al pegar cada valor
+// cae en su columna. El logro 6 es «Nivel 10»; el nombre interno es el de la
+// ficha (el que el personaje tiene en Thalassa).
+function filaExcel(p) {
+  const columnas = [
+    p.remoto,                            // nombre externo (servidor de origen)
+    p.clase,
+    p.raza,
+    p.servidorOrigen || p.reinoOrigen,   // servidor del que proviene
+    p.logros.get(6) || "",               // fecha del logro «Nivel 10»
+    p.nombre,                            // nombre interno en Thalassa
+  ];
+  return columnas
+    .map((v) => String(v == null ? "" : v).replace(/[\t\r\n]+/g, " ").trim())
+    .join("\t");
+}
+
+async function copiarTexto(texto) {
+  try {
+    await navigator.clipboard.writeText(texto);
+  } catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = texto;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+}
+
 function informeTexto(p, r) {
   const lineas = [
     resumenLinea(p, r),
@@ -385,6 +416,16 @@ function renderPerfil(p, r) {
         <div class="cifras">
           ${cifras}
         </div>
+        <button type="button" class="copiar-excel"
+                title="Copiar fila para Excel: nombre externo, clase, raza, servidor, Nivel 10 y nombre interno"
+                aria-label="Copiar fila para Excel">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11 4"/>
+            <path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07L13 19"/>
+          </svg>
+        </button>
+        <span class="copiar-aviso">Fila copiada</span>
       </div>
 
       <div class="tarjeta">
@@ -694,19 +735,22 @@ function _conectarCopiar(p, r) {
   const copiar = $("#copiar");
   if (copiar) {
     copiar.addEventListener("click", async () => {
-      const texto = informeTexto(p, r);
-      try {
-        await navigator.clipboard.writeText(texto);
-      } catch (e) {
-        const ta = document.createElement("textarea");
-        ta.value = texto;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-      }
+      await copiarTexto(informeTexto(p, r));
       copiar.textContent = "Copiado";
       setTimeout(() => { if (copiar.isConnected) copiar.textContent = "Copiar informe"; }, 1600);
+    });
+  }
+
+  // Fila de trabajo para Excel: solo el icono de enlace de la ficha.
+  const copiarExcel = $(".copiar-excel");
+  if (copiarExcel) {
+    copiarExcel.addEventListener("click", async () => {
+      await copiarTexto(filaExcel(p));
+      copiarExcel.classList.add("copiado");
+      clearTimeout(copiarExcel._aviso);
+      copiarExcel._aviso = setTimeout(() => {
+        if (copiarExcel.isConnected) copiarExcel.classList.remove("copiado");
+      }, 1800);
     });
   }
 
