@@ -380,11 +380,18 @@ button:active { transform: translateY(1px); }
   text-transform: uppercase;
   color: var(--faint);
 }
-.ficha-datos b { font: 500 13px/1.35 var(--sans); color: var(--text); word-break: break-word; }
+.ficha-datos b {
+  font: 500 13px/1.35 var(--sans);
+  color: var(--text);
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
 .cifras {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
   gap: 8px;
   align-content: start;
 }
@@ -392,8 +399,9 @@ button:active { transform: translateY(1px); }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 9px;
-  padding: 8px 10px;
+  padding: 7px 9px;
 }
+.cifra-topo { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
 .cifra b { display: block; font: 400 18px/1.2 var(--mono); color: var(--text); }
 .cifra span {
   font: 500 9.5px/1.4 var(--mono);
@@ -601,6 +609,21 @@ button:active { transform: translateY(1px); }
   image-rendering: -webkit-optimize-contrast;
 }
 .icono.mini { width: 20px; height: 20px; border-radius: 3px; }
+/* Iconos de la ficha: clase junto a la línea del personaje y género en su dato */
+.icono.clase {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: -4px;
+  margin-right: 6px;
+  border-radius: 3px;
+}
+.icono.genero {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border-radius: 3px;
+}
 .icono-reserva { opacity: .38; filter: grayscale(1); }
 .celda-icono { width: 40px; padding-right: 4px !important; }
 .barra-nombre .icono {

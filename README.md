@@ -38,7 +38,7 @@ repositorio (`web/iconos/`), así que la web funciona sin conexión.
 
 ## Iconos
 
-5.643 iconos 3.3.5 en JPG de 56×56 (9,7 MB). El mapa id → icono sale de la BD
+5.657 iconos 3.3.5 en JPG de 56×56 (9,7 MB). El mapa id → icono sale de la BD
 local (`item_db.json` y `spell_db.json`, que son la fuente de verdad) y, para
 los 371 logros que la BD no cubre, del tooltip de Wowhead (cacheado en
 `logros_iconos.json`).
@@ -157,7 +157,7 @@ web/
   iconos-ids.js           ids de objetos y hechizos (generado, bajo demanda)
   iconos-ui.js            utilidades para pintar iconos
   iconos-habilidades.js   iconos de habilidades y profesiones
-  iconos/                 5.643 iconos 3.3.5 en JPG de 56x56
+  iconos/                 5.657 iconos 3.3.5 en JPG de 56x56
   estilos.css             estilos
   fuentes.css             @font-face
   fuentes/                Fira Sans, Fira Mono y Alfa Slab One (woff2)

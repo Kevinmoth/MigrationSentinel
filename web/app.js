@@ -136,7 +136,7 @@ function renderResumen(p, r) {
       <div class="nota">${r.nota.toFixed(1)}</div>
       <div>
         <div class="nivel">${r.nivel}</div>
-        <div class="quien">${esc(p.nombre || "Sin nombre")} · ${esc(p.reino || "?")} ·
+        <div class="quien">${nombreClase(p)} · ${esc(p.reino || "?")} ·
           ${esc(p.clase || "?")} ${esc(p.raza || "?")} · nivel ${p.nivel || "?"}</div>
         <div class="motivo">${r.familia ? "Motivo principal: " + esc(r.familia) : "Sin hallazgos"}</div>
       </div>
@@ -199,10 +199,112 @@ function histogramaLogros(p) {
     <p class="pie-mini">${meses.length} mes(es) · máximo ${max} logros en un mes · de ${meses[0]} a ${meses[meses.length - 1]}</p>`;
 }
 
+// ------------------------------------------------------- iconos del perfil
+// La ficha llega en español y con variantes ("PALADIN", "SHAMAN", "Elfo
+// Nocturno", "Human"), así que se compara todo sin acentos ni mayúsculas.
+const _normal = (s) => String(s == null ? "" : s).toLowerCase()
+  .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
+
+const CLASE_ICONO = {
+  "guerrero": "classicon_warrior", "warrior": "classicon_warrior",
+  "paladin": "classicon_paladin",
+  "cazador": "classicon_hunter", "hunter": "classicon_hunter",
+  "picaro": "classicon_rogue", "rogue": "classicon_rogue",
+  "sacerdote": "classicon_priest", "priest": "classicon_priest",
+  "caballero de la muerte": "classicon_deathknight", "death knight": "classicon_deathknight",
+  "chaman": "classicon_shaman", "shaman": "classicon_shaman",
+  "mago": "classicon_mage", "mage": "classicon_mage",
+  "brujo": "classicon_warlock", "warlock": "classicon_warlock",
+  "druida": "classicon_druid", "druid": "classicon_druid",
+};
+
+// Los logros de personaje del juego se llaman achievement_character_<raza>_<sexo>.
+const RAZA_LOGRO = {
+  "humano": "human", "human": "human",
+  "enano": "dwarf",
+  "elfo nocturno": "nightelf", "elfo de la noche": "nightelf",
+  "gnomo": "gnome",
+  "draenei": "draenei",
+  "no-muerto": "undead", "no muerto": "undead",
+  "tauren": "tauren",
+  "trol": "troll", "troll": "troll",
+  "orco": "orc",
+  "elfo de sangre": "bloodelf",
+};
+
+const ICONO_CIFRA = {
+  logros: "achievement_general",
+  objetos: "inv_misc_bag_10",
+  boe: "inv_box_02",
+  exaltadas: "achievement_reputation_01",
+  emblemas: "inv_misc_frostemblem_01",
+  monturas: "ability_mount_ridinghorse",
+  hechizos: "spell_arcane_arcane01",
+  hk: "ability_dualwield",
+  honor: "inv_jewelry_trinketpvp_01",
+  arena: "achievement_arena_3v3_4",
+  oro: "inv_misc_coin_01",
+};
+
+function iconoClase(clase) {
+  return CLASE_ICONO[_normal(clase)] || "";
+}
+
+// Colores de clase del juego, para el nombre del personaje.
+const COLOR_CLASE = {
+  "guerrero": "#c79c6e", "warrior": "#c79c6e",
+  "paladin": "#f58cba",
+  "cazador": "#abd473", "hunter": "#abd473",
+  "picaro": "#fff569", "rogue": "#fff569",
+  "sacerdote": "#ffffff", "priest": "#ffffff",
+  "caballero de la muerte": "#e04b60", "death knight": "#e04b60",
+  "chaman": "#4a9ee8", "shaman": "#4a9ee8",
+  "mago": "#69ccf0", "mage": "#69ccf0",
+  "brujo": "#a894e6", "warlock": "#a894e6",
+  "druida": "#ff7d0a", "druid": "#ff7d0a",
+};
+
+function colorClase(clase) {
+  return COLOR_CLASE[_normal(clase)] || "";
+}
+
+// El nombre del personaje, con el color de su clase.
+function nombreClase(p) {
+  const color = colorClase(p.clase);
+  const nombre = esc(p.nombre || "Sin nombre");
+  return color ? `<span style="color:${color}">${nombre}</span>` : nombre;
+}
+
+// El icono de personaje del juego ya es raza + género, que es justo lo que
+// resume esa fila; si la raza no se reconoce se cae al humano.
+function iconoGenero(raza, genero) {
+  const g = _normal(genero);
+  const sexo = g.startsWith("f") ? "female" : g.startsWith("m") ? "male" : "";
+  if (!sexo) return "";
+  return `achievement_character_${RAZA_LOGRO[_normal(raza)] || "human"}_${sexo}`;
+}
+
 function renderPerfil(p, r) {
   const n = numeros(p, r);
   const exaltadas = p.reps.filter((x) => x.valor >= 42000).length;
   const skills = p.habilidades.filter((h) => h.max > 0);
+
+  // Contadores con el icono que el juego usa para cada cosa.
+  const cifras = [
+    { v: p.logros.size, t: "logros", i: ICONO_CIFRA.logros, k: "logro" },
+    { v: p.objetos.length, t: "objetos", i: ICONO_CIFRA.objetos, k: "objeto" },
+    { v: n.boe.size, t: "BoE", i: ICONO_CIFRA.boe, k: "objeto", extra: n.boe.size >= 20 ? " alerta" : "" },
+    { v: exaltadas, t: "exaltadas", i: ICONO_CIFRA.exaltadas, k: "logro" },
+    { v: p.emblemas.length, t: "emblemas", i: ICONO_CIFRA.emblemas, k: "objeto" },
+    { v: p.monturas.length, t: "monturas", i: ICONO_CIFRA.monturas, k: "hechizo" },
+    { v: p.hechizos.length, t: "hechizos", i: ICONO_CIFRA.hechizos, k: "hechizo" },
+    { v: p.hk, t: "HK", i: ICONO_CIFRA.hk, k: "hechizo" },
+    { v: p.honor, t: "honor", i: ICONO_CIFRA.honor, k: "objeto" },
+    { v: p.arena, t: "arena", i: ICONO_CIFRA.arena, k: "logro" },
+    { v: p.oro, t: "oro", i: ICONO_CIFRA.oro, k: "objeto" },
+  ].map((x) => `<div class="cifra${x.extra || ""}">
+      <div class="cifra-topo">${etiquetaIcono(x.i, x.k, "mini")}<b>${esc(x.v)}</b></div>
+      <span>${x.t}</span></div>`).join("");
 
   const repFilas = p.reps.slice().sort((a, b) => b.valor - a.valor);
   const repHtml = repFilas.length
@@ -254,29 +356,19 @@ function renderPerfil(p, r) {
     <div class="perfil">
       <div class="ficha">
         <div class="ficha-izq">
-          <div class="nombre-grande">${esc(p.nombre || "Sin nombre")}</div>
-          <div class="ficha-sub">${esc(p.reino || "?")} · ${esc(p.clase || "?")} ${esc(p.raza || "?")} · nivel ${p.nivel || "?"}</div>
+          <div class="nombre-grande">${nombreClase(p)}</div>
+          <div class="ficha-sub">${esc(p.reino || "?")} · ${etiquetaIcono(iconoClase(p.clase), "logro", "clase")}${esc(p.clase || "?")} ${esc(p.raza || "?")} · nivel ${p.nivel || "?"}</div>
           <div class="ficha-datos">
             <div><span>PJ remoto</span><b>${esc(p.remoto || "—")}</b></div>
             <div><span>Reino de origen</span><b>${esc(p.reinoOrigen || "—")}</b></div>
             <div><span>Servidor</span><b>${esc(p.servidorOrigen || "—")}</b></div>
             <div><span>Locale · Build</span><b>${esc(p.locale || "—")} · ${esc(p.build || "—")}</b></div>
-            <div><span>Género</span><b>${esc(p.genero || "—")}</b></div>
+            <div><span>Género</span><b>${etiquetaIcono(iconoGenero(p.raza, p.genero), "logro", "genero")}${esc(p.genero || "—")}</b></div>
             <div><span>Extraído</span><b>${esc(p.extraido || "—")}</b></div>
           </div>
         </div>
         <div class="cifras">
-          <div class="cifra"><b>${p.logros.size}</b><span>logros</span></div>
-          <div class="cifra"><b>${p.objetos.length}</b><span>objetos</span></div>
-          <div class="cifra ${n.boe.size >= 20 ? "alerta" : ""}"><b>${n.boe.size}</b><span>BoE</span></div>
-          <div class="cifra"><b>${exaltadas}</b><span>exaltadas</span></div>
-          <div class="cifra"><b>${p.emblemas.length}</b><span>emblemas</span></div>
-          <div class="cifra"><b>${p.monturas.length}</b><span>monturas</span></div>
-          <div class="cifra"><b>${p.hechizos.length}</b><span>hechizos</span></div>
-          <div class="cifra"><b>${p.hk}</b><span>HK</span></div>
-          <div class="cifra"><b>${p.honor}</b><span>honor</span></div>
-          <div class="cifra"><b>${p.arena}</b><span>arena</span></div>
-          <div class="cifra"><b>${p.oro}</b><span>oro</span></div>
+          ${cifras}
         </div>
       </div>
 
@@ -413,14 +505,14 @@ const VISTAS = {
 
 // Estado del resultado actual, para poder repintar cuando lleguen los ids.
 let _actual = null;
-let _vistaActual = "resumen";
+let _vistaActual = "perfil";
 let _yaMostrado = false;
 // Lo que el revisor ha escrito o filtrado: sobrevive a los repintados.
 const _filtro = { logros: "", objetos: "", tipoObjeto: "" };
 
 function pintar(p, r) {
   _actual = { p, r };
-  _vistaActual = "resumen";
+  _vistaActual = "perfil";
   _filtro.logros = "";
   _filtro.objetos = "";
   _filtro.tipoObjeto = "";

@@ -29,10 +29,10 @@ Y arriba, el estado que la propia página declara de la migración
 
 | Vista | Qué muestra |
 |---|---|
-| **Perfil** | La ficha completa y visual: identidad (PJ remoto, reino de origen, servidor, locale, build, género, fecha de extracción), contadores, **curva de logros por mes**, barras de reputaciones (con las exaltadas marcadas), habilidades, emblemas, monturas, hechizos y la **bitácora de la migración**. |
+| **Perfil** | La ficha completa y visual: identidad (PJ remoto, reino de origen, servidor, locale, build, género, fecha de extracción), contadores con su icono, **curva de logros por mes**, barras de reputaciones (con las exaltadas marcadas), habilidades, emblemas, monturas, hechizos y la **bitácora de la migración**. El nombre va en el color de la clase. Es la pestaña que queda seleccionada al analizar. |
 | **Logros** | Todos los logros en tabla, con buscador, los que el motor usa como referencia resaltados y los que aparecen en un hallazgo marcados en rojo. |
 | **Objetos** | Todos los objetos en tabla, con buscador y filtros (**BoE**, en un hallazgo, ilvl 277, ilvl 258, de banda, cancelados), el origen de cada pieza y el estado que marca la propia página. |
-| **Resumen** | Veredicto, hallazgos por bloques y los datos básicos del personaje. Es la pestaña que queda seleccionada al analizar. |
+| **Resumen** | Veredicto, hallazgos por bloques y los datos básicos del personaje. |
 
 ## Cómo publicarla
 
@@ -82,7 +82,7 @@ iconos.js           nombres de icono y mapa de logros (generado)
 iconos-ids.js       ids de objetos y hechizos (generado, se carga bajo demanda)
 iconos-ui.js        utilidades para pintar iconos
 iconos-habilidades.js  iconos de las habilidades y profesiones
-iconos/             5.643 iconos 3.3.5 en JPG de 56x56
+iconos/             5.657 iconos 3.3.5 en JPG de 56x56
 cursores/           cursores del juego (guantelete e interactuar, 32x32)
 logo.gif            logo animado (120x120)
 favicon.png         icono de la pestaña
@@ -91,8 +91,8 @@ ejemplo.txt         una ficha de ejemplo para probar
 
 ## Iconos
 
-Los objetos, logros, hechizos, monturas, emblemas y habilidades llevan su
-icono 3.3.5. Son **5.643 ficheros de 56×56** (9,7 MB) dentro de `web/iconos/`,
+Los objetos, logros, hechizos, monturas, emblemas, habilidades, clases y razas
+llevan su icono 3.3.5. Son **5.657 ficheros de 56×56** (9,7 MB) dentro de `web/iconos/`,
 así que la web funciona sin conexión y no depende de ningún CDN.
 
 El origen es doble:
