@@ -16,6 +16,9 @@ Cada push a `main` publica esta carpeta automáticamente mediante
 3. Pegar en el cuadro de la web.
 4. «Analizar personaje».
 
+El parser tolera que el pegado traiga saltos de línea de más: líneas en blanco
+entre una etiqueta y su valor, o la fecha de un logro en la línea siguiente.
+
 El resultado es el mismo expediente que genera la herramienta local:
 
 - **Pruebas** (≥ 80%): contradicciones con las normas del juego.

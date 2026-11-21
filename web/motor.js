@@ -112,6 +112,15 @@ function campos(linea) {
   return linea.split(/\s{2,}/).map((x) => x.trim());
 }
 
+// Al copiar la ficha desde el navegador, entre una etiqueta y su valor puede
+// quedar una linea en blanco. Devuelve la siguiente linea CON texto.
+function siguienteTexto(lineas, i) {
+  for (let j = i + 1; j < lineas.length; j++) {
+    if (lineas[j]) return lineas[j];
+  }
+  return "";
+}
+
 function parsear(texto) {
   const lineas = String(texto).replace(/\r/g, "").split("\n")
     .map((l) => l.replace(/\u00a0/g, " ").trim());
@@ -149,7 +158,7 @@ function parsear(texto) {
     if (s === "Hechizos de Clase") { seccion = "hechizos"; continue; }
     if (s === "Logros") { seccion = "logros"; continue; }
 
-    const sig = lineas[i + 1] || "";
+    const sig = siguienteTexto(lineas, i);
     if (s === "Clase") { p.clase = sig; continue; }
     if (s === "Raza") { p.raza = sig; continue; }
     if (s === "Nivel") { p.nivel = numero(sig); continue; }
@@ -165,9 +174,17 @@ function parsear(texto) {
     if (s === "Servidor del que Provienes") { p.servidorOrigen = sig; continue; }
 
     if (seccion === "logros") {
-      const m = /^(\d+)\t(\d+)\t(.+?)\t(\d{1,2}-\d{1,2}-\d{4})\b/.exec(s);
+      // La fecha va, segun como copie el navegador, en la misma linea que el
+      // logro o en la siguiente ("Nivel 10\t" + salto + "19-06-2025").
+      const m = /^(\d+)\t(\d+)\t(.+?)(?:\t(.*))?$/.exec(s);
       if (m) {
-        const f = aFecha(m[4]);
+        const resto = (m[4] || "").trim();
+        let textoFecha = (/(\d{1,2}-\d{1,2}-\d{4})\b/.exec(resto) || [])[1] || "";
+        if (!textoFecha) {
+          const posterior = siguienteTexto(lineas, i);
+          textoFecha = (/(\d{1,2}-\d{1,2}-\d{4})\b/.exec(posterior) || [])[1] || "";
+        }
+        const f = aFecha(textoFecha);
         const id = Number(m[2]);
         if (f) {
           p.logros.set(id, f);
