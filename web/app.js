@@ -478,16 +478,25 @@ function renderLogros(p, r) {
   filas.sort((a, b) => (a.fecha < b.fecha ? -1 : a.fecha > b.fecha ? 1 : a.id - b.id));
 
   const cuerpo = filas.map((x) => `
-    <tr data-busca="${esc(x.nombre.toLowerCase())} ${x.id} ${x.fecha}" data-id="${x.id}" data-fecha="${esc(x.fecha)}">
+    <tr data-busca="${esc(x.nombre.toLowerCase())} ${x.id} ${x.fecha}" data-id="${x.id}" data-fecha="${esc(x.fecha)}" data-filtros="${filtrosDeLogro(x.id)}">
       <td class="celda-icono">${etiquetaIcono(iconoLogro(x.id), "logro", "", enlaceWowhead("logro", x.id))}</td>
       <td class="num">${x.id}</td>
       <td>${esc(x.nombre)} ${x.clave ? `<span class="chip mini">${esc(x.clave)}</span>` : ""} ${x.marca}</td>
       <td class="num">${esc(x.fecha)}</td>
     </tr>`).join("");
 
+  const filtros = [
+    ["", "Todos"], ["icc", "ICC"], ["toc", "ToC"], ["ulduar", "Ulduar"],
+    ["halion", "Halion"], ["pvp", "PvP"],
+  ];
+
   return `
     <div class="buscador">
       <input id="buscar-logros" type="search" placeholder="Buscar logro, ID o fecha…">
+      <div class="filtros" id="filtros-logros">
+        ${filtros.map(([k, t]) => `<button class="filtro${k === _filtro.raid ? " activo" : ""}" data-f="${k}"
+          title="${k === "" ? "Ver todos los logros" : "Ver solo los logros de " + t}">${t}</button>`).join("")}
+      </div>
       <span class="pie-mini" id="cuenta-logros">${filas.length} logros</span>
     </div>
     <div class="tarjeta">
@@ -569,7 +578,7 @@ let _actual = null;
 let _vistaActual = "perfil";
 let _yaMostrado = false;
 // Lo que el revisor ha escrito o filtrado: sobrevive a los repintados.
-const _filtro = { logros: "", objetos: "", tipoObjeto: "" };
+const _filtro = { logros: "", raid: "", objetos: "", tipoObjeto: "" };
 // Orden de la tabla de logros: por fecha por defecto.
 const _ordenLogros = { campo: "fecha", dir: 1 };
 
@@ -602,6 +611,7 @@ function pintar(p, r) {
   _actual = { p, r };
   _vistaActual = "perfil";
   _filtro.logros = "";
+  _filtro.raid = "";
   _filtro.objetos = "";
   _filtro.tipoObjeto = "";
   _reparto(true);
@@ -680,13 +690,24 @@ function _conectarBuscadores(p, r) {
       const q = _filtro.logros.trim().toLowerCase();
       let n = 0;
       $$("#tabla-logros tr").forEach((tr) => {
-        const ok = !q || tr.dataset.busca.includes(q);
+        const okTexto = !q || tr.dataset.busca.includes(q);
+        const okRaid = !_filtro.raid || (tr.dataset.filtros || "").split(" ").includes(_filtro.raid);
+        const ok = okTexto && okRaid;
         tr.hidden = !ok;
         if (ok) n++;
       });
       $("#cuenta-logros").textContent = `${n} de ${p.logros.size} logros`;
     };
     bl.addEventListener("input", () => { _filtro.logros = bl.value; aplicar(); });
+
+    // Filtros de raid: Todos, ICC, ToC, Ulduar, Halion y PvP.
+    $$("#filtros-logros .filtro").forEach((b) => {
+      b.addEventListener("click", () => {
+        $$("#filtros-logros .filtro").forEach((x) => x.classList.toggle("activo", x === b));
+        _filtro.raid = b.dataset.f;
+        aplicar();
+      });
+    });
 
     // Orden de la tabla: fecha por defecto; ID o Fecha al pulsar la cabecera.
     $$("#vista-logros th[data-orden]").forEach((th) => {
