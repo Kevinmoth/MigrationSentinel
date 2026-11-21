@@ -229,15 +229,13 @@ function renderPerfil(p, r) {
     : `<p class="vacio">Sin emblemas.</p>`;
 
   const monturasHtml = p.monturas.length
-    ? `<div class="chips">${p.monturas.slice(0, 18).map((id) => `
-        <span class="chip montura">${etiquetaIcono(iconoSpell(id), "hechizo", "mini")}ID ${id}</span>`).join("")}</div>` +
-      (p.monturas.length > 18 ? `<p class="pie-mini">y ${p.monturas.length - 18} más</p>` : "")
+    ? `<div class="chips">${p.monturas.map((id) => `
+        <span class="chip montura">${etiquetaIcono(iconoSpell(id), "hechizo", "mini")}ID ${id}</span>`).join("")}</div>`
     : `<p class="vacio">Sin monturas ni compañeros.</p>`;
 
   const hechizosHtml = p.hechizos.length
-    ? `<div class="chips">${p.hechizos.slice(0, 18).map((id) => `
-        <span class="chip hechizo">${etiquetaIcono(iconoSpell(id), "hechizo", "mini")}ID ${id}</span>`).join("")}</div>` +
-      (p.hechizos.length > 18 ? `<p class="pie-mini">y ${p.hechizos.length - 18} más</p>` : "")
+    ? `<div class="chips">${p.hechizos.map((id) => `
+        <span class="chip hechizo">${etiquetaIcono(iconoSpell(id), "hechizo", "mini")}ID ${id}</span>`).join("")}</div>`
     : `<p class="vacio">Sin hechizos de clase.</p>`;
 
   const logsHtml = p.logs.length
@@ -426,8 +424,20 @@ function pintar(p, r) {
   _filtro.logros = "";
   _filtro.objetos = "";
   _filtro.tipoObjeto = "";
+  _reparto(true);
   _pintarVistas();
   _avisarIds();
+}
+
+// Reparto de anchos: con el análisis a la vista la ficha se queda en 1/3 y el
+// resultado en 2/3; el botón «Ampliar» alterna sin tocar nada del análisis.
+function _reparto(conResultado) {
+  const rejilla = $(".rejilla");
+  rejilla.classList.toggle("analizado", conResultado);
+  rejilla.classList.remove("expandido");
+  const b = $("#alternar-texto");
+  b.hidden = !conResultado;
+  b.textContent = "Ampliar";
 }
 
 // Repinta las cuatro vistas. Solo se hace al analizar y cuando llega el mapa
@@ -559,6 +569,7 @@ function _conectarCopiar(p, r) {
       $("#resultado").innerHTML = "";
       _actual = null;
       _yaMostrado = false;
+      _reparto(false);
       $("#texto").focus();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -619,7 +630,12 @@ $("#limpiar").addEventListener("click", () => {
   $("#texto").value = "";
   $("#salida").hidden = true;
   $("#estado").textContent = "";
+  _reparto(false);
   $("#texto").focus();
+});
+$("#alternar-texto").addEventListener("click", () => {
+  const expandido = $(".rejilla").classList.toggle("expandido");
+  $("#alternar-texto").textContent = expandido ? "Contraer" : "Ampliar";
 });
 $("#texto").addEventListener("keydown", (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === "Enter") analizarEntrada();
