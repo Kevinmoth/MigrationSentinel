@@ -29,10 +29,10 @@ Y arriba, el estado que la propia página declara de la migración
 
 | Vista | Qué muestra |
 |---|---|
-| **Resumen** | Veredicto, hallazgos por bloques y los datos básicos del personaje. |
 | **Perfil** | La ficha completa y visual: identidad (PJ remoto, reino de origen, servidor, locale, build, género, fecha de extracción), contadores, **curva de logros por mes**, barras de reputaciones (con las exaltadas marcadas), habilidades, emblemas, monturas, hechizos y la **bitácora de la migración**. |
 | **Logros** | Todos los logros en tabla, con buscador, los que el motor usa como referencia resaltados y los que aparecen en un hallazgo marcados en rojo. |
 | **Objetos** | Todos los objetos en tabla, con buscador y filtros (**BoE**, en un hallazgo, ilvl 277, ilvl 258, de banda, cancelados), el origen de cada pieza y el estado que marca la propia página. |
+| **Resumen** | Veredicto, hallazgos por bloques y los datos básicos del personaje. Es la pestaña que queda seleccionada al analizar. |
 
 ## Cómo publicarla
 
@@ -83,6 +83,7 @@ iconos-ids.js       ids de objetos y hechizos (generado, se carga bajo demanda)
 iconos-ui.js        utilidades para pintar iconos
 iconos-habilidades.js  iconos de las habilidades y profesiones
 iconos/             5.643 iconos 3.3.5 en JPG de 56x56
+cursores/           cursores del juego (guantelete e interactuar, 32x32)
 logo.gif            logo animado (120x120)
 favicon.png         icono de la pestaña
 ejemplo.txt         una ficha de ejemplo para probar
@@ -143,6 +144,16 @@ node pruebas/prueba_iconos.js          # comprueba que todo cuadra
 carga siempre. `iconos-ids.js` (579 KB) lleva los ids de objetos y hechizos
 —que son más de cien mil— y se carga bajo demanda, solo cuando ya se ha
 pintado un resultado.
+
+## Cursor
+
+Toda la web usa los cursores de WoW: el guantelete (`cursores/guantelete.png`) como
+puntero normal y el de interactuar, el guantelete con la tuerquita
+(`cursores/interactuar.png`), al pasar por botones, pestañas, filtros y enlaces. Los
+dos son de 32×32 con el punto activo en la punta del dedo (`1 1`). El arte es de
+Blizzard y llega desde el pack CraftCursors (Slackcraft); va dentro del repo para que
+no dependa de ningún CDN. Al escribir en la ficha o en un buscador se recupera la
+barra de texto del sistema.
 
 ## Actualizar los datos
 

@@ -405,10 +405,10 @@ function renderObjetos(p, r) {
 
 // -------------------------------------------------------------------- pintado
 const VISTAS = {
-  resumen: renderResumen,
   perfil: renderPerfil,
   logros: renderLogros,
   objetos: renderObjetos,
+  resumen: renderResumen,
 };
 
 // Estado del resultado actual, para poder repintar cuando lleguen los ids.

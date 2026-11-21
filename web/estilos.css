@@ -42,6 +42,8 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font: 15px/1.6 var(--sans);
+  /* Cursor del juego (guantelete de WoW 3.3.5), punto activo en la punta del dedo */
+  cursor: url("cursores/guantelete.png") 1 1, auto;
 }
 
 body {
@@ -182,6 +184,12 @@ textarea {
 }
 textarea::placeholder { color: var(--faint); }
 textarea:focus { outline: 2px solid rgba(194, 65, 12, .55); outline-offset: 1px; }
+/* Al escribir se recupera la barra de texto del sistema */
+textarea, input { cursor: text; }
+/* Sobre algo pulsable, el cursor de «interactuar» del juego: el guantelete con la tuerquita */
+a:hover, button:hover, summary:hover, [role="button"]:hover {
+  cursor: url("cursores/interactuar.png") 1 1, auto;
+}
 
 .acciones { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
 button {
@@ -189,7 +197,8 @@ button {
   border-radius: 8px;
   padding: 10px 17px;
   font: 600 14px/1 var(--sans);
-  cursor: pointer;
+  /* el navegador pone cursor: default a los botones; que herede el guantelete */
+  cursor: inherit;
   transition: background .15s, border-color .15s;
 }
 button:active { transform: translateY(1px); }
