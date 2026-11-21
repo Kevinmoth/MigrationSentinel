@@ -323,10 +323,20 @@ function renderPerfil(p, r) {
       }).join("")}</div>`
     : `<p class="vacio">Sin tabla de reputaciones.</p>`;
 
+  // Las habilidades van por bloques: clase, profesiones, armas/armaduras,
+  // idiomas y el resto, cada uno con su separador.
+  const porGrupo = new Map();
+  for (const h of skills) {
+    const g = grupoHabilidad(h.nombre, h.enlace);
+    if (!porGrupo.has(g)) porGrupo.set(g, []);
+    porGrupo.get(g).push(h);
+  }
   const skillHtml = skills.length
-    ? `<div class="barra-lista">${skills.map((h) => barraFila(
-        h.nombre, h.actual, h.max, h.actual >= h.max ? "completa" : "", ` / ${h.max}`,
-        etiquetaIcono(iconoHabilidad(h.nombre, h.enlace), "hechizo", "mini"))).join("")}</div>`
+    ? GRUPOS_HABILIDAD.filter((g) => porGrupo.has(g.id)).map((g) => `
+        <p class="sub-titulo">${esc(g.nombre)}</p>
+        <div class="barra-lista">${porGrupo.get(g.id).map((h) => barraFila(
+          h.nombre, h.actual, h.max, h.actual >= h.max ? "completa" : "", ` / ${h.max}`,
+          etiquetaIcono(iconoHabilidad(h.nombre, h.enlace), "hechizo", "mini"))).join("")}</div>`).join("")
     : `<p class="vacio">Sin tabla de habilidades.</p>`;
 
   const emblemasHtml = p.emblemas.length

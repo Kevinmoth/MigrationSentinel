@@ -109,10 +109,18 @@ de su familia; se asignan en `scripts/completar_iconos_logros.py`.
 
 ### Habilidades
 
-La tabla de habilidades trae skill lines (`?skill=NNN`), no hechizos, y los
-iconos de hechizos no las cubren. Se resuelven por tres vías: el `entry: NNN`
-de «Equitación con entry: 34091» (que sí es un hechizo real), el enlace
-`?skill=NNN`, y el nombre de la habilidad.
+La tarjeta se pinta en bloques, cada uno con su separador: **Clase** (árboles de
+talentos y Ganzúa), **Profesiones** (incluidas cocina, pesca, primeros auxilios y
+equitación), **Armas y armaduras**, **Idiomas** y **Otras**.
+
+La tabla trae skill lines (`?skill=NNN`), no hechizos, y los iconos de hechizos
+no las cubren. Se resuelven por tres vías: el `entry: NNN` de «Equitación con
+entry: 34091» (que sí es un hechizo real), el enlace `?skill=NNN`, y el nombre de
+la habilidad. Para lo que no tiene skill line con arte propio se usa el icono de
+3.3.5 que mejor lo representa: cada arma con su arma (`inv_sword_04`,
+`inv_axe_04`, `inv_weapon_shortblade_77`…), cada armadura con una pieza, y cada
+idioma con el emblema de la raza que lo habla (`achievement_character_orc_male`
+para el orco, `_human_male` para el común, etc.).
 
 El icono canónico de cada profesión sale de los hechizos de profesión del
 propio cliente 3.3.5:
