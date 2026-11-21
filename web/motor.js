@@ -192,9 +192,15 @@ function parsear(texto) {
         continue;
       }
     } else if (seccion === "habilidades") {
-      const m = /^(\d+)\t(\d+)\t(\d+)\t(.+?)\t/.exec(s);
+      // # \t Maximo \t Actual \t Nombre \t Enlace
+      // El nombre se queda con lo que haya hasta el tabulador: el enlace
+      // (que en el texto pegado es "Ver Habilidad") va aparte.
+      const m = /^(\d+)\t(\d+)\t(\d+)\t([^\t]*)\t?([^\t]*)/.exec(s);
       if (m) {
-        p.habilidades.push({ max: numero(m[2]), actual: numero(m[3]), nombre: m[4].trim() });
+        p.habilidades.push({
+          max: numero(m[2]), actual: numero(m[3]),
+          nombre: m[4].trim(), enlace: (m[5] || "").trim(),
+        });
         continue;
       }
     } else if (seccion === "monturas") {

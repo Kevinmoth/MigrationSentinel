@@ -533,3 +533,47 @@ button:active { transform: translateY(1px); }
 .tabla .num { text-align: right; font-family: var(--mono); white-space: nowrap; }
 .tabla .estado-op { font: 500 11px var(--mono); color: var(--sospechoso); }
 
+/* --------------------------------------------------------------- iconos */
+.icono {
+  width: 32px;
+  height: 32px;
+  display: block;
+  border-radius: 4px;
+  background: #14110f;
+  border: 1px solid rgba(255, 255, 255, .06);
+  /* Los iconos son de 56x56: al reducir, el suavizado normal queda mejor. */
+  image-rendering: auto;
+  image-rendering: -webkit-optimize-contrast;
+}
+.icono.mini { width: 20px; height: 20px; border-radius: 3px; }
+.icono-reserva { opacity: .38; filter: grayscale(1); }
+.celda-icono { width: 40px; padding-right: 4px !important; }
+.barra-nombre .icono {
+  display: inline-block;
+  vertical-align: -5px;
+  margin-right: 7px;
+}
+.chip .icono {
+  display: inline-block;
+  vertical-align: -5px;
+  margin-right: 6px;
+  border-color: rgba(255, 255, 255, .1);
+}
+.tabla tbody tr:hover .icono { border-color: rgba(194, 65, 12, .5); }
+
+.miniaturas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 7px;
+}
+.miniaturas .miniatura {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background: #14110f;
+  border: 1px solid rgba(255, 255, 255, .07);
+}
+.hallazgo.prueba .miniaturas .miniatura { border-color: rgba(248, 113, 113, .35); }
+.hallazgo.indicio .miniaturas .miniatura { border-color: rgba(251, 191, 36, .3); }
+

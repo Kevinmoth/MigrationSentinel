@@ -31,6 +31,34 @@ El resultado se divide en tres bloques:
 La web **no** compara entre perfiles: eso requiere el corpus y se queda en la
 herramienta de escritorio.
 
+El resultado se ve en cuatro pestañas (**Resumen**, **Perfil**, **Logros** y
+**Objetos**) y todo lleva su icono 3.3.5: objetos, logros, hechizos, monturas,
+emblemas y las habilidades de cada profesión. Los iconos van dentro del
+repositorio (`web/iconos/`), así que la web funciona sin conexión.
+
+## Iconos
+
+5.643 iconos 3.3.5 en JPG de 56×56 (9,7 MB). El mapa id → icono sale de la BD
+local (`item_db.json` y `spell_db.json`, que son la fuente de verdad) y, para
+los 371 logros que la BD no cubre, del tooltip de Wowhead (cacheado en
+`logros_iconos.json`).
+
+Las habilidades son el caso aparte: la ficha trae skill lines (`?skill=NNN`),
+no hechizos. El icono canónico de cada profesión sale de los hechizos de
+profesión del propio cliente (Herrería → `Trade_BlackSmithing`, Desollar →
+`INV_Misc_Pelt_Wolf_01`, Joyería → `INV_Misc_Gem_01`, Inscripción →
+`INV_Misc_Note_01`, etc.), y «Equitación con entry: 34091» sí es un hechizo
+real, con su icono.
+
+Para regenerarlos:
+
+```powershell
+python scripts/descargar_iconos.py        # copia de la BD local + descarga lo que falte
+python scripts/completar_iconos_logros.py # iconos de los logros propios del servidor
+python scripts/generar_iconos.py          # web/iconos.js y web/iconos-ids.js
+node pruebas/prueba_iconos.js             # comprueba que todo cuadra
+```
+
 ## La herramienta de escritorio
 
 ```powershell
@@ -117,15 +145,25 @@ BoE_epicos_nivel80_todos - BoE épicos nivel 80.csv   lista original de BoE (ori
 scripts/
   generar_boe.py          regenera boe_epicos.json desde la CSV
   generar_datos_web.py    regenera web/datos.js desde los catálogos
+  generar_iconos.py       regenera web/iconos.js y web/iconos-ids.js
+  descargar_iconos.py     deja en web/iconos/ los iconos 3.3.5 que usa la web
+  completar_iconos_logros.py  icono de los logros propios del servidor
 web/
   index.html              interfaz
   motor.js                parser del texto pegado + las reglas
   app.js                  pintado del expediente y copiar informe
   datos.js                catálogo empaquetado (generado)
+  iconos.js               nombres de icono y mapa de logros (generado)
+  iconos-ids.js           ids de objetos y hechizos (generado, bajo demanda)
+  iconos-ui.js            utilidades para pintar iconos
+  iconos-habilidades.js   iconos de habilidades y profesiones
+  iconos/                 5.643 iconos 3.3.5 en JPG de 56x56
   estilos.css             estilos
   fuentes.css             @font-face
   fuentes/                Fira Sans, Fira Mono y Alfa Slab One (woff2)
   ejemplo.txt             ficha de ejemplo
+pruebas/
+  prueba_iconos.js        comprueba que todo id resuelve a un icono real
 .github/workflows/pages.yml  despliegue automático en GitHub Pages
 ```
 

@@ -53,9 +53,41 @@ function bloqueHallazgos(titulo, lista, clase) {
         <h4>${esc(h.titulo)}</h4>
         <p>${esc(h.detalle)}</p>
         ${h.nota ? `<p class="porque">${esc(h.nota)}</p>` : ""}
+        ${miniaturasHallazgo(h)}
       </div>
     </div>`).join("");
   return `<div class="bloque"><h3>${esc(titulo)}</h3>${filas}</div>`;
+}
+
+// Miniaturas de los objetos y logros que sostienen el hallazgo: el revisor
+// los ve de un vistazo y decide si el indicio tiene sentido.
+function miniaturasHallazgo(h) {
+  const partes = [];
+  if (h.objs && h.objs.length) {
+    const vistos = new Set();
+    for (const id of h.objs) {
+      if (vistos.has(id)) continue;
+      vistos.add(id);
+      const ic = iconoItem(id);
+      if (!ic) continue;
+      partes.push(`<img class="icono miniatura" src="iconos/${esc(ic)}.jpg" alt="" loading="lazy" ` +
+                  `width="20" height="20" title="Objeto ${id}" ` +
+                  `onerror="this.style.visibility='hidden'">`);
+      if (partes.length >= 24) break;
+    }
+  }
+  if (h.ids && h.ids.length) {
+    for (const id of h.ids) {
+      const ic = iconoLogro(id);
+      if (!ic) continue;
+      partes.push(`<img class="icono miniatura" src="iconos/${esc(ic)}.jpg" alt="" loading="lazy" ` +
+                  `width="20" height="20" title="Logro ${id}" ` +
+                  `onerror="this.style.visibility='hidden'">`);
+      if (partes.length >= 30) break;
+    }
+  }
+  if (!partes.length) return "";
+  return `<div class="miniaturas">${partes.join("")}</div>`;
 }
 
 function resumenLinea(p, r) {
@@ -137,10 +169,10 @@ function renderResumen(p, r) {
 }
 
 // ------------------------------------------------------------------- perfil
-function barraFila(nombre, valor, maximo, clase, sufijo) {
+function barraFila(nombre, valor, maximo, clase, sufijo, icono) {
   const pct = maximo > 0 ? Math.min(100, (valor / maximo) * 100) : 0;
   return `<div class="barra-fila">
-    <span class="barra-nombre">${esc(nombre)}</span>
+    <span class="barra-nombre">${icono || ""}${esc(nombre)}</span>
     <span class="barra ${clase || ""}"><i style="width:${pct.toFixed(1)}%"></i></span>
     <span class="valor">${valor}${sufijo || ""}</span>
   </div>`;
@@ -171,9 +203,6 @@ function renderPerfil(p, r) {
   const n = numeros(p, r);
   const exaltadas = p.reps.filter((x) => x.valor >= 42000).length;
   const skills = p.habilidades.filter((h) => h.max > 0);
-  const chips = (lista, clase) => lista.length
-    ? `<div class="chips">${lista.map((x) => `<span class="chip ${clase || ""}">${x}</span>`).join("")}</div>`
-    : `<p class="vacio">—</p>`;
 
   const repFilas = p.reps.slice().sort((a, b) => b.valor - a.valor);
   const repHtml = repFilas.length
@@ -189,20 +218,25 @@ function renderPerfil(p, r) {
 
   const skillHtml = skills.length
     ? `<div class="barra-lista">${skills.map((h) => barraFila(
-        h.nombre, h.actual, h.max, h.actual >= h.max ? "completa" : "", ` / ${h.max}`)).join("")}</div>`
+        h.nombre, h.actual, h.max, h.actual >= h.max ? "completa" : "", ` / ${h.max}`,
+        etiquetaIcono(iconoHabilidad(h.nombre, h.enlace), "hechizo", "mini"))).join("")}</div>`
     : `<p class="vacio">Sin tabla de habilidades.</p>`;
 
   const emblemasHtml = p.emblemas.length
-    ? chips(p.emblemas.map((e) => `${esc(e.nombre)} <b>×${e.cantidad}</b>`), "emblema")
+    ? `<div class="chips">${p.emblemas.map((e) => `
+        <span class="chip emblema">${etiquetaIcono(iconoItem(e.id), "objeto", "mini")}
+          ${esc(e.nombre)} <b>×${e.cantidad}</b></span>`).join("")}</div>`
     : `<p class="vacio">Sin emblemas.</p>`;
 
   const monturasHtml = p.monturas.length
-    ? chips(p.monturas.slice(0, 18).map((id) => `ID ${id}`), "montura") +
+    ? `<div class="chips">${p.monturas.slice(0, 18).map((id) => `
+        <span class="chip montura">${etiquetaIcono(iconoSpell(id), "hechizo", "mini")}ID ${id}</span>`).join("")}</div>` +
       (p.monturas.length > 18 ? `<p class="pie-mini">y ${p.monturas.length - 18} más</p>` : "")
     : `<p class="vacio">Sin monturas ni compañeros.</p>`;
 
   const hechizosHtml = p.hechizos.length
-    ? chips(p.hechizos.slice(0, 18).map((id) => `ID ${id}`), "hechizo") +
+    ? `<div class="chips">${p.hechizos.slice(0, 18).map((id) => `
+        <span class="chip hechizo">${etiquetaIcono(iconoSpell(id), "hechizo", "mini")}ID ${id}</span>`).join("")}</div>` +
       (p.hechizos.length > 18 ? `<p class="pie-mini">y ${p.hechizos.length - 18} más</p>` : "")
     : `<p class="vacio">Sin hechizos de clase.</p>`;
 
@@ -299,6 +333,7 @@ function renderLogros(p, r) {
 
   const cuerpo = filas.map((x) => `
     <tr data-busca="${esc(x.nombre.toLowerCase())} ${x.id} ${x.fecha}">
+      <td class="celda-icono">${etiquetaIcono(iconoLogro(x.id), "logro")}</td>
       <td class="num">${x.id}</td>
       <td>${esc(x.nombre)} ${x.clave ? `<span class="chip mini">${esc(x.clave)}</span>` : ""} ${x.marca}</td>
       <td class="num">${esc(x.fecha)}</td>
@@ -315,7 +350,7 @@ function renderLogros(p, r) {
     </div>
     <div class="tabla-wrap">
       <table class="tabla">
-        <thead><tr><th>ID</th><th>Logro</th><th>Fecha</th></tr></thead>
+        <thead><tr><th></th><th>ID</th><th>Logro</th><th>Fecha</th></tr></thead>
         <tbody id="tabla-logros">${cuerpo}</tbody>
       </table>
     </div>`;
@@ -341,6 +376,7 @@ function renderObjetos(p, r) {
                         o.ilvl === 277 ? "277" : "", o.ilvl === 258 ? "toc" : "",
                         FUENTES[String(o.id)] ? "banda" : "",
                         /CANCELADO/i.test(o.opcion || "") ? "cancelado" : ""].filter(Boolean).join(" ")}">
+      <td class="celda-icono">${etiquetaIcono(iconoItem(o.id), "objeto")}</td>
       <td class="num">${o.id}</td>
       <td>${esc(o.nombre)} ${etiquetasObjeto(o, n)}</td>
       <td class="num">${o.cantidad}</td>
@@ -363,7 +399,7 @@ function renderObjetos(p, r) {
     </div>
     <div class="tabla-wrap">
       <table class="tabla">
-        <thead><tr><th>ID</th><th>Objeto</th><th>Cant.</th><th>ilvl</th><th>Estado</th></tr></thead>
+        <thead><tr><th></th><th>ID</th><th>Objeto</th><th>Cant.</th><th>ilvl</th><th>Estado</th></tr></thead>
         <tbody id="tabla-objetos">${cuerpo}</tbody>
       </table>
     </div>`;
@@ -377,34 +413,81 @@ const VISTAS = {
   objetos: renderObjetos,
 };
 
+// Estado del resultado actual, para poder repintar cuando lleguen los ids.
+let _actual = null;
+let _vistaActual = "resumen";
+let _yaMostrado = false;
+// Lo que el revisor ha escrito o filtrado: sobrevive a los repintados.
+const _filtro = { logros: "", objetos: "", tipoObjeto: "" };
+
 function pintar(p, r) {
+  _actual = { p, r };
+  _vistaActual = "resumen";
+  _filtro.logros = "";
+  _filtro.objetos = "";
+  _filtro.tipoObjeto = "";
+  _pintarVistas();
+  _avisarIds();
+}
+
+// Repinta las cuatro vistas. Solo se hace al analizar y cuando llega el mapa
+// de ids; cambiar de pestaña no repinta, solo muestra u oculta.
+function _pintarVistas() {
+  if (!_actual) return;
+  const { p, r } = _actual;
   const titulos = {
     resumen: "Resumen", perfil: "Perfil", logros: "Logros", objetos: "Objetos",
   };
   const contadores = { resumen: r.hallazgos.length, perfil: 0, logros: p.logros.size, objetos: p.objetos.length };
 
   const pestanas = `<div class="pestanas" role="tablist">
-    ${Object.keys(VISTAS).map((k, i) => `
-      <button class="pestana${i === 0 ? " activa" : ""}" data-vista="${k}" role="tab">
+    ${Object.keys(VISTAS).map((k) => `
+      <button class="pestana${k === _vistaActual ? " activa" : ""}" data-vista="${k}" role="tab">
         ${titulos[k]}${contadores[k] ? `<span class="contador">${contadores[k]}</span>` : ""}
       </button>`).join("")}
   </div>`;
 
-  const cuerpo = Object.keys(VISTAS).map((k, i) => `
-    <div class="vista" id="vista-${k}"${i === 0 ? "" : " hidden"}>${VISTAS[k](p, r)}</div>`).join("");
+  const cuerpo = Object.keys(VISTAS).map((k) => `
+    <div class="vista" id="vista-${k}"${k === _vistaActual ? "" : " hidden"}>${VISTAS[k](p, r)}</div>`).join("");
 
   $("#resultado").innerHTML = pestanas + cuerpo;
 
   $$(".pestana").forEach((b) => b.addEventListener("click", () => {
+    _vistaActual = b.dataset.vista;
     $$(".pestana").forEach((x) => x.classList.toggle("activa", x === b));
     $$(".vista").forEach((v) => { v.hidden = v.id !== "vista-" + b.dataset.vista; });
   }));
 
+  _conectarBuscadores(p, r);
+  _conectarCopiar(p, r);
+
+  if (!_yaMostrado) {
+    _yaMostrado = true;
+    $("#salida").hidden = false;
+    $("#salida").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+// El mapa de ids de objetos y hechizos pesa, asi que se carga aparte. Cuando
+// llega, se repinta todo para que aparezcan los iconos.
+function _avisarIds() {
+  if (typeof _cargarIds !== "function") return;
+  _cargarIds().then(() => {
+    if (!_actual) return;
+    _pintarVistas();
+    // vuelve a la vista que el revisor estaba mirando
+    const v = $("#vista-" + _vistaActual);
+    if (v) v.hidden = false;
+  });
+}
+
+function _conectarBuscadores(p, r) {
   // buscador de logros
   const bl = $("#buscar-logros");
   if (bl) {
-    bl.addEventListener("input", () => {
-      const q = bl.value.trim().toLowerCase();
+    bl.value = _filtro.logros;
+    const aplicar = () => {
+      const q = _filtro.logros.trim().toLowerCase();
       let n = 0;
       $$("#tabla-logros tr").forEach((tr) => {
         const ok = !q || tr.dataset.busca.includes(q);
@@ -412,33 +495,42 @@ function pintar(p, r) {
         if (ok) n++;
       });
       $("#cuenta-logros").textContent = `${n} de ${p.logros.size} logros`;
-    });
+    };
+    bl.addEventListener("input", () => { _filtro.logros = bl.value; aplicar(); });
+    aplicar();
   }
 
   // buscador y filtros de objetos
   const bo = $("#buscar-objetos");
   if (bo) {
-    let filtro = "";
+    bo.value = _filtro.objetos;
     const aplicar = () => {
-      const q = bo.value.trim().toLowerCase();
+      const q = _filtro.objetos.trim().toLowerCase();
+      const f = _filtro.tipoObjeto;
       let n = 0;
       $$("#tabla-objetos tr").forEach((tr) => {
         const okTexto = !q || tr.dataset.busca.includes(q);
-        const okFiltro = !filtro || (tr.dataset.filtros || "").split(" ").includes(filtro);
+        const okFiltro = !f || (tr.dataset.filtros || "").split(" ").includes(f);
         const ok = okTexto && okFiltro;
         tr.hidden = !ok;
         if (ok) n++;
       });
       $("#cuenta-objetos").textContent = `${n} de ${p.objetos.length} objetos`;
     };
-    bo.addEventListener("input", aplicar);
-    $$("#filtros-objetos .filtro").forEach((b) => b.addEventListener("click", () => {
-      $$("#filtros-objetos .filtro").forEach((x) => x.classList.toggle("activo", x === b));
-      filtro = b.dataset.f;
-      aplicar();
-    }));
+    bo.addEventListener("input", () => { _filtro.objetos = bo.value; aplicar(); });
+    $$("#filtros-objetos .filtro").forEach((b) => {
+      b.classList.toggle("activo", b.dataset.f === _filtro.tipoObjeto);
+      b.addEventListener("click", () => {
+        $$("#filtros-objetos .filtro").forEach((x) => x.classList.toggle("activo", x === b));
+        _filtro.tipoObjeto = b.dataset.f;
+        aplicar();
+      });
+    });
+    aplicar();
   }
+}
 
+function _conectarCopiar(p, r) {
   const copiar = $("#copiar");
   if (copiar) {
     copiar.addEventListener("click", async () => {
@@ -464,13 +556,13 @@ function pintar(p, r) {
       $("#texto").value = "";
       $("#salida").hidden = true;
       $("#estado").textContent = "";
+      $("#resultado").innerHTML = "";
+      _actual = null;
+      _yaMostrado = false;
       $("#texto").focus();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
-
-  $("#salida").hidden = false;
-  $("#salida").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function analizarEntrada() {

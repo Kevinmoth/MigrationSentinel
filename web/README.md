@@ -71,17 +71,78 @@ sigue en la herramienta local.
 ## Estructura
 
 ```
-index.html     interfaz
-estilos.css    estilos (paleta y tipografías de aprenderust.dev)
-fuentes.css    @font-face de Fira Sans, Alfa Slab One y Fira Mono
-fuentes/       los woff2, para que funcione sin internet
-motor.js       parser del texto pegado + reglas
-app.js         pintado del expediente
-datos.js       catálogo de metas, fuentes de objetos y nombres (generado)
-logo.gif       logo animado (120x120)
-favicon.png    icono de la pestaña
-ejemplo.txt    una ficha de ejemplo para probar
+index.html          interfaz
+estilos.css         estilos (paleta y tipografías de aprenderust.dev)
+fuentes.css         @font-face de Fira Sans, Alfa Slab One y Fira Mono
+fuentes/            los woff2, para que funcione sin internet
+motor.js            parser del texto pegado + reglas
+app.js              pintado del expediente
+datos.js            catálogo de metas, fuentes de objetos y nombres (generado)
+iconos.js           nombres de icono y mapa de logros (generado)
+iconos-ids.js       ids de objetos y hechizos (generado, se carga bajo demanda)
+iconos-ui.js        utilidades para pintar iconos
+iconos-habilidades.js  iconos de las habilidades y profesiones
+iconos/             5.643 iconos 3.3.5 en JPG de 56x56
+logo.gif            logo animado (120x120)
+favicon.png         icono de la pestaña
+ejemplo.txt         una ficha de ejemplo para probar
 ```
+
+## Iconos
+
+Los objetos, logros, hechizos, monturas, emblemas y habilidades llevan su
+icono 3.3.5. Son **5.643 ficheros de 56×56** (9,7 MB) dentro de `web/iconos/`,
+así que la web funciona sin conexión y no depende de ningún CDN.
+
+El origen es doble:
+
+- **La BD local** (`item_db.json`, `spell_db.json`, `icons/`) es la fuente de
+  verdad del mapa id → icono. Aporta 5.272 iconos.
+- **Wowhead** (`nether.wowhead.com/tooltip`) aporta el icono de los 371
+  logros que la BD local no trae, porque `achievement_db.json` solo guarda el
+  nombre. Se cachean en `logros_iconos.json` para no depender de la red.
+
+Los iconos que Wowhead no conoce (los emblemas de mazmorra y banda `3838-3843`
+y el Emblemático `4785`, propios del servidor) llevan un icono representativo
+de su familia; se asignan en `scripts/completar_iconos_logros.py`.
+
+### Habilidades
+
+La tabla de habilidades trae skill lines (`?skill=NNN`), no hechizos, y los
+iconos de hechizos no las cubren. Se resuelven por tres vías: el `entry: NNN`
+de «Equitación con entry: 34091» (que sí es un hechizo real), el enlace
+`?skill=NNN`, y el nombre de la habilidad.
+
+El icono canónico de cada profesión sale de los hechizos de profesión del
+propio cliente 3.3.5:
+
+| Skill line | Profesión | Icono |
+|---|---|---|
+| 164 | Herrería | `Trade_BlackSmithing` |
+| 165 | Peletería | `INV_Misc_ArmorKit_17` |
+| 171 | Alquimia | `Trade_Alchemy` |
+| 182 | Herboristería | `Trade_Herbalism` |
+| 186 | Minería | `Trade_Mining` |
+| 197 | Sastrería | `Trade_Tailoring` |
+| 202 | Ingeniería | `Trade_Engineering` |
+| 333 | Encantamiento | `Trade_Engraving` |
+| 393 | Desollar | `INV_Misc_Pelt_Wolf_01` |
+| 755 | Joyería | `INV_Misc_Gem_01` |
+| 773 | Inscripción | `INV_Misc_Note_01` |
+
+### Regenerar los iconos
+
+```powershell
+python scripts/descargar_iconos.py     # copia de la BD local + descarga lo que falte
+python scripts/completar_iconos_logros.py  # iconos de los logros propios del servidor
+python scripts/generar_iconos.py       # iconos.js + iconos-ids.js
+node pruebas/prueba_iconos.js          # comprueba que todo cuadra
+```
+
+`iconos.js` (188 KB) lleva los nombres de icono y el mapa de logros, y se
+carga siempre. `iconos-ids.js` (579 KB) lleva los ids de objetos y hechizos
+—que son más de cien mil— y se carga bajo demanda, solo cuando ya se ha
+pintado un resultado.
 
 ## Actualizar los datos
 
