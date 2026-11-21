@@ -30,8 +30,8 @@ Y arriba, el estado que la propia página declara de la migración
 | Vista | Qué muestra |
 |---|---|
 | **Perfil** | La ficha completa y visual: identidad (PJ remoto, reino de origen, servidor, locale, build, género, fecha de extracción), contadores con su icono, **curva de logros por mes**, barras de reputaciones (con las exaltadas marcadas), habilidades, emblemas, monturas, hechizos y la **bitácora de la migración**. El nombre va en el color de la clase. Es la pestaña que queda seleccionada al analizar. |
-| **Logros** | Todos los logros en tabla, con buscador, los que el motor usa como referencia resaltados y los que aparecen en un hallazgo marcados en rojo. |
-| **Objetos** | Todos los objetos en tabla, con buscador y filtros (**BoE**, en un hallazgo, ilvl 277, ilvl 258, de banda, cancelados), el origen de cada pieza y el estado que marca la propia página. |
+| **Logros** | Todos los logros en tabla, con buscador y ordenables por **ID** o **fecha** (por fecha por defecto), los que el motor usa como referencia resaltados y los que aparecen en un hallazgo marcados en rojo. El icono abre la ficha del logro en Wowhead. |
+| **Objetos** | Todos los objetos en tabla, con buscador y filtros (**BoE**, en un hallazgo, ilvl 277, ilvl 258, de banda, cancelados), el origen de cada pieza y el estado que marca la propia página. El icono abre la ficha del objeto en Wowhead. |
 | **Resumen** | Veredicto, hallazgos por bloques y los datos básicos del personaje. |
 
 ## Cómo publicarla

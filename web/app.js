@@ -70,9 +70,11 @@ function miniaturasHallazgo(h) {
       vistos.add(id);
       const ic = iconoItem(id);
       if (!ic) continue;
-      partes.push(`<img class="icono miniatura" src="iconos/${esc(ic)}.jpg" alt="" loading="lazy" ` +
-                  `width="20" height="20" title="Objeto ${id}" ` +
-                  `onerror="this.style.visibility='hidden'">`);
+      partes.push(`<a class="icono-enlace" href="${esc(enlaceWowhead("objeto", id))}" ` +
+                  `target="_blank" rel="noopener noreferrer" title="Objeto ${esc(id)} · abrir en Wowhead">` +
+                  `<img class="icono miniatura" src="iconos/${esc(ic)}.jpg" alt="" loading="lazy" ` +
+                  `width="20" height="20" ` +
+                  `onerror="this.style.visibility='hidden'"></a>`);
       if (partes.length >= 24) break;
     }
   }
@@ -80,9 +82,11 @@ function miniaturasHallazgo(h) {
     for (const id of h.ids) {
       const ic = iconoLogro(id);
       if (!ic) continue;
-      partes.push(`<img class="icono miniatura" src="iconos/${esc(ic)}.jpg" alt="" loading="lazy" ` +
-                  `width="20" height="20" title="Logro ${id}" ` +
-                  `onerror="this.style.visibility='hidden'">`);
+      partes.push(`<a class="icono-enlace" href="${esc(enlaceWowhead("logro", id))}" ` +
+                  `target="_blank" rel="noopener noreferrer" title="Logro ${esc(id)} · abrir en Wowhead">` +
+                  `<img class="icono miniatura" src="iconos/${esc(ic)}.jpg" alt="" loading="lazy" ` +
+                  `width="20" height="20" ` +
+                  `onerror="this.style.visibility='hidden'"></a>`);
       if (partes.length >= 30) break;
     }
   }
@@ -311,8 +315,9 @@ function renderPerfil(p, r) {
     ? `<div class="barra-lista scroll">${repFilas.map((x) => {
         const ex = x.valor >= 42000;
         return `<div class="barra-fila${ex ? " exaltada" : ""}">
-          <span class="barra-nombre">${esc(x.nombre)}${ex ? ' <span class="chip mini">EXALTADO</span>' : ""}</span>
-          <span class="barra ${ex ? "exaltada" : ""}"><i style="width:${Math.min(100, (x.valor / 42000) * 100).toFixed(1)}%"></i></span>
+          <span class="barra-nombre">${esc(x.nombre)}</span>
+          <span class="barra${ex ? " exaltada" : ""}"><i style="width:${Math.min(100, (x.valor / 42000) * 100).toFixed(1)}%"></i>${
+            ex ? '<b class="barra-tag">EXALTADO</b>' : ""}</span>
           <span class="valor">${x.valor}</span>
         </div>`;
       }).join("")}</div>`
@@ -326,7 +331,7 @@ function renderPerfil(p, r) {
 
   const emblemasHtml = p.emblemas.length
     ? `<div class="chips">${p.emblemas.map((e) => `
-        <span class="chip emblema">${etiquetaIcono(iconoItem(e.id), "objeto", "mini")}
+        <span class="chip emblema">${etiquetaIcono(iconoItem(e.id), "objeto", "mini", enlaceWowhead("objeto", e.id))}
           ${esc(e.nombre)} <b>×${e.cantidad}</b></span>`).join("")}</div>`
     : `<p class="vacio">Sin emblemas.</p>`;
 
@@ -422,8 +427,8 @@ function renderLogros(p, r) {
   filas.sort((a, b) => (a.fecha < b.fecha ? -1 : a.fecha > b.fecha ? 1 : a.id - b.id));
 
   const cuerpo = filas.map((x) => `
-    <tr data-busca="${esc(x.nombre.toLowerCase())} ${x.id} ${x.fecha}">
-      <td class="celda-icono">${etiquetaIcono(iconoLogro(x.id), "logro")}</td>
+    <tr data-busca="${esc(x.nombre.toLowerCase())} ${x.id} ${x.fecha}" data-id="${x.id}" data-fecha="${esc(x.fecha)}">
+      <td class="celda-icono">${etiquetaIcono(iconoLogro(x.id), "logro", "", enlaceWowhead("logro", x.id))}</td>
       <td class="num">${x.id}</td>
       <td>${esc(x.nombre)} ${x.clave ? `<span class="chip mini">${esc(x.clave)}</span>` : ""} ${x.marca}</td>
       <td class="num">${esc(x.fecha)}</td>
@@ -440,7 +445,12 @@ function renderLogros(p, r) {
     </div>
     <div class="tabla-wrap">
       <table class="tabla">
-        <thead><tr><th></th><th>ID</th><th>Logro</th><th>Fecha</th></tr></thead>
+        <thead><tr>
+          <th></th>
+          <th class="orden" data-orden="id" aria-sort="none" title="Ordenar por ID">ID</th>
+          <th>Logro</th>
+          <th class="orden" data-orden="fecha" aria-sort="none" title="Ordenar por fecha">Fecha</th>
+        </tr></thead>
         <tbody id="tabla-logros">${cuerpo}</tbody>
       </table>
     </div>`;
@@ -466,7 +476,7 @@ function renderObjetos(p, r) {
                         o.ilvl === 277 ? "277" : "", o.ilvl === 258 ? "toc" : "",
                         FUENTES[String(o.id)] ? "banda" : "",
                         /CANCELADO/i.test(o.opcion || "") ? "cancelado" : ""].filter(Boolean).join(" ")}">
-      <td class="celda-icono">${etiquetaIcono(iconoItem(o.id), "objeto")}</td>
+      <td class="celda-icono">${etiquetaIcono(iconoItem(o.id), "objeto", "", enlaceWowhead("objeto", o.id))}</td>
       <td class="num">${o.id}</td>
       <td>${esc(o.nombre)} ${etiquetasObjeto(o, n)}</td>
       <td class="num">${o.cantidad}</td>
@@ -509,6 +519,33 @@ let _vistaActual = "perfil";
 let _yaMostrado = false;
 // Lo que el revisor ha escrito o filtrado: sobrevive a los repintados.
 const _filtro = { logros: "", objetos: "", tipoObjeto: "" };
+// Orden de la tabla de logros: por fecha por defecto.
+const _ordenLogros = { campo: "fecha", dir: 1 };
+
+// Reordena las filas ya pintadas, así no se pierde ni la búsqueda ni nada de
+// lo que esté filtrado.
+function _ordenarLogros() {
+  const tbody = $("#tabla-logros");
+  if (!tbody) return;
+  const { campo, dir } = _ordenLogros;
+  const filas = Array.from(tbody.rows);
+  filas.sort((a, b) => {
+    if (campo === "id") return (Number(a.dataset.id) - Number(b.dataset.id)) * dir;
+    if (a.dataset.fecha === b.dataset.fecha) return Number(a.dataset.id) - Number(b.dataset.id);
+    return (a.dataset.fecha < b.dataset.fecha ? -1 : 1) * dir;
+  });
+  const frag = document.createDocumentFragment();
+  for (const f of filas) frag.appendChild(f);
+  tbody.appendChild(frag);
+
+  $$("#vista-logros th[data-orden]").forEach((th) => {
+    const activa = th.dataset.orden === campo;
+    th.classList.toggle("ordenado", activa);
+    if (activa) th.dataset.dir = dir > 0 ? "asc" : "desc";
+    else delete th.dataset.dir;
+    th.setAttribute("aria-sort", activa ? (dir > 0 ? "ascending" : "descending") : "none");
+  });
+}
 
 function pintar(p, r) {
   _actual = { p, r };
@@ -599,6 +636,17 @@ function _conectarBuscadores(p, r) {
       $("#cuenta-logros").textContent = `${n} de ${p.logros.size} logros`;
     };
     bl.addEventListener("input", () => { _filtro.logros = bl.value; aplicar(); });
+
+    // Orden de la tabla: fecha por defecto; ID o Fecha al pulsar la cabecera.
+    $$("#vista-logros th[data-orden]").forEach((th) => {
+      th.addEventListener("click", () => {
+        const campo = th.dataset.orden;
+        if (_ordenLogros.campo === campo) _ordenLogros.dir *= -1;
+        else { _ordenLogros.campo = campo; _ordenLogros.dir = 1; }
+        _ordenarLogros();
+      });
+    });
+    _ordenarLogros();
     aplicar();
   }
 

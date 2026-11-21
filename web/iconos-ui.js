@@ -97,6 +97,14 @@ function _url(nombre) {
   return BASE_ICONOS + nombre + ".jpg";
 }
 
+/** Página del objeto, logro o hechizo en Wowhead (WotLK, en español). */
+function enlaceWowhead(tipo, id) {
+  const n = Number(id);
+  if (!Number.isFinite(n) || n <= 0) return "";
+  const ruta = tipo === "logro" ? "achievement" : tipo === "hechizo" ? "spell" : "item";
+  return "https://www.wowhead.com/wotlk/es/" + ruta + "=" + n;
+}
+
 /**
  * Etiqueta <img> con el icono que corresponde.
  *
@@ -105,12 +113,17 @@ function _url(nombre) {
  * recuadro vacio repetido veinte veces.
  *
  * Si el archivo no esta en el repo, cae al generico del tipo.
+ * Con `enlace`, el icono se envuelve en un enlace (la ficha del objeto o del
+ * logro en Wowhead).
  */
-function etiquetaIcono(nombre, tipo, clase) {
+function etiquetaIcono(nombre, tipo, clase, enlace) {
   if (!nombre) return "";
   const src = _url(nombre);
-  return '<img class="icono ' + (clase || "") + '" src="' + esc(src) +
+  const img = '<img class="icono ' + (clase || "") + '" src="' + esc(src) +
          '" alt="" loading="lazy" width="32" height="32" ' +
          'onerror="this.onerror=null;this.src=\'' + esc(_url(FALLBACK[tipo] || FALLBACK.objeto)) +
          '\';this.classList.add(\'icono-reserva\')">';
+  if (!enlace) return img;
+  return '<a class="icono-enlace" href="' + esc(enlace) + '" target="_blank" ' +
+         'rel="noopener noreferrer" title="Abrir en Wowhead">' + img + '</a>';
 }
