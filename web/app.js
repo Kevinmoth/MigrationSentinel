@@ -487,7 +487,7 @@ function renderLogros(p, r) {
 
   const filtros = [
     ["", "Todos"], ["icc", "ICC"], ["toc", "ToC"], ["ulduar", "Ulduar"],
-    ["halion", "Halion"], ["pvp", "PvP"],
+    ["halion", "Halion"], ["mazmorra", "Mazmorra"], ["pvp", "PvP"],
   ];
 
   return `
@@ -532,6 +532,7 @@ function renderObjetos(p, r) {
   const n = numeros(p, r);
   const cuerpo = p.objetos.map((o) => `
     <tr data-busca="${esc(o.nombre.toLowerCase())} ${o.id}"
+        data-id="${o.id}" data-ilvl="${o.ilvl || 0}"
         data-filtros="${[n.boe.has(o.id) ? "boe" : "", n.objs.has(o.id) ? "hallazgo" : "",
                         o.ilvl === 277 ? "277" : "", o.ilvl === 258 ? "toc" : "",
                         FUENTES[String(o.id)] ? "banda" : "",
@@ -559,7 +560,9 @@ function renderObjetos(p, r) {
     </div>
     <div class="tabla-wrap">
       <table class="tabla">
-        <thead><tr><th></th><th>ID</th><th>Objeto</th><th>Cant.</th><th>ilvl</th><th>Estado</th></tr></thead>
+        <thead><tr><th></th><th>ID</th><th>Objeto</th><th>Cant.</th>
+          <th class="orden" data-orden="ilvl" aria-sort="none" title="Ordenar por ilvl">ilvl</th>
+          <th>Estado</th></tr></thead>
         <tbody id="tabla-objetos">${cuerpo}</tbody>
       </table>
     </div>`;
@@ -581,6 +584,8 @@ let _yaMostrado = false;
 const _filtro = { logros: "", raid: "", objetos: "", tipoObjeto: "" };
 // Orden de la tabla de logros: por fecha por defecto.
 const _ordenLogros = { campo: "fecha", dir: 1 };
+// Orden de la tabla de objetos: el de la página hasta que se pulsa ilvl.
+const _ordenObjetos = { campo: "", dir: -1 };
 
 // Reordena las filas ya pintadas, así no se pierde ni la búsqueda ni nada de
 // lo que esté filtrado.
@@ -607,6 +612,32 @@ function _ordenarLogros() {
   });
 }
 
+function _ordenarObjetos() {
+  const tbody = $("#tabla-objetos");
+  const th = $("#vista-objetos th[data-orden='ilvl']");
+  if (!tbody || !th) return;
+  const { campo, dir } = _ordenObjetos;
+
+  if (campo === "ilvl") {
+    const filas = Array.from(tbody.rows);
+    filas.sort((a, b) => {
+      const va = Number(a.dataset.ilvl) || 0;
+      const vb = Number(b.dataset.ilvl) || 0;
+      if (va === vb) return Number(a.dataset.id) - Number(b.dataset.id);
+      return (va - vb) * dir;
+    });
+    const frag = document.createDocumentFragment();
+    for (const f of filas) frag.appendChild(f);
+    tbody.appendChild(frag);
+  }
+
+  const activa = campo === "ilvl";
+  th.classList.toggle("ordenado", activa);
+  if (activa) th.dataset.dir = dir > 0 ? "asc" : "desc";
+  else delete th.dataset.dir;
+  th.setAttribute("aria-sort", activa ? (dir > 0 ? "ascending" : "descending") : "none");
+}
+
 function pintar(p, r) {
   _actual = { p, r };
   _vistaActual = "perfil";
@@ -614,6 +645,8 @@ function pintar(p, r) {
   _filtro.raid = "";
   _filtro.objetos = "";
   _filtro.tipoObjeto = "";
+  _ordenObjetos.campo = "";
+  _ordenObjetos.dir = -1;
   _reparto(true);
   _pintarVistas();
   _avisarIds();
@@ -700,7 +733,7 @@ function _conectarBuscadores(p, r) {
     };
     bl.addEventListener("input", () => { _filtro.logros = bl.value; aplicar(); });
 
-    // Filtros de raid: Todos, ICC, ToC, Ulduar, Halion y PvP.
+    // Filtros de raid y mazmorra: Todos, ICC, ToC, Ulduar, Halion, Mazmorra y PvP.
     $$("#filtros-logros .filtro").forEach((b) => {
       b.addEventListener("click", () => {
         $$("#filtros-logros .filtro").forEach((x) => x.classList.toggle("activo", x === b));
@@ -748,6 +781,16 @@ function _conectarBuscadores(p, r) {
         aplicar();
       });
     });
+
+    // Orden por ilvl: el primer clic pone primero lo más alto.
+    $$("#vista-objetos th[data-orden]").forEach((th) => {
+      th.addEventListener("click", () => {
+        if (_ordenObjetos.campo === "ilvl") _ordenObjetos.dir *= -1;
+        else { _ordenObjetos.campo = "ilvl"; _ordenObjetos.dir = -1; }
+        _ordenarObjetos();
+      });
+    });
+    _ordenarObjetos();
     aplicar();
   }
 }
