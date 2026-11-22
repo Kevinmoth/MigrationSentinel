@@ -67,6 +67,12 @@ Nivel
 Problemas con los Objetos de la Migración
 #\tEntryID\tNombre del Objeto\tCantidad\tItemLevel\tEnlace Armería\tOpciones
 1\t41673\tYelmo de cuero de Gladiador incansable\t1\t251\tVer Objeto\t-
+86\t16411\t\t1\t\tVer Objeto\tCANCELADO
+
+Emblemas del personaje
+#\tID\tNombre\tCantidad\tEnlace Armería
+2\t43228\tFragmento de vigilante de piedra\t1\tVer Emblema
+12\t37742\t\t65\tVer Emblema
 
 Logros
 #\tID\tNombre del logro\tFecha\tEnlace Armería
@@ -98,7 +104,14 @@ comprobar(p1.servidorOrigen === "logon.warmane.com", "servidor: " + JSON.stringi
 comprobar(p1.clase === "Pícaro", "clase: " + JSON.stringify(p1.clase));
 comprobar(p1.raza === "Trol", "raza: " + JSON.stringify(p1.raza));
 comprobar(p1.nivel === 80, "nivel: " + p1.nivel);
-comprobar(p1.objetos.length === 1 && p1.objetos[0].id === 41673, "objetos: " + p1.objetos.length);
+comprobar(p1.objetos.length === 2 && p1.objetos[0].id === 41673, "objetos: " + p1.objetos.length);
+const raro = p1.objetos.find((o) => o.id === 16411);
+comprobar(!!raro && raro.nombre === "" && raro.cantidad === 1 && raro.ilvl === 0 && raro.opcion === "CANCELADO",
+  "objeto sin nombre/ilvl: " + JSON.stringify(raro));
+comprobar(p1.emblemas.length === 2 && p1.emblemas[0].id === 43228, "emblemas: " + p1.emblemas.length);
+const moneda = p1.emblemas.find((e) => e.id === 37742);
+comprobar(!!moneda && moneda.nombre === "" && moneda.cantidad === 65,
+  "moneda sin nombre: " + JSON.stringify(moneda));
 
 console.log("=== LOGROS CON LA FECHA EN LA LINEA SIGUIENTE ===");
 comprobar(p1.logros.size === 2, "logros: " + p1.logros.size);

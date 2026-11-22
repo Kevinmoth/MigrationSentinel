@@ -371,19 +371,27 @@ function renderPerfil(p, r) {
     : `<p class="vacio">Sin tabla de habilidades.</p>`;
 
   const emblemasHtml = p.emblemas.length
-    ? `<div class="chips">${p.emblemas.map((e) => `
-        <span class="chip emblema">${etiquetaIcono(iconoItem(e.id), "objeto", "mini", enlaceWowhead("objeto", e.id))}
-          ${esc(e.nombre)} <b>×${e.cantidad}</b></span>`).join("")}</div>`
+    ? `<div class="chips">${p.emblemas.map((e) => {
+        const enlace = enlaceWowhead("objeto", e.id);
+        const nombre = e.nombre
+          ? esc(e.nombre)
+          : `<a class="nombre-objeto" href="${esc(enlace)}" target="_blank" rel="noopener noreferrer"
+                title="Moneda no identificada · abrir en Wowhead">ID ${e.id}</a>`;
+        return `<span class="chip emblema">${etiquetaIcono(iconoItem(e.id) || "inv_misc_questionmark", "objeto", "mini", enlace)}
+          ${nombre} <b>×${e.cantidad}</b></span>`;
+      }).join("")}</div>`
     : `<p class="vacio">Sin emblemas.</p>`;
 
   const monturasHtml = p.monturas.length
     ? `<div class="chips">${p.monturas.map((id) => `
-        <span class="chip montura">${etiquetaIcono(iconoSpell(id), "hechizo", "mini")}ID ${id}</span>`).join("")}</div>`
+        <a class="chip montura" href="${esc(enlaceWowhead("hechizo", id))}" target="_blank"
+           rel="noopener noreferrer" title="Abrir en Wowhead">${etiquetaIcono(iconoSpell(id), "hechizo", "mini")}ID ${id}</a>`).join("")}</div>`
     : `<p class="vacio">Sin monturas ni compañeros.</p>`;
 
   const hechizosHtml = p.hechizos.length
     ? `<div class="chips">${p.hechizos.map((id) => `
-        <span class="chip hechizo">${etiquetaIcono(iconoSpell(id), "hechizo", "mini")}ID ${id}</span>`).join("")}</div>`
+        <a class="chip hechizo" href="${esc(enlaceWowhead("hechizo", id))}" target="_blank"
+           rel="noopener noreferrer" title="Abrir en Wowhead">${etiquetaIcono(iconoSpell(id), "hechizo", "mini")}ID ${id}</a>`).join("")}</div>`
     : `<p class="vacio">Sin hechizos de clase.</p>`;
 
   const logsHtml = p.logs.length
@@ -530,20 +538,29 @@ function etiquetasObjeto(o, n) {
 
 function renderObjetos(p, r) {
   const n = numeros(p, r);
-  const cuerpo = p.objetos.map((o) => `
-    <tr data-busca="${esc(o.nombre.toLowerCase())} ${o.id}"
+  const cuerpo = p.objetos.map((o) => {
+    const enlace = enlaceWowhead("objeto", o.id);
+    // Si la página no trae el nombre (objeto fuera de la BD), se muestra el
+    // ID enlazado a Wowhead y un icono de reserva.
+    const nombre = o.nombre
+      ? esc(o.nombre)
+      : `<a class="nombre-objeto" href="${esc(enlace)}" target="_blank" rel="noopener noreferrer"
+            title="Objeto no identificado · abrir en Wowhead">ID ${o.id}</a>`;
+    return `
+    <tr data-busca="${esc((o.nombre || "").toLowerCase())} ${o.id}"
         data-id="${o.id}" data-ilvl="${o.ilvl || 0}"
         data-filtros="${[n.boe.has(o.id) ? "boe" : "", n.objs.has(o.id) ? "hallazgo" : "",
                         o.ilvl === 277 ? "277" : "", o.ilvl === 258 ? "toc" : "",
                         FUENTES[String(o.id)] ? "banda" : "",
                         /CANCELADO/i.test(o.opcion || "") ? "cancelado" : ""].filter(Boolean).join(" ")}">
-      <td class="celda-icono">${etiquetaIcono(iconoItem(o.id), "objeto", "", enlaceWowhead("objeto", o.id))}</td>
+      <td class="celda-icono">${etiquetaIcono(iconoItem(o.id) || "inv_misc_questionmark", "objeto", "", enlace)}</td>
       <td class="num">${o.id}</td>
-      <td>${esc(o.nombre)} ${etiquetasObjeto(o, n)}</td>
+      <td>${nombre} ${etiquetasObjeto(o, n)}</td>
       <td class="num">${o.cantidad}</td>
       <td class="num">${o.ilvl || "—"}</td>
       <td class="estado-op">${o.opcion && o.opcion !== "-" ? esc(o.opcion) : ""}</td>
-    </tr>`).join("");
+    </tr>`;
+  }).join("");
 
   const filtros = [
     ["", "Todos"], ["boe", "BoE"], ["hallazgo", "En un hallazgo"], ["277", "ilvl 277"],

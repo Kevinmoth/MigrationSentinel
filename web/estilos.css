@@ -566,6 +566,10 @@ button:active { transform: translateY(1px); }
 .chip.fuente { border-color: rgba(56, 189, 248, .35); color: #7dd3fc; }
 .chip.emblema { border-color: rgba(194, 65, 12, .45); color: #fdba74; }
 .chip.montura, .chip.hechizo { color: var(--muted); }
+/* Monturas y hechizos: si el id no esta en la BD, el chip muestra el ID y
+   sigue enlazando a Wowhead. */
+a.chip { text-decoration: none; }
+a.chip:hover { border-color: var(--faint); color: var(--text); }
 
 .linea-tiempo { display: grid; gap: 2px; }
 .evento {
@@ -651,6 +655,9 @@ button:active { transform: translateY(1px); }
 .tabla td:nth-child(2) { color: var(--text); }
 .tabla .num { text-align: right; font-family: var(--mono); white-space: nowrap; }
 .tabla .estado-op { font: 500 11px var(--mono); color: var(--sospechoso); }
+/* Objeto sin nombre en la BD: se muestra el ID como enlace a Wowhead. */
+.nombre-objeto { color: var(--text); text-decoration: none; border-bottom: 1px dotted var(--faint); }
+.nombre-objeto:hover { color: var(--accent-hover); border-bottom-color: var(--accent); }
 
 /* --------------------------------------------------------------- iconos */
 .icono {

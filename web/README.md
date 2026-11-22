@@ -34,8 +34,10 @@ Y arriba, el estado que la propia página declara de la migración
 |---|---|
 | **Perfil** | La ficha completa y visual: identidad (PJ remoto, reino de origen, servidor, locale, build, género, fecha de extracción), contadores con su icono, **curva de logros por mes**, barras de reputaciones (con las exaltadas marcadas), habilidades, emblemas, monturas, hechizos y la **bitácora de la migración**. El nombre va en el color de la clase. Es la pestaña que queda seleccionada al analizar. Abajo a la derecha, el icono de enlace copia la **fila de trabajo para Excel**: nombre externo, clase, raza, servidor, fecha del logro **Nivel 10** y nombre interno en Thalassa, separados por tabuladores. |
 | **Logros** | Todos los logros en tabla, con buscador y ordenables por **ID** o **fecha** (por fecha por defecto), los que el motor usa como referencia resaltados y los que aparecen en un hallazgo marcados en rojo. Los filtros de raid y mazmorra (**ICC**, **ToC**, **Ulduar**, **Halion**, **Mazmorra**, **PvP**) se combinan con el buscador. El icono abre la ficha del logro en Wowhead. |
-| **Objetos** | Todos los objetos en tabla, con buscador y filtros (**BoE**, en un hallazgo, ilvl 277, ilvl 258, de banda, cancelados), el origen de cada pieza y el estado que marca la propia página. La columna **ilvl** ordena de mayor a menor (y al revés al volver a pulsarla). El icono abre la ficha del objeto en Wowhead. |
+| **Objetos** | Todos los objetos en tabla, con buscador y filtros (**BoE**, en un hallazgo, ilvl 277, ilvl 258, de banda, cancelados), el origen de cada pieza y el estado que marca la propia página. La columna **ilvl** ordena de mayor a menor (y al revés al volver a pulsarla). Si un objeto no trae nombre (no está en la BD), se muestra su **ID enlazado a Wowhead** con un icono de reserva. El icono abre la ficha del objeto en Wowhead. |
 | **Resumen** | Veredicto, hallazgos por bloques y los datos básicos del personaje. |
+
+Las monedas de la sección de emblemas, las monturas y los hechizos que no traen nombre también se muestran por su **ID** y enlazan a su ficha de Wowhead.
 
 ## Cómo publicarla
 

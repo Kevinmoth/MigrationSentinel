@@ -193,19 +193,25 @@ function parsear(texto) {
         continue;
       }
     } else if (seccion === "objetos") {
-      const m = /^(\d+)\t(\d+)\t(.+?)\t(\d+)\t(\d+)\t([^\t]*)\t?([^\t]*)/.exec(s);
-      if (m) {
+      // El nombre o el ilvl pueden venir vacios (objetos que no estan en la
+      // base): se aceptan igual y se muestran por su ID.
+      const t = s.split("\t");
+      if (t.length >= 5 && /^\d+$/.test(t[0]) && /^\d+$/.test(t[1]) && /^\d+$/.test(t[3])) {
         p.objetos.push({
-          id: Number(m[2]), nombre: m[3].trim(),
-          cantidad: numero(m[4]), ilvl: numero(m[5]),
-          opcion: (m[7] || m[6] || "").trim(),
+          id: Number(t[1]), nombre: (t[2] || "").trim(),
+          cantidad: numero(t[3]), ilvl: numero(t[4]),
+          opcion: (t[6] || t[5] || "").trim(),
         });
         continue;
       }
     } else if (seccion === "emblemas") {
-      const m = /^(\d+)\t(\d+)\t(.+?)\t(\d+)\t/.exec(s);
-      if (m) {
-        p.emblemas.push({ id: Number(m[2]), nombre: m[3].trim(), cantidad: numero(m[4]) });
+      // Igual que los objetos: la moneda puede venir sin nombre.
+      const t = s.split("\t");
+      if (t.length >= 4 && /^\d+$/.test(t[0]) && /^\d+$/.test(t[1]) && /^\d+$/.test(t[3])) {
+        p.emblemas.push({
+          id: Number(t[1]), nombre: (t[2] || "").trim(),
+          cantidad: numero(t[3]),
+        });
         continue;
       }
     } else if (seccion === "habilidades") {
