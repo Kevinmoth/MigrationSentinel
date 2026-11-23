@@ -1,0 +1,83 @@
+/* =====================================================================
+   Botones con la textura de WoW 3.3.5
+   ---------------------------------------------------------------------
+   Solo los botones: Interface\Buttons\UI-Panel-Button-Up / Down.
+   El resto del tema vuelve a estilos.css.
+   ===================================================================== */
+
+@font-face {
+  font-family: "Friz Quadrata";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fuentes/friz-quadrata.ttf") format("truetype");
+}
+
+:root {
+  --wow-oro: #ffd100;
+  --wow-fuente: "Friz Quadrata", "Fira Sans", Georgia, serif;
+}
+
+/* El botón no se encoge: si no cabe, baja a la línea siguiente.
+   Así el texto nunca se sale de la textura. */
+.primario,
+.secundario {
+  flex: 0 0 auto;
+  height: 32px;
+  min-width: 88px;
+  padding: 0 8px;
+  border: 0 solid transparent;
+  border-width: 0 16px;
+  border-image: url("wow/boton-up.png") 0 16 fill / 0 16px stretch;
+  border-radius: 0;
+  background: transparent;
+  color: #fff;
+  font: 400 14px/1 var(--wow-fuente);
+  letter-spacing: .02em;
+  white-space: nowrap;
+  text-shadow: 0 1px 1px #000, 0 0 6px rgba(0, 0, 0, .85);
+  image-rendering: pixelated;
+  transition: filter .15s;
+}
+.primario:hover,
+.secundario:hover {
+  background: transparent;
+  border-color: transparent;
+  filter: brightness(1.18) saturate(1.05);
+}
+.primario:active,
+.secundario:active {
+  border-image-source: url("wow/boton-down.png");
+  filter: none;
+  transform: translateY(1px);
+}
+.secundario {
+  color: #efe4d2;
+  filter: saturate(.7) brightness(.94);
+}
+.secundario:hover { filter: saturate(.9) brightness(1.1); }
+
+/* El botón «Ampliar» de la barra de título, en pequeño. */
+.boton-mini {
+  flex: none;
+  height: 22px;
+  padding: 0 7px;
+  border: 0 solid transparent;
+  border-width: 0 10px;
+  border-image: url("wow/boton-up.png") 0 10 fill / 0 10px stretch;
+  border-radius: 0;
+  background: transparent;
+  color: var(--wow-oro);
+  font: 400 12px/1 var(--wow-fuente);
+  letter-spacing: .03em;
+  text-transform: none;
+  white-space: nowrap;
+  text-shadow: 0 1px 1px #000;
+  image-rendering: pixelated;
+}
+.boton-mini:hover {
+  background: transparent;
+  border-color: transparent;
+  color: #fff;
+  filter: brightness(1.2);
+}
