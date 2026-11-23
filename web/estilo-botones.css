@@ -2,7 +2,9 @@
    Botones con la textura de WoW 3.3.5
    ---------------------------------------------------------------------
    Solo los botones: Interface\Buttons\UI-Panel-Button-Up / Down.
-   El resto del tema vuelve a estilos.css.
+   Los PNG están recortados al dibujo real (78x21): el BLP original es un
+   lienzo de 128x32 con el resto transparente, y por eso el texto quedaba
+   colgando fuera de la textura. El resto del tema vuelve a estilos.css.
    ===================================================================== */
 
 @font-face {
@@ -22,10 +24,13 @@
    Así el texto nunca se sale de la textura. */
 .primario,
 .secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex: 0 0 auto;
   height: 32px;
   min-width: 88px;
-  padding: 0 8px;
+  padding: 0 12px;
   border: 0 solid transparent;
   border-width: 0 16px;
   border-image: url("wow/boton-up.png") 0 16 fill / 0 16px stretch;
