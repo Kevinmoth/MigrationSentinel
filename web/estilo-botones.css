@@ -1,7 +1,7 @@
 /* =====================================================================
    Botones con la textura de WoW 3.3.5
    ---------------------------------------------------------------------
-   Solo los botones: Interface\Buttons\UI-Panel-Button-Up / Down.
+   Botones de acción y filtros: Interface\Buttons\UI-Panel-Button-Up / Down.
    Los PNG están recortados al dibujo real (78x21): el BLP original es un
    lienzo de 128x32 con el resto transparente, y por eso el texto quedaba
    colgando fuera de la textura. El rojo puro se rebaja al naranja de la
@@ -122,4 +122,60 @@
 }
 .boton-mini:hover::before {
   filter: grayscale(1) brightness(.5);
+}
+
+/* --------------------------------------------------------------- filtros */
+/* La misma piedra de los botones de acción, en pequeño. El filtro activo
+   usa el naranja y el resto se queda en gris para no competir con él. */
+.filtro {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 27px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--muted);
+  font: 500 10.5px/1 var(--mono);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 1px 1px #000;
+  transition: color .15s, transform .15s;
+}
+.filtro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: url("wow/boton-up.png") center / 100% 100% no-repeat;
+  image-rendering: pixelated;
+  filter: grayscale(1) brightness(.36);
+  transition: filter .15s;
+}
+.filtro:hover {
+  color: var(--text);
+  border-color: transparent;
+}
+.filtro:hover::before {
+  filter: grayscale(1) brightness(.54);
+}
+.filtro.activo {
+  background: transparent;
+  border-color: transparent;
+  color: #fff7f1;
+}
+.filtro.activo::before {
+  filter: saturate(.92) brightness(.94);
+}
+.filtro:active {
+  transform: translateY(1px);
+}
+.filtro:focus-visible {
+  outline: 2px solid rgba(234, 88, 12, .65);
+  outline-offset: 2px;
 }
