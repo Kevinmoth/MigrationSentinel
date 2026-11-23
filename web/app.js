@@ -585,7 +585,10 @@ function renderObjetos(p, r) {
     <tr data-busca="${esc((o.nombre || "").toLowerCase())} ${o.id}"
         data-id="${o.id}" data-ilvl="${o.ilvl || 0}"
         data-filtros="${[n.boe.has(o.id) ? "boe" : "", n.objs.has(o.id) ? "hallazgo" : "",
-                        o.ilvl === 277 ? "277" : "", o.ilvl === 258 ? "toc" : "",
+                        o.ilvl === 277 ? "277" : "", o.ilvl === 264 ? "264" : "",
+                        o.ilvl === 258 ? "toc" : "", o.ilvl === 232 ? "232" : "",
+                        o.ilvl >= 226 && o.ilvl <= 239 ? "226-239" : "",
+                        o.ilvl >= 200 && o.ilvl <= 213 ? "200-213" : "",
                         FUENTES[String(o.id)] ? "banda" : "",
                         /CANCELADO/i.test(o.opcion || "") ? "cancelado" : ""].filter(Boolean).join(" ")}">
       <td class="celda-icono">${etiquetaIcono(iconoItem(o.id) || "inv_misc_questionmark", "objeto", "", enlace)}</td>
@@ -599,7 +602,9 @@ function renderObjetos(p, r) {
 
   const filtros = [
     ["", "Todos"], ["boe", "BoE"], ["hallazgo", "En un hallazgo"], ["277", "ilvl 277"],
-    ["toc", "ilvl 258"], ["banda", "De banda"], ["cancelado", "Cancelados"],
+    ["264", "ilvl 264"], ["toc", "ilvl 258"], ["232", "ilvl 232"],
+    ["226-239", "ilvl 226 a 239"], ["200-213", "ilvl 200 a 213"],
+    ["banda", "De banda"], ["cancelado", "Cancelados"],
   ];
 
   return `
