@@ -414,12 +414,18 @@ button:active { transform: translateY(1px); }
 .cifra.alerta { border-color: rgba(248, 113, 113, .5); background: rgba(248, 113, 113, .07); }
 .cifra.alerta b { color: var(--alto); }
 
-/* Copiar la fila de la hoja de trabajo: solo el icono, abajo a la derecha
-   de la ficha del personaje. */
-.copiar-excel {
+/* Acciones de copiado de la ficha: fila para Excel y mensaje de reclamación.
+   Los dos botones son solo icono y viven abajo a la derecha. */
+.copiar-acciones {
   position: absolute;
   right: 8px;
   bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.copiar-excel,
+.copiar-mensaje {
   display: grid;
   place-items: center;
   width: 25px;
@@ -429,13 +435,23 @@ button:active { transform: translateY(1px); }
   border-radius: 7px;
   background: var(--surface);
   color: var(--muted);
+  transition: color .15s, border-color .15s;
 }
-.copiar-excel:hover { color: var(--accent-hover); border-color: var(--accent); }
-.copiar-excel.copiado { color: var(--limpio); border-color: rgba(74, 222, 128, .55); }
+.copiar-excel:hover,
+.copiar-mensaje:hover { color: var(--accent-hover); border-color: var(--accent); }
+.copiar-excel.copiado,
+.copiar-mensaje.copiado { color: var(--limpio); border-color: rgba(74, 222, 128, .55); }
+.copiar-mensaje .icono-mensaje {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  object-fit: cover;
+}
 .copiar-aviso {
   position: absolute;
-  right: 40px;
-  bottom: 12px;
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
   font: 500 9.5px/1 var(--mono);
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -443,8 +459,10 @@ button:active { transform: translateY(1px); }
   opacity: 0;
   transition: opacity .15s;
   pointer-events: none;
+  white-space: nowrap;
 }
-.copiar-excel.copiado ~ .copiar-aviso { opacity: 1; }
+.copiar-excel.copiado ~ .aviso-excel,
+.copiar-mensaje.copiado ~ .aviso-mensaje { opacity: 1; }
 
 .tarjeta {
   background: var(--surface-2);

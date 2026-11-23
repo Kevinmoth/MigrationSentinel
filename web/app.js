@@ -116,6 +116,33 @@ function filaExcel(p) {
     .join("\t");
 }
 
+// Mensaje para reclamar una migración en el foro. El nombre del personaje
+// sustituye al hueco de la plantilla; si no se pudo leer, se usa el remoto.
+function mensajeReclamacion(p) {
+  const nombre = (p.nombre || p.remoto || "jugador").trim();
+  return `Hola ${nombre}!
+
+Si ya has publicado tu reclamación en el foro de Migraciones, puedes ignorar este mensaje.
+
+En primer lugar, queremos aclararte que tu migración NO HA SIDO RECHAZADA DEFINITIVAMENTE. El rechazo inicial forma parte del proceso habitual de revisión del Departamento de Migraciones y no implica necesariamente que no puedas continuar con el trámite.
+
+Para seguir con el proceso, debes publicar una reclamación en el subforo de Migraciones. Te dejamos los enlaces necesarios:
+
+Subforo de Migraciones: https://naerzone.com/subforo/151/migraciones.html
+
+Plantilla de reclamación: https://naerzone.com/post/151/151402/reclamaciones-gratuitas.html
+
+Guía y normativa de Migraciones: https://naerzone.com/post/151/133977/guia-y-normativa-migraciones.html
+
+Recuerda que es obligatorio utilizar la plantilla indicada y completar todos los apartados correspondientes.
+
+Por último, te recomendamos revisar la guía y normativa, donde encontrarás respuesta a la mayoría de las dudas habituales. Si aun así necesitas ayuda, puedes crear un hilo en el subforo de Migraciones utilizando la etiqueta «Duda» y plantear allí tus consultas. Estaremos encantados de ayudarte. 🙂
+
+--------------
+Departamento De Migraciones
+NaerZone.`;
+}
+
 async function copiarTexto(texto) {
   try {
     await navigator.clipboard.writeText(texto);
@@ -424,16 +451,24 @@ function renderPerfil(p, r) {
         <div class="cifras">
           ${cifras}
         </div>
-        <button type="button" class="copiar-excel"
-                title="Copiar fila para Excel: nombre externo, clase, raza, servidor, Nivel 10 y nombre interno"
-                aria-label="Copiar fila para Excel">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
-               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11 4"/>
-            <path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07L13 19"/>
-          </svg>
-        </button>
-        <span class="copiar-aviso">Fila copiada</span>
+        <div class="copiar-acciones">
+          <button type="button" class="copiar-excel"
+                  title="Copiar fila para Excel: nombre externo, clase, raza, servidor, Nivel 10 y nombre interno"
+                  aria-label="Copiar fila para Excel">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11 4"/>
+              <path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07L13 19"/>
+            </svg>
+          </button>
+          <button type="button" class="copiar-mensaje"
+                  title="Copiar mensaje de reclamación para el foro"
+                  aria-label="Copiar mensaje de reclamación para el foro">
+            <img class="icono-mensaje" src="iconos/inv_letter_02.jpg" alt="" width="16" height="16">
+          </button>
+          <span class="copiar-aviso aviso-excel">Fila copiada</span>
+          <span class="copiar-aviso aviso-mensaje">Mensaje copiado</span>
+        </div>
       </div>
 
       <div class="tarjeta">
@@ -822,16 +857,32 @@ function _conectarCopiar(p, r) {
     });
   }
 
-  // Fila de trabajo para Excel: solo el icono de enlace de la ficha.
+  // Acciones de copiado de la ficha: fila de Excel y mensaje de reclamación.
+  const botonesCopia = [$(".copiar-excel"), $(".copiar-mensaje")].filter(Boolean);
+  const avisarCopia = (boton) => {
+    for (const b of botonesCopia) {
+      clearTimeout(b._aviso);
+      b.classList.remove("copiado");
+    }
+    boton.classList.add("copiado");
+    boton._aviso = setTimeout(() => {
+      if (boton.isConnected) boton.classList.remove("copiado");
+    }, 1800);
+  };
+
   const copiarExcel = $(".copiar-excel");
   if (copiarExcel) {
     copiarExcel.addEventListener("click", async () => {
       await copiarTexto(filaExcel(p));
-      copiarExcel.classList.add("copiado");
-      clearTimeout(copiarExcel._aviso);
-      copiarExcel._aviso = setTimeout(() => {
-        if (copiarExcel.isConnected) copiarExcel.classList.remove("copiado");
-      }, 1800);
+      avisarCopia(copiarExcel);
+    });
+  }
+
+  const copiarMensaje = $(".copiar-mensaje");
+  if (copiarMensaje) {
+    copiarMensaje.addEventListener("click", async () => {
+      await copiarTexto(mensajeReclamacion(p));
+      avisarCopia(copiarMensaje);
     });
   }
 
