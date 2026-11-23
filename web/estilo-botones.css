@@ -21,6 +21,11 @@
   --wow-fuente: "Friz Quadrata", "Fira Sans", Georgia, serif;
 }
 
+/* El grupo de acciones queda centrado dentro de su panel. */
+.acciones {
+  justify-content: center;
+}
+
 /* El botón no se encoge: si no cabe, baja a la línea siguiente.
    Así el texto nunca se sale de la textura. */
 .primario,
