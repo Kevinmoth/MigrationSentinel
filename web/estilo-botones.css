@@ -116,6 +116,12 @@
 }
 .boton-mini::before {
   filter: grayscale(1) brightness(.34);
+  /* Mismo corte que en los filtros: el marco lateral no se encoge con el
+     ancho del botón. */
+  background: none;
+  border-style: solid;
+  border-width: 0 3px;
+  border-image: url("wow/boton-up.png") 0 3 fill / 0 3px stretch;
 }
 .boton-mini:hover {
   color: var(--text);
@@ -152,7 +158,13 @@
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: url("wow/boton-up.png") center / 100% 100% no-repeat;
+  /* La textura se parte en tres columnas (0 / 3 px / 0) y solo se estira la
+     del centro: así el marco lateral conserva 4 px en todos los anchos, en
+     vez de encogerse con la imagen estirada. Arriba y abajo se sigue
+     estirando entera, que es lo que ya quedaba bien. */
+  border-style: solid;
+  border-width: 0 4px;
+  border-image: url("wow/boton-up.png") 0 3 fill / 0 4px stretch;
   image-rendering: pixelated;
   filter: grayscale(1) brightness(.36);
   transition: filter .15s;
