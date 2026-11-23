@@ -4,7 +4,9 @@
    Solo los botones: Interface\Buttons\UI-Panel-Button-Up / Down.
    Los PNG están recortados al dibujo real (78x21): el BLP original es un
    lienzo de 128x32 con el resto transparente, y por eso el texto quedaba
-   colgando fuera de la textura. El resto del tema vuelve a estilos.css.
+   colgando fuera de la textura. El rojo puro se rebaja al naranja de la
+   web y los secundarios se muestran en gris para no competir con la
+   acción principal. El resto del tema vuelve a estilos.css.
    ===================================================================== */
 
 @font-face {
@@ -16,7 +18,6 @@
 }
 
 :root {
-  --wow-oro: #ffd100;
   --wow-fuente: "Friz Quadrata", "Fira Sans", Georgia, serif;
 }
 
@@ -24,65 +25,96 @@
    Así el texto nunca se sale de la textura. */
 .primario,
 .secundario {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
   height: 32px;
   min-width: 88px;
-  padding: 0 12px;
-  border: 0 solid transparent;
-  border-width: 0 16px;
-  border-image: url("wow/boton-up.png") 0 16 fill / 0 16px stretch;
-  border-radius: 0;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 6px;
   background: transparent;
-  color: #fff;
+  color: #fff7f1;
   font: 400 14px/1 var(--wow-fuente);
   letter-spacing: .02em;
   white-space: nowrap;
   text-shadow: 0 1px 1px #000, 0 0 6px rgba(0, 0, 0, .85);
+  transition: transform .15s;
+}
+
+/* La textura va en una capa aparte para poder cambiar su color sin
+   alterar el texto: el primario usa el naranja de la web y el
+   secundario, la misma piedra en gris para conservar la jerarquía. */
+.primario::before,
+.secundario::before,
+.boton-mini::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: url("wow/boton-up.png") center / 100% 100% no-repeat;
   image-rendering: pixelated;
   transition: filter .15s;
 }
-.primario:hover,
-.secundario:hover {
-  background: transparent;
-  border-color: transparent;
-  filter: brightness(1.18) saturate(1.05);
+.primario::before {
+  filter: saturate(.92) brightness(.94);
+}
+.secundario::before {
+  filter: grayscale(1) brightness(.42);
+}
+.primario:hover::before {
+  filter: saturate(1) brightness(1.1);
+}
+.secundario:hover::before {
+  filter: grayscale(1) brightness(.62);
+}
+.primario:active::before,
+.secundario:active::before {
+  background-image: url("wow/boton-down.png");
 }
 .primario:active,
 .secundario:active {
-  border-image-source: url("wow/boton-down.png");
-  filter: none;
   transform: translateY(1px);
 }
 .secundario {
-  color: #efe4d2;
-  filter: saturate(.7) brightness(.94);
+  color: var(--text);
+  text-shadow: 0 1px 2px #000;
 }
-.secundario:hover { filter: saturate(.9) brightness(1.1); }
+.primario:focus-visible,
+.secundario:focus-visible,
+.boton-mini:focus-visible {
+  outline: 2px solid rgba(234, 88, 12, .65);
+  outline-offset: 2px;
+}
 
 /* El botón «Ampliar» de la barra de título, en pequeño. */
 .boton-mini {
+  position: relative;
+  isolation: isolate;
   flex: none;
-  height: 22px;
-  padding: 0 7px;
-  border: 0 solid transparent;
-  border-width: 0 10px;
-  border-image: url("wow/boton-up.png") 0 10 fill / 0 10px stretch;
-  border-radius: 0;
+  height: 24px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 5px;
   background: transparent;
-  color: var(--wow-oro);
-  font: 400 12px/1 var(--wow-fuente);
-  letter-spacing: .03em;
-  text-transform: none;
+  color: var(--muted);
+  font: 600 10px/1 var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
   white-space: nowrap;
   text-shadow: 0 1px 1px #000;
-  image-rendering: pixelated;
+  transition: color .15s;
+}
+.boton-mini::before {
+  filter: grayscale(1) brightness(.34);
 }
 .boton-mini:hover {
-  background: transparent;
-  border-color: transparent;
-  color: #fff;
-  filter: brightness(1.2);
+  color: var(--text);
+}
+.boton-mini:hover::before {
+  filter: grayscale(1) brightness(.5);
 }
