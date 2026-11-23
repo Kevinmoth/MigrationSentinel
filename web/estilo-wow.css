@@ -1,0 +1,327 @@
+/* =====================================================================
+   Experimento visual · ventanas internas de WoW 3.3.5
+   ---------------------------------------------------------------------
+   Las texturas salen del cliente 3.3.5:
+     Interface\FrameGeneral\UI-Frame.blp          esquinas y retrato
+     Interface\FrameGeneral\_UI-Frame.blp         barra de título y bordes
+     Interface\FrameGeneral\!UI-Frame.blp         bordes laterales
+     Interface\FrameGeneral\UI-Background-Rock    fondo de roca
+     Interface\Buttons\UI-Panel-Button-*          botones
+   Se cargan desde web/wow/ y este archivo va después de estilos.css,
+   así que todo lo de aquí pisa al tema anterior.
+   ===================================================================== */
+
+@font-face {
+  font-family: "Friz Quadrata";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fuentes/friz-quadrata.ttf") format("truetype");
+}
+
+:root {
+  --wow-oro: #ffd100;
+  --wow-oro-apagado: #c9a961;
+  --wow-metal: #3a2d1e;
+  --wow-fuente: "Friz Quadrata", "Fira Sans", Georgia, serif;
+  /* Los títulos grandes del juego usan la misma Friz Quadrata. */
+  --display: var(--wow-fuente);
+}
+
+/* ------------------------------------------------------------ cabecera */
+.cabecera {
+  border-bottom: 1px solid #000;
+  background:
+    linear-gradient(180deg, rgba(46, 36, 25, .92), rgba(10, 8, 6, .94)),
+    url("wow/fondo-roca.png") repeat;
+  background-size: auto, 512px 512px;
+  box-shadow:
+    0 1px 0 rgba(255, 205, 120, .16),
+    0 8px 22px rgba(0, 0, 0, .55);
+}
+.cabecera h1 {
+  font-family: var(--wow-fuente);
+  color: var(--wow-oro);
+  letter-spacing: .04em;
+  text-shadow: 0 1px 1px #000, 0 0 14px rgba(255, 180, 0, .25);
+}
+.cabecera p { color: #b9ab97; }
+.sello {
+  border-color: #4a3a26;
+  border-radius: 0;
+  background: rgba(0, 0, 0, .35);
+  color: var(--wow-oro);
+  font-family: var(--wow-fuente);
+  letter-spacing: .1em;
+}
+
+/* El retrato del juego: el aro dorado de UI-Frame alrededor del logo. */
+.marca { position: relative; }
+.marca::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  width: 78px;
+  height: 78px;
+  background: url("wow/retrato.png") center / 78px 78px no-repeat;
+  image-rendering: pixelated;
+  pointer-events: none;
+  z-index: 1;
+}
+.marca .logo { border-radius: 50%; border-color: #241b13; }
+
+/* -------------------------------------------------------------- ventanas */
+.panel {
+  position: relative;
+  border: 1px solid #050403;
+  border-radius: 0;
+  padding: 20px;
+  background:
+    linear-gradient(180deg, rgba(28, 21, 14, .30), rgba(5, 4, 3, .74)),
+    url("wow/fondo-roca.png") repeat;
+  background-size: auto, 512px 512px;
+  background-color: #0b0908;
+  box-shadow:
+    inset 0 0 0 1px rgba(150, 118, 72, .40),
+    inset 0 0 0 2px rgba(0, 0, 0, .68),
+    inset 0 0 26px rgba(0, 0, 0, .78),
+    0 10px 26px rgba(0, 0, 0, .55);
+}
+
+.panel::before,
+.panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+
+/* Bordes reales del cliente. La capa ::before queda detrás del contenido. */
+.panel::before {
+  background:
+    url("wow/borde-sup.png") left top repeat-x,
+    url("wow/borde-inf.png") left bottom repeat-x,
+    url("wow/borde-izq.png") left top repeat-y,
+    url("wow/borde-der.png") right top repeat-y;
+  background-size: 256px 28px, 256px 9px, 16px 256px, 10px 256px;
+}
+
+/* Esquinas metálicas. La capa ::after queda por encima para tapar uniones. */
+.panel::after {
+  background:
+    url("wow/esquina-sup-izq.png") left top no-repeat,
+    url("wow/esquina-sup-der.png") right top no-repeat,
+    url("wow/esquina-inf-izq.png") left bottom no-repeat,
+    url("wow/esquina-inf-der.png") right bottom no-repeat;
+  background-size: 32px 32px, 33px 33px, 14px 14px, 11px 11px;
+}
+
+/* La ventana de resultados no tiene cabecera: deja sitio a la barra. */
+.panel:not(:has(.panel-cabecera)) { padding-top: 38px; }
+
+/* Barra de título: la tira _UI-Frame-TitleTile con el texto en oro. */
+.panel-cabecera {
+  margin: -20px -20px 16px;
+  min-height: 28px;
+  padding: 0 38px;
+  align-items: center;
+  background: url("wow/borde-sup.png") left top repeat-x;
+  background-size: 256px 28px;
+  border-bottom: 1px solid rgba(0, 0, 0, .85);
+  box-shadow: 0 1px 0 rgba(255, 205, 130, .12);
+  image-rendering: pixelated;
+}
+.panel h2 {
+  margin: 0;
+  font: 400 16px/1 var(--wow-fuente);
+  letter-spacing: .03em;
+  text-transform: none;
+  color: var(--wow-oro);
+  text-shadow: 0 1px 1px #000, 0 0 10px rgba(255, 180, 0, .22);
+}
+
+/* --------------------------------------------------------------- botones */
+.primario,
+.secundario {
+  height: 32px;
+  min-width: 96px;
+  padding: 0 14px;
+  border: 0 solid transparent;
+  border-width: 0 16px;
+  border-image: url("wow/boton-up.png") 0 16 fill / 0 16px stretch;
+  border-radius: 0;
+  background: transparent;
+  color: #fff;
+  font: 400 15px/1 var(--wow-fuente);
+  letter-spacing: .02em;
+  text-shadow: 0 1px 1px #000, 0 0 6px rgba(0, 0, 0, .85);
+  image-rendering: pixelated;
+  transition: filter .15s;
+}
+.primario:hover,
+.secundario:hover {
+  background: transparent;
+  border-color: transparent;
+  filter: brightness(1.18) saturate(1.05);
+}
+.primario:active,
+.secundario:active {
+  border-image-source: url("wow/boton-down.png");
+  filter: none;
+  transform: translateY(1px);
+}
+.secundario {
+  color: #efe4d2;
+  filter: saturate(.7) brightness(.94);
+}
+.secundario:hover { filter: saturate(.9) brightness(1.1); }
+
+/* El botón «Ampliar» de la barra de título, en pequeño. */
+.boton-mini {
+  height: 22px;
+  padding: 0 7px;
+  border: 0 solid transparent;
+  border-width: 0 10px;
+  border-image: url("wow/boton-up.png") 0 10 fill / 0 10px stretch;
+  border-radius: 0;
+  background: transparent;
+  color: var(--wow-oro);
+  font: 400 12px/1 var(--wow-fuente);
+  letter-spacing: .03em;
+  text-transform: none;
+  text-shadow: 0 1px 1px #000;
+  image-rendering: pixelated;
+}
+.boton-mini:hover {
+  background: transparent;
+  border-color: transparent;
+  color: #fff;
+  filter: brightness(1.2);
+}
+
+/* --------------------------------------------------------------- campos */
+textarea,
+.buscador input {
+  border-radius: 0;
+  border-color: var(--wow-metal);
+  background: #070605;
+  box-shadow:
+    inset 0 1px 0 rgba(0, 0, 0, .95),
+    inset 0 0 14px rgba(0, 0, 0, .85),
+    0 1px 0 rgba(210, 170, 100, .10);
+}
+textarea:focus,
+.buscador input:focus {
+  outline: 1px solid var(--wow-oro);
+  outline-offset: 0;
+}
+kbd {
+  border-radius: 0;
+  border-color: #4a3a26;
+  background: #14100c;
+  color: var(--wow-oro-apagado);
+}
+
+/* --------------------------------------------------------------- pestañas */
+.pestana {
+  font-family: var(--wow-fuente);
+  letter-spacing: .05em;
+  color: #b9a98e;
+  text-shadow: 0 1px 0 #000;
+}
+.pestana:hover { color: #e8dcc8; }
+.pestana.activa {
+  color: var(--wow-oro);
+  border-bottom-color: var(--wow-oro);
+}
+.pestana.activa .contador { color: var(--wow-oro); }
+
+/* ------------------------------------------------------------ tarjetas */
+/* Todo cuadrado, como el marco del juego; sin bordes redondeados. */
+.dato,
+.cifra,
+.tarjeta,
+.ficha,
+.veredicto,
+.tabla-wrap,
+.aviso {
+  border-radius: 0;
+}
+.dato,
+.cifra,
+.tarjeta {
+  border-color: #33271a;
+  background:
+    linear-gradient(rgba(20, 15, 11, .72), rgba(9, 7, 6, .84)),
+    url("wow/fondo-roca.png") repeat;
+  background-size: auto, 512px 512px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 215, 150, .07),
+    inset 0 0 10px rgba(0, 0, 0, .6);
+}
+.ficha {
+  border-color: #33271a;
+  background:
+    radial-gradient(70% 90% at 0% 50%, rgba(247, 76, 0, .05), transparent 70%),
+    linear-gradient(rgba(18, 14, 10, .82), rgba(8, 6, 5, .9)),
+    url("wow/fondo-roca.png") repeat;
+  background-size: auto, auto, 512px 512px;
+}
+.veredicto {
+  border-color: #3a2b1b;
+  border-left-width: 4px;
+  background:
+    linear-gradient(90deg, rgba(34, 25, 16, .45), rgba(8, 6, 5, .86)),
+    url("wow/fondo-roca.png") repeat;
+  background-size: auto, 512px 512px;
+  box-shadow:
+    inset 0 0 18px rgba(0, 0, 0, .65),
+    0 1px 0 rgba(255, 210, 140, .06);
+}
+
+/* Aviso de la página de migración: banda de pergamino oscuro. */
+.aviso {
+  border: 1px solid #6b4a22;
+  border-left: 3px solid #b97a2a;
+  background:
+    linear-gradient(rgba(44, 27, 11, .55), rgba(14, 8, 4, .82)),
+    url("wow/fondo-roca.png") repeat;
+  background-size: auto, 512px 512px;
+  color: #f0d9a8;
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, .6);
+}
+.aviso b { color: var(--wow-oro); }
+
+/* Pesos y barras: sin píldoras redondeadas. */
+.hallazgo .peso {
+  border-radius: 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .18),
+    0 1px 2px rgba(0, 0, 0, .6);
+}
+.barra {
+  border-radius: 0;
+  background: #0a0806;
+  box-shadow:
+    inset 0 1px 3px #000,
+    0 0 0 1px #2b2118;
+}
+.barra > i { border-radius: 0; }
+.pestana .contador { border-radius: 0; }
+
+/* --------------------------------------------------------------- varios */
+.filtro {
+  border-radius: 0;
+  font-family: var(--wow-fuente);
+  letter-spacing: .03em;
+}
+.filtro.activo {
+  background: #5a1f12;
+  border-color: #8a5a2b;
+  color: var(--wow-oro);
+}
+.copiar-excel { border-radius: 0; }
+.chip { border-radius: 0; }
+.icono { border-radius: 2px; }
