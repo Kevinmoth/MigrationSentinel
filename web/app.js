@@ -565,7 +565,7 @@ function etiquetasObjeto(o, n) {
   if (n.boe.has(o.id)) et.push('<span class="chip mini boe">BoE</span>');
   if (n.objs.has(o.id)) et.push('<span class="chip mini alerta">en un hallazgo</span>');
   if (o.ilvl === 277) et.push('<span class="chip mini">277</span>');
-  if (o.ilvl === 258) et.push('<span class="chip mini">258</span>');
+  if (o.ilvl >= 245 && o.ilvl <= 258) et.push(`<span class="chip mini">${o.ilvl}</span>`);
   const f = FUENTES[String(o.id)];
   if (f && f.jefe) et.push(`<span class="chip mini fuente">${esc(f.jefe.replace(/ \(\d\)$/, ""))}</span>`);
   return et.join(" ");
@@ -586,7 +586,7 @@ function renderObjetos(p, r) {
         data-id="${o.id}" data-ilvl="${o.ilvl || 0}"
         data-filtros="${[n.boe.has(o.id) ? "boe" : "", n.objs.has(o.id) ? "hallazgo" : "",
                         o.ilvl === 277 ? "277" : "", o.ilvl === 264 ? "264" : "",
-                        o.ilvl === 258 ? "toc" : "", o.ilvl === 232 ? "232" : "",
+                        o.ilvl >= 245 && o.ilvl <= 258 ? "245-258" : "", o.ilvl === 232 ? "232" : "",
                         o.ilvl >= 226 && o.ilvl <= 239 ? "226-239" : "",
                         o.ilvl >= 200 && o.ilvl <= 213 ? "200-213" : "",
                         FUENTES[String(o.id)] ? "banda" : "",
@@ -602,7 +602,7 @@ function renderObjetos(p, r) {
 
   const filtros = [
     ["", "Todos"], ["boe", "BoE"], ["hallazgo", "En un hallazgo"], ["277", "ilvl 277"],
-    ["264", "ilvl 264"], ["toc", "ilvl 258"], ["232", "ilvl 232"],
+    ["264", "ilvl 264"], ["245-258", "ilvl 245 a 258"], ["232", "ilvl 232"],
     ["226-239", "ilvl 226 a 239"], ["200-213", "ilvl 200 a 213"],
     ["banda", "De banda"], ["cancelado", "Cancelados"],
   ];
