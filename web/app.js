@@ -560,6 +560,43 @@ function renderLogros(p, r) {
 }
 
 // ------------------------------------------------------------------ objetos
+// Estado del objeto en el catalogo del juego (web/casillas.js):
+//   "casilla"  -> la clave de la casilla que ocupa
+//   "material" -> esta en el catalogo pero no es equipable
+//   "fuera"     -> no esta en el catalogo
+function estadoCasilla(id) {
+  if (typeof CASILLAS_CODIGO !== "string") return "fuera";
+  const letra = CASILLAS_CODIGO[id];
+  if (!letra || letra === ".") return "fuera";
+  if (letra === "-") return "material";
+  return "casilla";
+}
+
+// Casilla que ocupa un objeto en el personaje. "" si no se sabe.
+function casillaDe(id) {
+  if (estadoCasilla(id) !== "casilla") return "";
+  const letra = CASILLAS_CODIGO[id];
+  return CASILLAS_CLAVE[letra.charCodeAt(0) - 97] || "";
+}
+
+// Nombre visible de la casilla ("Muñecas", "Arma"...).
+function nombreCasilla(clave) {
+  const i = CASILLAS_CLAVE.indexOf(clave);
+  return i >= 0 ? CASILLAS[i] : clave;
+}
+
+// Filtros que le corresponden a un objeto: los mismos para la tabla y para
+// la vista de equipo, para que las dos vistas coincidan.
+function clavesFiltro(o, n) {
+  return [n.boe.has(o.id) ? "boe" : "", n.objs.has(o.id) ? "hallazgo" : "",
+          o.ilvl === 277 ? "277" : "", o.ilvl === 264 ? "264" : "",
+          o.ilvl >= 245 && o.ilvl <= 258 ? "245-258" : "", o.ilvl === 232 ? "232" : "",
+          o.ilvl >= 226 && o.ilvl <= 239 ? "226-239" : "",
+          o.ilvl >= 200 && o.ilvl <= 213 ? "200-213" : "",
+          FUENTES[String(o.id)] ? "banda" : "",
+          /CANCELADO/i.test(o.opcion || "") ? "cancelado" : ""].filter(Boolean);
+}
+
 function etiquetasObjeto(o, n) {
   const et = [];
   if (n.boe.has(o.id)) et.push('<span class="chip mini boe">BoE</span>');
@@ -584,13 +621,7 @@ function renderObjetos(p, r) {
     return `
     <tr data-busca="${esc((o.nombre || "").toLowerCase())} ${o.id}"
         data-id="${o.id}" data-ilvl="${o.ilvl || 0}"
-        data-filtros="${[n.boe.has(o.id) ? "boe" : "", n.objs.has(o.id) ? "hallazgo" : "",
-                        o.ilvl === 277 ? "277" : "", o.ilvl === 264 ? "264" : "",
-                        o.ilvl >= 245 && o.ilvl <= 258 ? "245-258" : "", o.ilvl === 232 ? "232" : "",
-                        o.ilvl >= 226 && o.ilvl <= 239 ? "226-239" : "",
-                        o.ilvl >= 200 && o.ilvl <= 213 ? "200-213" : "",
-                        FUENTES[String(o.id)] ? "banda" : "",
-                        /CANCELADO/i.test(o.opcion || "") ? "cancelado" : ""].filter(Boolean).join(" ")}">
+        data-filtros="${clavesFiltro(o, n).join(" ")}">
       <td class="celda-icono">${etiquetaIcono(iconoItem(o.id) || "inv_misc_questionmark", "objeto", "", enlace)}</td>
       <td class="num">${o.id}</td>
       <td>${nombre} ${etiquetasObjeto(o, n)}</td>
@@ -608,6 +639,13 @@ function renderObjetos(p, r) {
   ];
 
   return `
+    <div class="modo-objetos">
+      <span class="modo-etiqueta">Vista</span>
+      <div class="filtros" id="modos-objetos">
+        <button class="filtro" data-modo="lista">Lista</button>
+        <button class="filtro" data-modo="equipo">Equipo</button>
+      </div>
+    </div>
     <div class="buscador">
       <input id="buscar-objetos" type="search" placeholder="Buscar objeto o ID…">
       <div class="filtros" id="filtros-objetos">
@@ -615,14 +653,124 @@ function renderObjetos(p, r) {
       </div>
       <span class="pie-mini" id="cuenta-objetos">${p.objetos.length} objetos</span>
     </div>
-    <div class="tabla-wrap">
-      <table class="tabla">
-        <thead><tr><th></th><th>ID</th><th>Objeto</th><th>Cant.</th>
-          <th class="orden" data-orden="ilvl" aria-sort="none" title="Ordenar por ilvl">ilvl</th>
-          <th>Estado</th></tr></thead>
-        <tbody id="tabla-objetos">${cuerpo}</tbody>
-      </table>
-    </div>`;
+    <div id="vista-lista-objetos">
+      <div class="tabla-wrap">
+        <table class="tabla">
+          <thead><tr><th></th><th>ID</th><th>Objeto</th><th>Cant.</th>
+            <th class="orden" data-orden="ilvl" aria-sort="none" title="Ordenar por ilvl">ilvl</th>
+            <th>Estado</th></tr></thead>
+          <tbody id="tabla-objetos">${cuerpo}</tbody>
+        </table>
+      </div>
+    </div>
+    <div id="vista-equipo-objetos" class="equipo" hidden></div>`;
+}
+
+// ------------------------------------------------------------- vista equipo
+// Los objetos del inventario, repartidos por la casilla que ocupan. Cada
+// casilla es una tarjeta con su nombre y los objetos que le tocan, para que
+// se vea de un vistazo como esta vestido el personaje.
+const GRUPOS_EQUIPO = [
+  { titulo: "Armadura", claves: ["cabeza", "cuello", "hombros", "espalda", "pecho",
+                                  "tabardo", "camisa", "manos", "muñecas", "cintura",
+                                  "piernas", "pies"] },
+  { titulo: "Accesorios", claves: ["anillo", "abalorio", "reliquia"] },
+  { titulo: "Armas", claves: ["arma", "escudo", "distancia"] },
+  { titulo: "Otros", claves: ["bolsa", "desconocido"] },
+];
+
+// Un objeto dentro de una casilla: icono, nombre, ilvl y cantidad.
+function filaEquipo(o) {
+  const enlace = enlaceWowhead("objeto", o.id);
+  const nombre = o.nombre
+    ? esc(o.nombre)
+    : `<a href="${esc(enlace)}" target="_blank" rel="noopener noreferrer"
+          title="Objeto no identificado · abrir en Wowhead">ID ${o.id}</a>`;
+  const etiquetas = [
+    o.ilvl ? `<span class="chip mini">${o.ilvl}</span>` : "",
+    o.cantidad > 1 ? `<span class="chip mini">x${o.cantidad}</span>` : "",
+  ].filter(Boolean).join("");
+  return `<li class="objeto-equipo">
+    ${etiquetaIcono(iconoItem(o.id) || "inv_misc_questionmark", "objeto", "", enlace)}
+    <span class="objeto-equipo-texto">
+      <span class="objeto-equipo-nombre">${nombre}</span>
+      ${etiquetas ? `<span class="objeto-equipo-tags">${etiquetas}</span>` : ""}
+    </span>
+  </li>`;
+}
+
+// Una casilla del personaje, con lo que el personaje lleva en ella.
+function tarjetaCasilla(clave, objetos) {
+  const cuerpo = objetos.length
+    ? `<ul class="casilla-items">${objetos.map(filaEquipo).join("")}</ul>`
+    : `<p class="casilla-vacia">vacío</p>`;
+  return `<div class="casilla${objetos.length ? " con-objetos" : ""}">
+    <div class="casilla-cabecera">
+      <span class="casilla-nombre">${esc(nombreCasilla(clave))}</span>
+      <span class="casilla-cuenta">${objetos.length}</span>
+    </div>
+    ${cuerpo}
+  </div>`;
+}
+
+// La vista de equipo completa, respetando el buscador y el filtro activo.
+function renderEquipo(p, n, consulta, filtro) {
+  const q = (consulta || "").trim().toLowerCase();
+  const porCasilla = new Map();
+  const materiales = [];
+  const fuera = [];
+  for (const o of p.objetos) {
+    const texto = `${(o.nombre || "").toLowerCase()} ${o.id}`;
+    if (q && !texto.includes(q)) continue;
+    if (filtro && !clavesFiltro(o, n).includes(filtro)) continue;
+    const estado = estadoCasilla(o.id);
+    if (estado === "material") { materiales.push(o); continue; }
+    if (estado === "fuera") { fuera.push(o); continue; }
+    const clave = casillaDe(o.id);
+    if (!clave) { fuera.push(o); continue; }
+    if (!porCasilla.has(clave)) porCasilla.set(clave, []);
+    porCasilla.get(clave).push(o);
+  }
+
+  const grupos = GRUPOS_EQUIPO.map((g) => {
+    const tarjetas = g.claves.map((c) => tarjetaCasilla(c, porCasilla.get(c) || []));
+    const total = g.claves.reduce((s, c) => s + (porCasilla.get(c) || []).length, 0);
+    return `<section class="grupo-equipo">
+      <h4 class="grupo-equipo-titulo">${esc(g.titulo)}<span class="grupo-equipo-cuenta">${total}</span></h4>
+      <div class="rejilla-casillas">${tarjetas.join("")}</div>
+    </section>`;
+  }).join("");
+
+  // Materiales y objetos fuera del catalogo: no ocupan ninguna casilla, pero
+  // se listan al final para que no se pierdan de vista.
+  const gruposResto = [];
+  if (materiales.length) {
+    gruposResto.push({ titulo: "No equipables", lista: materiales });
+  }
+  if (fuera.length) {
+    gruposResto.push({ titulo: "Fuera del catálogo", lista: fuera });
+  }
+  const restos = gruposResto.map((g) => `    <section class="grupo-equipo">
+      <h4 class="grupo-equipo-titulo">${esc(g.titulo)}<span class="grupo-equipo-cuenta">${g.lista.length}</span></h4>
+      <div class="rejilla-casillas">
+        <div class="casilla con-objetos casilla-larga">
+          <ul class="casilla-items">${g.lista.map(filaEquipo).join("")}</ul>
+        </div>
+      </div>
+    </section>`).join("");
+
+  if (!porCasilla.size && !materiales.length && !fuera.length) {
+    return { html: `<p class="equipo-vacio">Ningún objeto encaja en el filtro actual.</p>`,
+             casillas: 0, conCasilla: 0, restos: 0 };
+  }
+  const casillas = [...porCasilla.values()].filter((l) => l.length).length;
+  const conCasilla = [...porCasilla.values()].reduce((s, l) => s + l.length, 0);
+  return {
+    html: grupos + restos,
+    casillas,
+    conCasilla,
+    restos: materiales.length + fuera.length,
+  };
 }
 
 // -------------------------------------------------------------------- pintado
@@ -638,7 +786,7 @@ let _actual = null;
 let _vistaActual = "perfil";
 let _yaMostrado = false;
 // Lo que el revisor ha escrito o filtrado: sobrevive a los repintados.
-const _filtro = { logros: "", raid: "", objetos: "", tipoObjeto: "" };
+const _filtro = { logros: "", raid: "", objetos: "", tipoObjeto: "", modoObjetos: "lista" };
 // Orden de la tabla de logros: por fecha por defecto.
 const _ordenLogros = { campo: "fecha", dir: 1 };
 // Orden de la tabla de objetos: el de la página hasta que se pulsa ilvl.
@@ -702,6 +850,7 @@ function pintar(p, r) {
   _filtro.raid = "";
   _filtro.objetos = "";
   _filtro.tipoObjeto = "";
+  _filtro.modoObjetos = "lista";
   _ordenObjetos.campo = "";
   _ordenObjetos.dir = -1;
   _reparto(true);
@@ -816,6 +965,7 @@ function _conectarBuscadores(p, r) {
   const bo = $("#buscar-objetos");
   if (bo) {
     bo.value = _filtro.objetos;
+    const nums = numeros(p, r);
     const aplicar = () => {
       const q = _filtro.objetos.trim().toLowerCase();
       const f = _filtro.tipoObjeto;
@@ -827,7 +977,20 @@ function _conectarBuscadores(p, r) {
         tr.hidden = !ok;
         if (ok) n++;
       });
-      $("#cuenta-objetos").textContent = `${n} de ${p.objetos.length} objetos`;
+      // La vista de equipo obeyece el mismo buscador y el mismo filtro.
+      const cont = $("#vista-equipo-objetos");
+      let resumen = null;
+      if (cont) {
+        resumen = renderEquipo(p, nums, q, f);
+        cont.innerHTML = resumen.html;
+      }
+      const cuenta = $("#cuenta-objetos");
+      if (cuenta) {
+        cuenta.textContent = _filtro.modoObjetos === "equipo"
+          ? `${resumen ? resumen.conCasilla : 0} objetos en ${resumen ? resumen.casillas : 0} casillas`
+            + (resumen && resumen.restos ? ` · ${resumen.restos} sin equipar` : "")
+          : `${n} de ${p.objetos.length} objetos`;
+      }
     };
     bo.addEventListener("input", () => { _filtro.objetos = bo.value; aplicar(); });
     $$("#filtros-objetos .filtro").forEach((b) => {
@@ -836,6 +999,25 @@ function _conectarBuscadores(p, r) {
         $$("#filtros-objetos .filtro").forEach((x) => x.classList.toggle("activo", x === b));
         _filtro.tipoObjeto = b.dataset.f;
         aplicar();
+      });
+    });
+
+    // Vista de la tabla: lista o equipo.
+    const aplicarModo = () => {
+      const equipo = _filtro.modoObjetos === "equipo";
+      const vl = $("#vista-lista-objetos");
+      const ve = $("#vista-equipo-objetos");
+      if (vl) vl.hidden = equipo;
+      if (ve) ve.hidden = !equipo;
+      $$("#modos-objetos .filtro").forEach((b) => {
+        b.classList.toggle("activo", b.dataset.modo === _filtro.modoObjetos);
+      });
+      aplicar();
+    };
+    $$("#modos-objetos .filtro").forEach((b) => {
+      b.addEventListener("click", () => {
+        _filtro.modoObjetos = b.dataset.modo;
+        aplicarModo();
       });
     });
 
@@ -848,7 +1030,7 @@ function _conectarBuscadores(p, r) {
       });
     });
     _ordenarObjetos();
-    aplicar();
+    aplicarModo();
   }
 }
 

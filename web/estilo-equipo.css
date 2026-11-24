@@ -1,0 +1,168 @@
+/* =====================================================================
+   Vista de equipo
+   ---------------------------------------------------------------------
+   Reparto del inventario por casillas: cada casilla del personaje es una
+   tarjeta con su nombre y los objetos que le tocan. El color y las
+   tipografias son los de la web; los botones de «Lista / Equipo» usan la
+   textura de WoW que se aplica en estilo-botones.css.
+   ===================================================================== */
+
+/* Selector de vista, encima del buscador de objetos. */
+.modo-objetos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.modo-etiqueta {
+  font: 500 10px/1 var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ------------------------------------------------------------- rejilla */
+.equipo {
+  display: grid;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.grupo-equipo {
+  display: grid;
+  gap: 8px;
+}
+.grupo-equipo-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font: 500 10px/1 var(--mono);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--faint);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+.grupo-equipo-cuenta {
+  font: 500 10px/1 var(--mono);
+  color: var(--sospechoso);
+  background: rgba(194, 65, 12, .14);
+  border: 1px solid rgba(194, 65, 12, .35);
+  border-radius: 999px;
+  padding: 2px 7px;
+}
+
+.rejilla-casillas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 10px;
+}
+
+/* ------------------------------------------------------------- casillas */
+.casilla {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-height: 74px;
+  padding: 9px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+.casilla.con-objetos {
+  border-color: var(--border-strong);
+  box-shadow: inset 2px 0 0 rgba(194, 65, 12, .55);
+}
+.casilla-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.casilla-nombre {
+  font: 500 10px/1 var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.casilla-cuenta {
+  font: 500 10px/1 var(--mono);
+  color: var(--faint);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 6px;
+}
+.casilla.con-objetos .casilla-cuenta {
+  color: var(--sospechoso);
+  border-color: rgba(194, 65, 12, .4);
+}
+.casilla-vacia {
+  margin: 0;
+  font: 400 11px/1.4 var(--mono);
+  color: var(--faint);
+  opacity: .6;
+}
+/* Las listas largas (materiales, objetos fuera del catalogo) se desplazan
+   para que no alarguen la pagina entera. */
+.casilla-larga .casilla-items {
+  max-height: 190px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+/* ------------------------------------------------------------- objetos */
+.casilla-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.objeto-equipo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.objeto-equipo .icono {
+  width: 28px;
+  height: 28px;
+  flex: none;
+}
+.objeto-equipo-texto {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.objeto-equipo-nombre {
+  font-size: 12.4px;
+  line-height: 1.25;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.objeto-equipo-nombre a {
+  color: var(--text);
+  text-decoration: none;
+}
+.objeto-equipo-nombre a:hover {
+  color: var(--accent-hover);
+}
+.objeto-equipo-tags {
+  display: flex;
+  gap: 4px;
+}
+.objeto-equipo-tags .chip.mini {
+  margin-left: 0;
+}
+
+.equipo-vacio {
+  margin: 0;
+  padding: 18px;
+  text-align: center;
+  font: 400 12.5px var(--sans);
+  color: var(--faint);
+  background: var(--surface-2);
+  border: 1px dashed var(--border-strong);
+  border-radius: 11px;
+}
