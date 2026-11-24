@@ -103,12 +103,18 @@
   color: var(--faint);
   opacity: .6;
 }
-/* Las listas largas (materiales, objetos fuera del catalogo) se desplazan
-   para que no alarguen la pagina entera. */
+/* Las listas largas (materiales, objetos fuera del catalogo) ocupan toda la
+   anchura y se reparten en columnas: se ven enteros, sin scroll. */
+.casilla-larga {
+  grid-column: 1 / -1;
+  box-shadow: none;
+}
 .casilla-larga .casilla-items {
-  max-height: 190px;
-  overflow: auto;
-  padding-right: 4px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 6px 14px;
+  max-height: none;
+  overflow: visible;
 }
 
 /* ------------------------------------------------------------- objetos */
