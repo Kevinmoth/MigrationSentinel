@@ -38,16 +38,13 @@ NIVEL_80 = 13
 DOBLE_SPEC = 2716
 EMBLEMA_1 = 3838
 ESCALERA_EMBLEMAS = (3838, 3839, 3840, 3841, 3842, 3843)
-EMBLEMATIC = 4785
 ALGALON = 3036
 GUARDIANES = 2890
 ALAS_ICC25 = (4604, 4605, 4606, 4607, 4597)
 ALAS_ICC10 = (4531, 4528, 4529, 4527, 4530)
-ALAS_ICC25_HC = (4632, 4633, 4634, 4635)
 ALAS_ICC10_HC = (4628, 4629, 4630, 4631, 4583)
 META_ICC25 = 4608
 META_ICC10_HC = 4636
-ANILLOS_REPUTACION = set(range(50398, 50404)) | set(range(52570, 52576))
 
 # Escalera de muertes con honor (HK). El campo "muertes" del perfil ES el HK.
 HK_LOGROS = [(238, 1), (513, 100), (515, 500), (516, 1000), (512, 5000),
@@ -245,41 +242,6 @@ def _delta(p, a, b):
     return (fa - fb).days if fa and fb else None
 
 
-def r_emblema_vs_emblema(p):
-    """Emblematic y el primer emblema son el mismo hecho: deben coincidir."""
-    d = _delta(p, EMBLEMATIC, EMBLEMA_1)
-    if d is None or d == 0:
-        return None
-    if d < 0:
-        det = "Emblematic (%s) es %d día(s) ANTERIOR al primer emblema (%s)" % (
-            p["logros"][EMBLEMATIC], -d, p["logros"][EMBLEMA_1])
-    else:
-        det = "Emblematic (%s) llega %d día(s) después del primer emblema (%s)" % (
-            p["logros"][EMBLEMATIC], d, p["logros"][EMBLEMA_1])
-    return {"titulo": "Emblematic descuadrado con el primer emblema",
-            "detalle": det, "fuerza": 0.90, "familia": "emblema"}
-
-
-def r_emblema_antes_80(p):
-    d = _delta(p, EMBLEMATIC, NIVEL_80)
-    if d is not None and d < 0:
-        return {"titulo": "Emblematic antes del nivel 80",
-                "detalle": "Emblematic (%s) es anterior al nivel 80 (%s)" % (
-                    p["logros"][EMBLEMATIC], p["logros"][NIVEL_80]),
-                "fuerza": 0.85, "familia": "emblema"}
-    return None
-
-
-def r_primer_emblema_antes_80(p):
-    d = _delta(p, EMBLEMA_1, NIVEL_80)
-    if d is not None and d < 0:
-        return {"titulo": "Primer emblema antes del nivel 80",
-                "detalle": "El primer emblema (%s) es anterior al nivel 80 (%s)" % (
-                    p["logros"][EMBLEMA_1], p["logros"][NIVEL_80]),
-                "fuerza": 0.75, "familia": "emblema"}
-    return None
-
-
 def r_escalera_emblemas(p):
     if not all(i in p["logros"] for i in ESCALERA_EMBLEMAS):
         return None
@@ -324,15 +286,6 @@ def r_meta_icc10hc(p):
         return {"titulo": "Meta heroica de ICC 10 sin sus alas",
                 "detalle": "4636 sin los logros %s" % faltan,
                 "fuerza": 0.95, "familia": "icc"}
-    return None
-
-
-def r_277(p):
-    piezas = [e for e, nv in p["ilvl"].items() if nv == 277 and e not in ANILLOS_REPUTACION]
-    if piezas and not set(ALAS_ICC25_HC) & set(p["logros"]):
-        return {"titulo": "Botín 277 sin alas de ICC 25 heroico",
-                "detalle": "%d pieza(s) de ICC 25 HC sin ningún ala 25HC (hay tiendas: pesa poco)" % len(piezas),
-                "fuerza": 0.20, "familia": "icc"}
     return None
 
 
@@ -458,24 +411,12 @@ def _requisitos_objeto(jefe, ilvl):
 JEFES_TOC = ("icehowl", "gormok", "acidmaw", "dreadscale", "jaraxxus",
              "fjola", "eydis", "anub'arak")
 LOGROS_TOC = set(range(4577, 4583)) | {4615, 4616, 4617, 4618, 4619, 4620, 4622}
-JEFES_DE_ALA = {
-    "tormenta": "Marrowgar, Deathwhisper, Cañones y Saurfang",
-    "peste": "Festergut, Rotface y Putricida",
-    "sangre": "el Consejo de Príncipes y la Reina de Sangre",
-    "escarcha": "Valithria y Sindragosa",
-    "trono": "el Rey Exánime",
-}
-
-NUM_JEFES = {"tormenta": 4, "peste": 3, "sangre": 2, "escarcha": 2, "trono": 1}
-
-
 def r_objetos(p):
-    """Objetos de banda sin el logro que los respalde.
+    """Botín de un jefe que otorga su propio logro al morir.
 
-    Ojo: los logros de ala exigen completar el ala entera, así que un objeto de
-    un jefe intermedio NO demuestra nada. Solo es concluyente cuando el ala la
-    cierra un único jefe (Rey Exánime, Halion) o cuando hay objetos de varios
-    jefes del ala. Se pondera en consecuencia.
+    Solo el Rey Exánime y Halion cierran su encuentro por sí solos. El botín de
+    un jefe intermedio de un ala no prueba nada: se puede entrar a la banda,
+    matar a ese jefe y salir sin completar el ala.
     """
     if not FUENTES:
         return None
@@ -489,9 +430,11 @@ def r_objetos(p):
         req = _requisitos_objeto(f.get("jefe", ""), nv or f.get("ilvl") or 0)
         if not req or set(req) & ids:
             continue
+        es_halion = "halion" in jefe.lower()
+        if not es_halion and _ala_por_jefe(jefe) != "trono":
+            continue
         clave = tuple(sorted(req))
-        g = grupos.setdefault(clave, {"req": req, "jefes": {}, "items": []})
-        g["jefes"].setdefault(jefe, []).append(nom)
+        g = grupos.setdefault(clave, {"req": req, "items": []})
         g["items"].append((nom, nv, jefe))
     if not grupos:
         return None
@@ -499,44 +442,24 @@ def r_objetos(p):
     partes, fuerza = [], 0.0
     for clave, g in grupos.items():
         req = g["req"]
-        jefes = list(g["jefes"])
-        ala = _ala_por_jefe(jefes[0])
-        es_halion = "halion" in jefes[0].lower()
-        unico = ala == "trono"
-        if unico:
-            f = 0.70
-        elif es_halion:
-            f = 0.30          # RS tiene mini-jefes: el objeto puede no ser de Halion
-        elif len(jefes) >= NUM_JEFES.get(ala, 99):
-            f = 0.60
-        elif len(jefes) >= 2:
-            f = 0.30
-        else:
-            f = 0.15
-        fuerza = max(fuerza, f)
         nom, nv, jefe = g["items"][0]
+        es_halion = "halion" in jefe.lower()
+        fuerza = max(fuerza, 0.30 if es_halion else 0.70)
         pedido = " o ".join("«%s»" % _nombre(r) for r in req)
-        if unico:
-            texto = "posee «%s» (ilvl %d, cae de %s) sin %s" % (nom, nv, jefe, pedido)
-        elif es_halion:
-            texto = ("posee «%s» (ilvl %d, atribuido a Halion) sin %s; Ruby Sanctum tiene "
-                     "mini-jefes, así que el objeto puede no ser de Halion") % (nom, nv, pedido)
-        else:
-            texto = ("posee «%s» (ilvl %d, cae de %s) y no tiene %s, que exige %s; "
-                     "un objeto de un jefe intermedio no implica el ala") % (
-                nom, nv, jefe, pedido, JEFES_DE_ALA.get(ala, "completar el ala"))
+        texto = "posee «%s» (ilvl %d, cae de %s) sin %s" % (nom, nv, jefe, pedido)
+        if es_halion:
+            texto += ("; Ruby Sanctum tiene mini-jefes, así que el objeto puede no ser de Halion")
         if len(g["items"]) > 1:
-            texto += " (%d objeto(s) de esta ala)" % len(g["items"])
+            texto += " (%d objeto(s))" % len(g["items"])
         partes.append(texto)
 
-    partes.sort(key=lambda s: 0 if "no implica el ala" not in s else 1)
     det = "; ".join(partes[:2])
     if len(partes) > 2:
-        det += "; y %d ala(s) más" % (len(partes) - 2)
+        det += "; y %d más" % (len(partes) - 2)
     return {"titulo": "Objetos sin el logro que los respalde",
             "detalle": det, "fuerza": fuerza, "familia": "objetos",
             "sin_frecuencia": True,
-            "nota": "puede venir de tienda o de un jefe suelto; se anota como indicio"}
+            "nota": "solo se marca el botín de jefes que otorgan su propio logro al morir (Rey Exánime y Halion)"}
 
 
 def r_hk(p):
@@ -703,9 +626,8 @@ def r_lote(p):
 
 
 REGLAS = [r_metas, r_meta_fechas, r_escaleras, r_reputaciones, r_hk,
-          r_emblema_vs_emblema, r_emblema_antes_80, r_primer_emblema_antes_80,
           r_escalera_emblemas, r_500_rapido, r_algalon, r_meta_icc25, r_meta_icc10hc,
-          r_277, r_niveles, r_doble_spec, r_raides_antes_80, r_fechas_imposibles,
+          r_niveles, r_doble_spec, r_raides_antes_80, r_fechas_imposibles,
           r_objetos, r_toc, r_boe]
 
 

@@ -95,19 +95,20 @@ Pesos principales:
 | Fechas imposibles (antes del 3.0.2 o posteriores a la extracción) | 99 % |
 | Logro de HK sin las muertes que exige | 95 % |
 | Meta de ICC sin sus alas | 95 % |
-| Emblematic descuadrado con el primer emblema | 90 % |
 | Escaleras con fechas fuera de orden | 85-90 % |
 | Algalon sin los Guardianes de Ulduar | 80 % |
 | Objeto del Rey Exánime sin su logro | 70 % |
 | Equipo de la Cruzada 258 sin logros de la banda | 40-75 % |
-| Varios jefes del ala sin el logro del ala | 30-60 % |
+| Objeto de Halion sin su logro | 30 % |
 | Acumulación de objetos BoE (20+ distintos) | 80 % |
 | Acumulación de BoE (12-19 / 8-11 distintos) | 45 % / 25 % |
 | Clon de otro perfil (solo escritorio) | 70-75 % |
 
 Los objetos se anotan como indicio, no como sentencia: las tiendas y la subasta
-permiten tener piezas sin haber pisado la banda. El peso sube cuando hay varios
-objetos del mismo ala o de un jefe único.
+permiten tener piezas sin haber pisado la banda. Solo se marca el botín de los
+jefes que otorgan su propio logro al morir (el Rey Exánime y Halion): el de un
+jefe intermedio no prueba nada, porque se puede entrar a la banda, matar a ese
+jefe y salir sin completar el ala.
 
 ### Objetos BoE acumulados: posible personaje banco
 

@@ -8,16 +8,12 @@ const NIVEL_80 = 13;
 const DOBLE_SPEC = 2716;
 const EMBLEMA_1 = 3838;
 const ESCALERA_EMBLEMAS = [3838, 3839, 3840, 3841, 3842, 3843];
-const EMBLEMATIC = 4785;
 const ALGALON = 3036;
 const GUARDIANES = 2890;
 const ALAS_ICC25 = [4604, 4605, 4606, 4607, 4597];
-const ALAS_ICC25_HC = [4632, 4633, 4634, 4635];
 const ALAS_ICC10_HC = [4628, 4629, 4630, 4631, 4583];
 const META_ICC25 = 4608;
 const META_ICC10_HC = 4636;
-const ANILLOS = new Set([50398, 50399, 50400, 50401, 50402, 50403,
-                         52570, 52571, 52572, 52573, 52574, 52575]);
 
 const HK_LOGROS = [[238, 1], [513, 100], [515, 500], [516, 1000], [512, 5000],
                    [509, 10000], [239, 25000], [869, 50000], [870, 100000]];
@@ -51,15 +47,6 @@ const JEFES_TOC = ["icehowl", "gormok", "acidmaw", "dreadscale", "jaraxxus",
                    "fjola", "eydis", "anub'arak"];
 const LOGROS_TOC = new Set([4577, 4578, 4579, 4580, 4581, 4582,
                             4615, 4616, 4617, 4618, 4619, 4620, 4622]);
-
-const JEFES_DE_ALA = {
-  tormenta: "Marrowgar, Deathwhisper, Cañones y Saurfang",
-  peste: "Festergut, Rotface y Putricida",
-  sangre: "el Consejo de Príncipes y la Reina de Sangre",
-  escarcha: "Valithria y Sindragosa",
-  trono: "el Rey Exánime",
-};
-const NUM_JEFES = { tormenta: 4, peste: 3, sangre: 2, escarcha: 2, trono: 1 };
 
 const FAMILIAS = {
   normas: "Normas de logros",
@@ -353,36 +340,6 @@ function rHK(p) {
   return null;
 }
 
-function rEmblemaVs(p) {
-  const d = delta(p, EMBLEMATIC, EMBLEMA_1);
-  if (d === null || d === 0) return null;
-  const det = d < 0
-    ? "Emblematic (" + p.logros.get(EMBLEMATIC) + ") es " + (-d) + " día(s) ANTERIOR al primer emblema (" + p.logros.get(EMBLEMA_1) + ")"
-    : "Emblematic (" + p.logros.get(EMBLEMATIC) + ") llega " + d + " día(s) después del primer emblema (" + p.logros.get(EMBLEMA_1) + ")";
-  return { titulo: "Emblematic descuadrado con el primer emblema", detalle: det,
-           fuerza: 0.90, familia: "emblema", ids: [EMBLEMATIC, EMBLEMA_1] };
-}
-
-function rEmblema80(p) {
-  const d = delta(p, EMBLEMATIC, NIVEL_80);
-  if (d !== null && d < 0) {
-    return { titulo: "Emblematic antes del nivel 80",
-             detalle: "Emblematic (" + p.logros.get(EMBLEMATIC) + ") es anterior al nivel 80 (" + p.logros.get(NIVEL_80) + ")",
-             fuerza: 0.85, familia: "emblema", ids: [EMBLEMATIC, NIVEL_80] };
-  }
-  return null;
-}
-
-function rPrimerEmblema80(p) {
-  const d = delta(p, EMBLEMA_1, NIVEL_80);
-  if (d !== null && d < 0) {
-    return { titulo: "Primer emblema antes del nivel 80",
-             detalle: "El primer emblema (" + p.logros.get(EMBLEMA_1) + ") es anterior al nivel 80 (" + p.logros.get(NIVEL_80) + ")",
-             fuerza: 0.75, familia: "emblema", ids: [EMBLEMA_1, NIVEL_80] };
-  }
-  return null;
-}
-
 function rEscaleraEmblemas(p) {
   if (!ESCALERA_EMBLEMAS.every((i) => p.logros.has(i))) return null;
   const fechas = ESCALERA_EMBLEMAS.map((i) => p.logros.get(i));
@@ -427,16 +384,6 @@ function rMetaICC10HC(p) {
     return { titulo: "Meta heroica de ICC 10 sin sus alas",
              detalle: "4636 sin los logros " + faltan.join(", "),
              fuerza: 0.95, familia: "icc", ids: [META_ICC10_HC, ...ALAS_ICC10_HC] };
-  }
-  return null;
-}
-
-function r277(p) {
-  const piezas = p.objetos.filter((o) => o.ilvl === 277 && !ANILLOS.has(o.id));
-  if (piezas.length && !ALAS_ICC25_HC.some((i) => p.logros.has(i))) {
-    return { titulo: "Botín 277 sin alas de ICC 25 heroico",
-             detalle: piezas.length + " pieza(s) de ICC 25 HC sin ningún ala 25HC (hay tiendas: pesa poco)",
-             fuerza: 0.20, familia: "icc", objs: piezas.map((x) => x.id) };
   }
   return null;
 }
@@ -518,6 +465,10 @@ function requisitosObjeto(jefe, ilvl) {
 }
 
 function rObjetos(p) {
+  // Solo cuenta el botín de un jefe que cierra su encuentro por sí solo
+  // (Rey Exánime, Halion): matarlo otorga el logro. El botín de un jefe
+  // intermedio no prueba nada, porque se puede entrar a la banda, matar a ese
+  // jefe y salir sin completar el ala.
   const grupos = new Map();
   for (const o of p.objetos) {
     const f = FUENTES[String(o.id)];
@@ -525,52 +476,34 @@ function rObjetos(p) {
     const jefe = (f.jefe || "").replace(/ \(\d\)$/, "");
     const req = requisitosObjeto(f.jefe, o.ilvl || f.ilvl || 0);
     if (!req.length || req.some((r) => p.logros.has(r))) continue;
+    const esHalion = jefe.toLowerCase().includes("halion");
+    if (!esHalion && alaPorJefe(jefe) !== "trono") continue;
     const clave = req.slice().sort((a, b) => a - b).join(",");
-    if (!grupos.has(clave)) grupos.set(clave, { req, jefes: new Map(), items: [] });
-    const g = grupos.get(clave);
-    if (!g.jefes.has(jefe)) g.jefes.set(jefe, []);
-    g.jefes.get(jefe).push(o.nombre);
-    g.items.push([o.nombre, o.ilvl, jefe, o.id]);
+    if (!grupos.has(clave)) grupos.set(clave, { req, items: [] });
+    grupos.get(clave).items.push([o.nombre, o.ilvl, jefe, o.id]);
   }
   if (!grupos.size) return null;
 
   const partes = [];
   let fuerza = 0;
   for (const g of grupos.values()) {
-    const jefes = [...g.jefes.keys()];
-    const ala = alaPorJefe(jefes[0]);
-    const esHalion = jefes[0].toLowerCase().includes("halion");
-    const unico = ala === "trono";
-    let f;
-    if (unico) f = 0.70;
-    else if (esHalion) f = 0.30;
-    else if (jefes.length >= (NUM_JEFES[ala] || 99)) f = 0.60;
-    else if (jefes.length >= 2) f = 0.30;
-    else f = 0.15;
-    fuerza = Math.max(fuerza, f);
     const [nom, nv, jefe] = g.items[0];
+    const esHalion = jefe.toLowerCase().includes("halion");
+    fuerza = Math.max(fuerza, esHalion ? 0.30 : 0.70);
     const pedido = g.req.map((r) => "«" + nombre(r, p) + "»").join(" o ");
-    let texto;
-    if (unico) {
-      texto = "posee «" + nom + "» (ilvl " + nv + ", cae de " + jefe + ") sin " + pedido;
-    } else if (esHalion) {
-      texto = "posee «" + nom + "» (ilvl " + nv + ", atribuido a Halion) sin " + pedido +
-              "; Ruby Sanctum tiene mini-jefes, así que el objeto puede no ser de Halion";
-    } else {
-      texto = "posee «" + nom + "» (ilvl " + nv + ", cae de " + jefe + ") y no tiene " + pedido +
-              ", que exige " + (JEFES_DE_ALA[ala] || "completar el ala") +
-              "; un objeto de un jefe intermedio no implica el ala";
+    let texto = "posee «" + nom + "» (ilvl " + nv + ", cae de " + jefe + ") sin " + pedido;
+    if (esHalion) {
+      texto += "; Ruby Sanctum tiene mini-jefes, así que el objeto puede no ser de Halion";
     }
-    if (g.items.length > 1) texto += " (" + g.items.length + " objeto(s) de esta ala)";
-    partes.push({ texto, unico });
+    if (g.items.length > 1) texto += " (" + g.items.length + " objeto(s))";
+    partes.push(texto);
   }
-  partes.sort((a, b) => (a.unico === b.unico ? 0 : a.unico ? -1 : 1));
-  let det = partes.slice(0, 2).map((x) => x.texto).join("; ");
-  if (partes.length > 2) det += "; y " + (partes.length - 2) + " ala(s) más";
+  let det = partes.slice(0, 2).join("; ");
+  if (partes.length > 2) det += "; y " + (partes.length - 2) + " más";
   return { titulo: "Objetos sin el logro que los respalde", detalle: det,
            fuerza, familia: "objetos",
            objs: [...grupos.values()].flatMap((g) => g.items.map((i) => i[3])),
-           nota: "puede venir de tienda o de un jefe suelto; se anota como indicio" };
+           nota: "solo se marca el botín de jefes que otorgan su propio logro al morir (Rey Exánime y Halion)" };
 }
 
 function rTOC(p) {
@@ -652,9 +585,8 @@ function rBoE(p) {
 }
 
 const REGLAS = [rMetas, rMetaFechas, rEscaleras, rReputaciones, rHK,
-                rEmblemaVs, rEmblema80, rPrimerEmblema80, rEscaleraEmblemas, r500Rapido,
-                rAlgalon, rMetaICC25, rMetaICC10HC, r277, rNiveles, rDobleSpec,
-                rRaides80, rFechas, rObjetos, rTOC, rBoE];
+                rEscaleraEmblemas, r500Rapido, rAlgalon, rMetaICC25, rMetaICC10HC,
+                rNiveles, rDobleSpec, rRaides80, rFechas, rObjetos, rTOC, rBoE];
 
 function analizar(p) {
   const hallazgos = [];
