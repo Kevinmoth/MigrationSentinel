@@ -84,13 +84,38 @@ body::before {
   object-fit: cover;
   flex: none;
 }
+.marca-texto { display: grid; gap: 3px; min-width: 0; }
+.marca-eyebrow {
+  font: 500 9.5px/1 var(--mono);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--sospechoso);
+  opacity: .9;
+}
 .cabecera h1 {
   margin: 0;
-  font: 400 23px/1.15 var(--display);
-  letter-spacing: .3px;
+  display: flex;
+  align-items: baseline;
+  font: 400 26px/1.1 var(--display);
+  letter-spacing: .2px;
   color: var(--text);
 }
-.cabecera p { margin: 5px 0 0; font-size: 13px; color: var(--muted); }
+.cabecera h1 .marca-acento {
+  background: linear-gradient(180deg, #fb923c 0%, #ea580c 55%, #c2410c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 10px rgba(234, 88, 12, .18));
+}
+.cabecera p { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+
+@media (max-width: 520px) {
+  .cabecera { padding: 16px; }
+  .marca { gap: 12px; }
+  .cabecera h1 { font-size: 22px; }
+  .marca-eyebrow { font-size: 8.5px; letter-spacing: .12em; }
+  .sello { display: none; }
+}
 .sello {
   font: 500 11px/1 var(--mono);
   letter-spacing: .14em;
