@@ -395,7 +395,7 @@ button:active { transform: translateY(1px); }
   to   { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .entra, .entra-rapido { animation: none; }
+  .entra, .entra-rapido, .histograma .col i.sube { animation: none; }
 }
 
 .perfil { display: grid; gap: 14px; }
@@ -613,6 +613,20 @@ button:active { transform: translateY(1px); }
   min-height: 3px;
   border-radius: 3px 3px 0 0;
   background: linear-gradient(180deg, var(--accent-hover), var(--accent));
+  /* Crece desde la linea base. Se anima con scaleY y no con height para no
+     recalcular el layout en cada fotograma. */
+  transform-origin: bottom;
+}
+/* Curva de logros: las barras suben hasta su altura real al aparecer. app.js
+   pone la clase .sube y el retraso de cada barra (escalonado de izquierda a
+   derecha). El relleno `backwards` las mantiene a cero durante su espera. */
+@keyframes curva-crece {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+.histograma .col i.sube {
+  animation: curva-crece .5s cubic-bezier(.22, .61, .36, 1) backwards;
+  animation-delay: var(--curva-retraso, 0ms);
 }
 .histograma .col span {
   font: 500 9px var(--mono);

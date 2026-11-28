@@ -908,7 +908,11 @@ function _pintarVistas() {
       if (!activa) v.classList.remove("entra-rapido");
     });
     _ajustarReps();
-    _fundir($("#vista-" + b.dataset.vista));
+    const v = $("#vista-" + b.dataset.vista);
+    _fundir(v);
+    // La curva de esa vista vuelve a crecer al abrirla, arrancando a la par que
+    // su fundido.
+    _animarCurvas(v, performance.now(), 60);
   }));
 
   _conectarBuscadores(p, r);
@@ -928,9 +932,12 @@ function _pintarVistas() {
 const ENTRADA_MS = 260;    // lo que dura cada pieza
 const ENTRADA_TOPE = 200;  // retraso maximo del escalonado: la entrada entera
                            // no pasa de ~460 ms
+const CURVA_MS = 500;      // lo que tarda cada barra de la curva en subir
 let _entrada = null;       // { inicio } mientras la entrada esta en curso
 let _limpiezaEntrada = 0;  // plazo de seguridad que retira las clases
 let _limpiezaFundido = 0;
+let _limpiezaCurva = 0;
+let _curvaFin = 0;
 
 // Piezas que se escalonan: lo que el ojo lee como una seccion propia. Las
 // pestañas y el aviso de estado van delante, aunque esten fuera de la vista
@@ -980,6 +987,59 @@ function _animarPiezas(vista, desde) {
   }, plazo);
 }
 
+// Curva de logros: las barras suben desde la linea base hasta su altura. El
+// escalonado va de izquierda a derecha y se reparte en un margen fijo, para que
+// con muchos meses no se eternice. Igual que la entrada de las secciones, se
+// retoma si el repintado rehace el HTML a mitad.
+function _animarCurva(histograma, desde, base) {
+  if (!histograma || _sinAnimacion()) return;
+  const barras = [...histograma.querySelectorAll(".col i")];
+  if (!barras.length) return;
+
+  const paso = Math.min(18, 260 / barras.length);
+  const transcurrido = desde ? performance.now() - desde : 0;
+
+  barras.forEach((b) => b.classList.remove("sube"));
+  void barras[0].offsetWidth;
+
+  let ultimo = 0;
+  barras.forEach((b, i) => {
+    const retraso = Math.round((base || 0) + i * paso - transcurrido);
+    if (retraso + CURVA_MS <= 0) return;         // ya crecio: se queda en su altura
+    b.style.setProperty("--curva-retraso", retraso + "ms");
+    b.classList.add("sube");
+    ultimo = Math.max(ultimo, retraso);
+  });
+
+  _programarLimpiezaCurva(ultimo);
+}
+
+// Retira .sube de todas las barras, no solo de las de la ultima llamada: puede
+// haber dos curvas (Perfil y Logros) animandose a la vez. El plazo es absoluto
+// para que una llamada nueva no corte la limpieza de una anterior.
+function _programarLimpiezaCurva(ultimoRetraso) {
+  const fin = performance.now() + ultimoRetraso + CURVA_MS + 150;
+  _curvaFin = Math.max(_curvaFin, fin);
+  clearTimeout(_limpiezaCurva);
+  _limpiezaCurva = setTimeout(() => {
+    for (const b of document.querySelectorAll(".histograma .col i.sube")) {
+      b.classList.remove("sube");
+      b.style.removeProperty("--curva-retraso");
+    }
+    _curvaFin = 0;
+  }, Math.max(0, _curvaFin - performance.now()));
+}
+
+// Las curvas de una vista, arrancando cuando su tarjeta ya esta visible.
+function _animarCurvas(vista, desde, base) {
+  if (!vista) return;
+  for (const h of vista.querySelectorAll(".histograma")) {
+    const tarjeta = h.closest(".tarjeta");
+    const propio = tarjeta && parseFloat(tarjeta.style.getPropertyValue("--entra-retraso"));
+    _animarCurva(h, desde, (base || 0) + (Number.isFinite(propio) ? propio : 0));
+  }
+}
+
 // Cambiar de pestaña: un fundido muy corto de la vista entera, sin escalonar.
 function _fundir(vista) {
   if (!vista || _sinAnimacion()) return;
@@ -1015,6 +1075,8 @@ function _animarEntrada() {
     return;                                      // ya termino: el repintado va directo
   }
   _animarPiezas(vista, _entrada.inicio);
+  // La curva arranca cuando su tarjeta ya ha entrado.
+  _animarCurvas(vista, _entrada.inicio, 0);
 }
 
 // El mapa de ids de objetos y hechizos pesa, asi que se carga aparte. Cuando
