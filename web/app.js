@@ -937,27 +937,41 @@ function _altoNatural(tarjeta) {
   return alto + marco;
 }
 
+// Alto al que hay que llevar la tarjeta de reputaciones para igualar la de
+// habilidades. Lado a lado no vale medir la tarjeta tal cual: si la lista de
+// reputaciones crece, estira la fila y la de al lado con ella (medida circular),
+// asi que se suma el contenido. Apiladas no hay estiron: manda su alto real.
+function _altoObjetivo(tarjeta, hermana) {
+  const apiladas = Math.abs(hermana.getBoundingClientRect().top -
+                            tarjeta.getBoundingClientRect().top) > 1;
+  return apiladas ? hermana.getBoundingClientRect().height : _altoNatural(hermana);
+}
+
 // La tarjeta de reputaciones debe medir siempre lo mismo que la de habilidades.
-// No vale medir la de habilidades tal cual: si la lista de reputaciones crece,
-// estira la fila y la de al lado con ella. Se toma su alto natural de contenido
-// y se fija como alto de la tarjeta de reputaciones; la lista, que es flexible,
-// ocupa el resto y scrollea si tiene mas filas que sitio.
+// Se fija ese alto y la lista, que es flexible, ocupa el resto y scrollea si
+// tiene mas filas que sitio.
 function _ajustarReps() {
   const tarjeta = document.querySelector(".tarjeta-reps");
   const lista = tarjeta && tarjeta.querySelector(".barra-lista");
   if (!tarjeta || !lista) return;
   tarjeta.style.removeProperty("height");
-  lista.style.removeProperty("max-height");
 
   const caja = tarjeta.getBoundingClientRect();
   if (!caja.height) return;                        // pestana oculta: se mide al mostrarla
   const hermana = tarjeta.nextElementSibling;      // «Habilidades»
   if (!hermana) return;
-  const cajaHermana = hermana.getBoundingClientRect();
-  // Apiladas (una columna) no comparten fila: cada una mide lo suyo.
-  if (Math.abs(cajaHermana.top - caja.top) > 1) return;
 
-  tarjeta.style.height = Math.max(320, Math.round(_altoNatural(hermana))) + "px";
+  // Al fijar el alto puede aparecer o desaparecer la barra de scroll de la
+  // pagina; eso cambia el ancho y el texto se recoloca, asi que la primera
+  // medida se queda corta. Se repite hasta que el alto se estabilice.
+  let objetivo = Math.max(320, Math.round(_altoObjetivo(tarjeta, hermana)));
+  for (let i = 0; i < 4; i++) {
+    tarjeta.style.height = objetivo + "px";
+    const nuevo = Math.max(320, Math.round(_altoObjetivo(tarjeta, hermana)));
+    if (nuevo === objetivo) break;
+    objetivo = nuevo;
+  }
+  tarjeta.style.height = objetivo + "px";
 }
 
 function _conectarBuscadores(p, r) {
