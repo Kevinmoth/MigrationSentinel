@@ -370,7 +370,7 @@ function renderPerfil(p, r) {
 
   const repFilas = p.reps.slice().sort((a, b) => b.valor - a.valor);
   const repHtml = repFilas.length
-    ? `<div class="barra-lista scroll">${repFilas.map((x) => {
+    ? `<div class="barra-lista">${repFilas.map((x) => {
         const ex = x.valor >= 42000;
         return `<div class="barra-fila${ex ? " exaltada" : ""}">
           <span class="barra-nombre">${esc(x.nombre)}</span>
@@ -476,7 +476,7 @@ function renderPerfil(p, r) {
         ${histogramaLogros(p)}
       </div>
 
-      <div class="rejilla-dos">
+      <div class="rejilla-dos rejilla-reps">
         <div class="tarjeta">
           <h3>Reputaciones <span class="contador">${exaltadas} exaltada(s) · 42.000 = exaltado</span></h3>
           ${repHtml}
