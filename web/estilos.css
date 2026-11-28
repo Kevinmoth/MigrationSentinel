@@ -519,11 +519,13 @@ button:active { transform: translateY(1px); }
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 14px;
 }
-/* La lista de reputaciones puede ser larga: si la tarjeta se estira al alto de
-   la de al lado solo para igualarla, la de habilidades se queda con medio panel
-   vacio. Aqui cada tarjeta mide lo suyo y la lista se ve entera; la pagina es
-   la que scrollea. */
-.rejilla-reps { align-items: start; }
+/* La tarjeta de reputaciones va siempre del mismo alto que la de habilidades.
+   app.js le fija ese alto a la tarjeta; aqui solo se reparte: la cabecera se
+   queda fija y la lista ocupa el resto, scrolleando si tiene mas filas que
+   sitio. */
+.rejilla-reps .tarjeta-reps { display: flex; flex-direction: column; }
+.rejilla-reps .tarjeta-reps > h3 { flex: none; }
+.rejilla-reps .tarjeta-reps .barra-lista { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding-right: 6px; }
 
 .barra-lista { display: grid; gap: 7px; }
 .barra-fila {

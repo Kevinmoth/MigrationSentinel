@@ -477,7 +477,7 @@ function renderPerfil(p, r) {
       </div>
 
       <div class="rejilla-dos rejilla-reps">
-        <div class="tarjeta">
+        <div class="tarjeta tarjeta-reps">
           <h3>Reputaciones <span class="contador">${exaltadas} exaltada(s) · 42.000 = exaltado</span></h3>
           ${repHtml}
         </div>
@@ -895,10 +895,12 @@ function _pintarVistas() {
     _vistaActual = b.dataset.vista;
     $$(".pestana").forEach((x) => x.classList.toggle("activa", x === b));
     $$(".vista").forEach((v) => { v.hidden = v.id !== "vista-" + b.dataset.vista; });
+    _ajustarReps();
   }));
 
   _conectarBuscadores(p, r);
   _conectarCopiar(p, r);
+  _ajustarReps();
 
   if (!_yaMostrado) {
     _yaMostrado = true;
@@ -918,6 +920,44 @@ function _avisarIds() {
     const v = $("#vista-" + _vistaActual);
     if (v) v.hidden = false;
   });
+}
+
+// Alto que ocupa el contenido de una tarjeta, sin contar el estiron que le meta
+// la rejilla. Los hijos van en flujo normal, asi que sus alturas son naturales.
+function _altoNatural(tarjeta) {
+  const estilo = getComputedStyle(tarjeta);
+  const marco = parseFloat(estilo.paddingTop) + parseFloat(estilo.paddingBottom) +
+                parseFloat(estilo.borderTopWidth) + parseFloat(estilo.borderBottomWidth);
+  let alto = 0;
+  for (const hijo of tarjeta.children) {
+    const cs = getComputedStyle(hijo);
+    alto += hijo.getBoundingClientRect().height +
+            parseFloat(cs.marginTop || 0) + parseFloat(cs.marginBottom || 0);
+  }
+  return alto + marco;
+}
+
+// La tarjeta de reputaciones debe medir siempre lo mismo que la de habilidades.
+// No vale medir la de habilidades tal cual: si la lista de reputaciones crece,
+// estira la fila y la de al lado con ella. Se toma su alto natural de contenido
+// y se fija como alto de la tarjeta de reputaciones; la lista, que es flexible,
+// ocupa el resto y scrollea si tiene mas filas que sitio.
+function _ajustarReps() {
+  const tarjeta = document.querySelector(".tarjeta-reps");
+  const lista = tarjeta && tarjeta.querySelector(".barra-lista");
+  if (!tarjeta || !lista) return;
+  tarjeta.style.removeProperty("height");
+  lista.style.removeProperty("max-height");
+
+  const caja = tarjeta.getBoundingClientRect();
+  if (!caja.height) return;                        // pestana oculta: se mide al mostrarla
+  const hermana = tarjeta.nextElementSibling;      // «Habilidades»
+  if (!hermana) return;
+  const cajaHermana = hermana.getBoundingClientRect();
+  // Apiladas (una columna) no comparten fila: cada una mide lo suyo.
+  if (Math.abs(cajaHermana.top - caja.top) > 1) return;
+
+  tarjeta.style.height = Math.max(320, Math.round(_altoNatural(hermana))) + "px";
 }
 
 function _conectarBuscadores(p, r) {
@@ -1149,6 +1189,12 @@ $("#limpiar").addEventListener("click", () => {
 $("#alternar-texto").addEventListener("click", () => {
   const expandido = $(".rejilla").classList.toggle("expandido");
   $("#alternar-texto").textContent = expandido ? "Contraer" : "Ampliar";
+  _ajustarReps();
+});
+let _temporizadorReps = 0;
+window.addEventListener("resize", () => {
+  clearTimeout(_temporizadorReps);
+  _temporizadorReps = setTimeout(_ajustarReps, 120);
 });
 $("#texto").addEventListener("keydown", (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === "Enter") analizarEntrada();
