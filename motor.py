@@ -59,8 +59,12 @@ FAMILIAS = {
     "ulduar": "Ulduar",
     "icc": "Progresión ICC",
     "progresion": "Progresión general",
+    "habilidades": "Habilidades de clase",
     "rareza": "Rareza estadística",
 }
+
+# Filas que abren una seccion dentro de «Habilidades» (maximo y actual a cero).
+SECCIONES_HABILIDAD = ("habilidades de clase", "class skills")
 
 # Catálogo real de normas: logro -> componentes que exige.
 # Se genera con el volcado de criterios de la base 3.3.5 (logros_wotlk.json).
@@ -193,6 +197,14 @@ def leer_perfil(ruta):
         if sid is not None:
             monturas.add(sid)
 
+    habilidades = []
+    for h in datos.get("habilidades", []) or []:
+        habilidades.append({
+            "nombre": (h.get("nombre") or "").strip(),
+            "maximo": _entero(h.get("maximo")) or 0,
+            "actual": _entero(h.get("actual")) or 0,
+        })
+
     suma_rep = 0
     reps_exaltadas = 0
     for r in datos.get("reputaciones", []) or []:
@@ -226,6 +238,7 @@ def leer_perfil(ruta):
         "ilvl": ilvl,
         "cantidades": cantidades,
         "monturas": monturas,
+        "habilidades": habilidades,
         "nombre_remoto": pj.get("nombreRemoto") or "",
         "realmlist": pj.get("realmlistOrigen") or "",
         "suma_rep": suma_rep,
@@ -240,6 +253,31 @@ def leer_perfil(ruta):
 def _delta(p, a, b):
     fa, fb = p["logros"].get(a), p["logros"].get(b)
     return (fa - fb).days if fa and fb else None
+
+
+def _ramas_clase(p):
+    """Nombres de las ramas de talento listadas en «Habilidades de clase».
+
+    La ficha abre secciones con filas de maximo y actual a cero; solo las filas
+    que van despues de «Habilidades de clase» y antes de la siguiente seccion
+    son ramas. Se reconocen por texto porque la cabecera cambia de idioma segun
+    el locale.
+    """
+    ramas, dentro = [], False
+    for h in p.get("habilidades") or []:
+        es_cabecera = h.get("maximo") == 0 and h.get("actual") == 0
+        nombre = (h.get("nombre") or "").strip()
+        if es_cabecera:
+            if dentro:
+                break
+            dentro = nombre.lower() in SECCIONES_HABILIDAD
+            continue
+        if dentro and nombre:
+            # Las ramas de talento van con maximo 1 (si/no). Ganzua y otras
+            # skills de clase van con maximo 400 y no son ramas.
+            if h.get("maximo") == 1:
+                ramas.append(nombre)
+    return ramas
 
 
 def r_escalera_emblemas(p):
@@ -593,6 +631,29 @@ def r_doble_spec(p):
     return None
 
 
+def r_ramas_clase(p):
+    """Todas las clases de 3.3.5 tienen tres ramas de talento.
+
+    La ficha lista las ramas dentro de la primera seccion de «Habilidades». Si
+    aparecen menos de tres, el perfil esta incompleto o la extraccion fallo.
+    """
+    if (p.get("nivel") or 0) < 10:
+        return None
+    ramas = _ramas_clase(p)
+    if len(ramas) >= 3:
+        return None
+    if not ramas and not p.get("habilidades"):
+        return None
+    det = "solo %d rama(s) de clase en habilidades" % len(ramas)
+    if ramas:
+        det += ": %s" % ", ".join(ramas)
+    return {"titulo": "Menos de tres ramas de clase",
+            "detalle": det,
+            "fuerza": 0.60, "familia": "habilidades",
+            "nota": "todas las clases de 3.3.5 tienen tres ramas de talento; "
+                    "menos de tres apunta a una ficha incompleta o editada"}
+
+
 def r_raides_antes_80(p):
     if NIVEL_80 not in p["logros"]:
         return None
@@ -627,7 +688,7 @@ def r_lote(p):
 
 REGLAS = [r_metas, r_meta_fechas, r_escaleras, r_reputaciones, r_hk,
           r_escalera_emblemas, r_500_rapido, r_algalon, r_meta_icc25, r_meta_icc10hc,
-          r_niveles, r_doble_spec, r_raides_antes_80, r_fechas_imposibles,
+          r_niveles, r_doble_spec, r_ramas_clase, r_raides_antes_80, r_fechas_imposibles,
           r_objetos, r_toc, r_boe]
 
 

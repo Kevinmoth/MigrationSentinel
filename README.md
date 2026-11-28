@@ -83,9 +83,9 @@ Cada regla devuelve un hallazgo con **dos números distintos**:
 - **frecuencia**: en cuántos perfiles del corpus aparece (contexto; no descuenta).
 
 Los hallazgos se agrupan por familias (normas, emblemas, Ulduar, progresión ICC,
-objetos…). Dentro de una familia manda el hallazgo más fuerte, para no contar
-cinco veces el mismo hecho; entre familias se combina con *noisy-OR*. Así una
-sola prueba sólida no se diluye entre veinte detalles menores.
+habilidades, objetos…). Dentro de una familia manda el hallazgo más fuerte, para
+no contar cinco veces el mismo hecho; entre familias se combina con *noisy-OR*.
+Así una sola prueba sólida no se diluye entre veinte detalles menores.
 
 Pesos principales:
 
@@ -99,6 +99,7 @@ Pesos principales:
 | Algalon sin los Guardianes de Ulduar | 80 % |
 | Objeto del Rey Exánime sin su logro | 70 % |
 | Equipo de la Cruzada 258 sin logros de la banda | 40-75 % |
+| Menos de tres ramas de clase | 60 % |
 | Objeto de Halion sin su logro | 30 % |
 | Acumulación de objetos BoE (20+ distintos) | 80 % |
 | Acumulación de BoE (12-19 / 8-11 distintos) | 45 % / 25 % |
@@ -109,6 +110,17 @@ permiten tener piezas sin haber pisado la banda. Solo se marca el botín de los
 jefes que otorgan su propio logro al morir (el Rey Exánime y Halion): el de un
 jefe intermedio no prueba nada, porque se puede entrar a la banda, matar a ese
 jefe y salir sin completar el ala.
+
+### Menos de tres ramas de clase
+
+Todas las clases de 3.3.5 tienen exactamente tres ramas de talento, así que un
+personaje de nivel 10 o más no puede tener menos. La ficha las lista dentro de
+«Habilidades de clase» y van con máximo 1 (sí/no); las demás filas de esa
+sección, como Ganzúa, son skills con máximo 400 y no cuentan.
+
+Se anota como indicio al 60 %, no como prueba: lo normal es que falte una fila
+en la ficha o que la extracción se haya cortado, pero también puede ser una
+ficha editada a mano.
 
 ### Objetos BoE acumulados: posible personaje banco
 

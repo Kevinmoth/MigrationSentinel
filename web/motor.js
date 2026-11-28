@@ -54,6 +54,7 @@ const FAMILIAS = {
   ulduar: "Ulduar",
   icc: "Progresión ICC",
   progresion: "Progresión general",
+  habilidades: "Habilidades de clase",
   objetos: "Objetos sin respaldo",
   banco: "Acumulación BoE (posible banco)",
 };
@@ -90,6 +91,28 @@ function lista(ids, p) {
 function delta(p, a, b) {
   const fa = p.logros.get(a), fb = p.logros.get(b);
   return fa && fb ? dias(fa, fb) : null;
+}
+
+// Ramas de talento listadas en «Habilidades de clase». La ficha abre cada
+// seccion con una fila de maximo y actual a cero, asi que las ramas son las
+// filas que van entre esa cabecera y la siguiente.
+const SECCION_RAMAS = ["habilidades de clase", "class skills"];
+
+function ramasClase(p) {
+  const ramas = [];
+  let dentro = false;
+  for (const h of p.habilidades) {
+    const nombre = (h.nombre || "").trim();
+    if (!h.max && !h.actual) {
+      if (dentro) break;
+      dentro = SECCION_RAMAS.includes(nombre.toLowerCase());
+      continue;
+    }
+    // Las ramas de talento van con maximo 1 (si/no). Ganzua y otras skills de
+    // clase van con maximo 400 y no son ramas.
+    if (dentro && nombre && h.max === 1) ramas.push(nombre);
+  }
+  return ramas;
 }
 
 // ------------------------------------------------------------------- parser
@@ -407,6 +430,22 @@ function rDobleSpec(p) {
   return null;
 }
 
+function rRamasClase(p) {
+  // Todas las clases de 3.3.5 tienen tres ramas de talento. Menos de tres no es
+  // un dato raro: es una ficha incompleta o mal extraida.
+  if ((p.nivel || 0) < 10) return null;
+  const ramas = ramasClase(p);
+  if (ramas.length >= 3) return null;
+  if (!ramas.length && !p.habilidades.length) return null;
+  let det = "solo " + ramas.length + " rama(s) de clase en habilidades";
+  if (ramas.length) det += ": " + ramas.join(", ");
+  return { titulo: "Menos de tres ramas de clase",
+           detalle: det,
+           fuerza: 0.60, familia: "habilidades",
+           nota: "todas las clases de 3.3.5 tienen tres ramas de talento; " +
+                 "menos de tres apunta a una ficha incompleta o editada" };
+}
+
 function rRaides80(p) {
   if (!p.logros.has(NIVEL_80)) return null;
   const lvl = p.logros.get(NIVEL_80);
@@ -586,7 +625,7 @@ function rBoE(p) {
 
 const REGLAS = [rMetas, rMetaFechas, rEscaleras, rReputaciones, rHK,
                 rEscaleraEmblemas, r500Rapido, rAlgalon, rMetaICC25, rMetaICC10HC,
-                rNiveles, rDobleSpec, rRaides80, rFechas, rObjetos, rTOC, rBoE];
+                rNiveles, rDobleSpec, rRamasClase, rRaides80, rFechas, rObjetos, rTOC, rBoE];
 
 function analizar(p) {
   const hallazgos = [];
