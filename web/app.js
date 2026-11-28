@@ -785,6 +785,9 @@ const VISTAS = {
 let _actual = null;
 let _vistaActual = "perfil";
 let _yaMostrado = false;
+// La entrada escalonada solo se hace al analizar; el repintado que trae los
+// iconos reutiliza el mismo HTML y no debe volver a animar.
+let _primeraPintada = false;
 // Lo que el revisor ha escrito o filtrado: sobrevive a los repintados.
 const _filtro = { logros: "", raid: "", objetos: "", tipoObjeto: "", modoObjetos: "lista" };
 // Orden de la tabla de logros: por fecha por defecto.
@@ -846,6 +849,9 @@ function _ordenarObjetos() {
 function pintar(p, r) {
   _actual = { p, r };
   _vistaActual = "perfil";
+  // Se anima la entrada de las secciones al analizar, pero no cuando luego
+  // llega el mapa de iconos y se repinta.
+  _primeraPintada = true;
   _filtro.logros = "";
   _filtro.raid = "";
   _filtro.objetos = "";
@@ -894,8 +900,15 @@ function _pintarVistas() {
   $$(".pestana").forEach((b) => b.addEventListener("click", () => {
     _vistaActual = b.dataset.vista;
     $$(".pestana").forEach((x) => x.classList.toggle("activa", x === b));
-    $$(".vista").forEach((v) => { v.hidden = v.id !== "vista-" + b.dataset.vista; });
+    $$(".vista").forEach((v) => {
+      const activa = v.id === "vista-" + b.dataset.vista;
+      v.hidden = !activa;
+      // Una vista que se abandona a mitad del fundido no debe quedarse con la
+      // clase puesta: al volver entraria ya "animada" y sin fundido.
+      if (!activa) v.classList.remove("entra-rapido");
+    });
     _ajustarReps();
+    _fundir($("#vista-" + b.dataset.vista));
   }));
 
   _conectarBuscadores(p, r);
@@ -907,6 +920,101 @@ function _pintarVistas() {
     $("#salida").hidden = false;
     $("#salida").scrollIntoView({ behavior: "smooth", block: "start" });
   }
+  _animarEntrada();
+}
+
+// Entrada de las secciones. Menos de medio segundo, solo opacidad y un
+// desplazamiento minimo: no mueve la pagina ni retrasa la lectura.
+const ENTRADA_MS = 260;    // lo que dura cada pieza
+const ENTRADA_TOPE = 200;  // retraso maximo del escalonado: la entrada entera
+                           // no pasa de ~460 ms
+let _entrada = null;       // { inicio } mientras la entrada esta en curso
+let _limpiezaEntrada = 0;  // plazo de seguridad que retira las clases
+let _limpiezaFundido = 0;
+
+// Piezas que se escalonan: lo que el ojo lee como una seccion propia. Las
+// pestañas y el aviso de estado van delante, aunque esten fuera de la vista
+// activa o no siempre aparezcan.
+function _piezasEntrada(vista) {
+  return [
+    ...document.querySelectorAll("#resultado > .pestanas"),
+    ...vista.querySelectorAll(".aviso, .ficha, .veredicto, .bloque, .buscador, " +
+                              ".modo-objetos, .tarjeta, .tabla-wrap, .grupo-equipo"),
+  ];
+}
+
+// Aplica la animacion a las piezas. `desde` es el instante en que empezo la
+// entrada: en un repintado se pasa para retomar cada pieza donde iba, con
+// retrasos negativos, en vez de cortar la animacion o reiniciarla entera.
+function _animarPiezas(vista, desde) {
+  const piezas = _piezasEntrada(vista);
+  // Con muchas piezas el escalonado se alargaria demasiado: se reparte en un
+  // margen fijo y a partir de ahi todas entran a la vez.
+  const paso = piezas.length > 8 ? 24 : 34;
+  const transcurrido = desde ? performance.now() - desde : 0;
+
+  // El reinicio se hace de golpe (una sola lectura de layout) en vez de forzar
+  // un reflow por pieza.
+  piezas.forEach((el) => el.classList.remove("entra"));
+  void vista.offsetWidth;
+
+  const puestas = [];
+  piezas.forEach((el, i) => {
+    const retraso = Math.round(Math.min(i * paso, ENTRADA_TOPE) - transcurrido);
+    if (retraso + ENTRADA_MS <= 0) return;       // esta pieza ya termino: se queda visible
+    el.style.setProperty("--entra-retraso", retraso + "ms");
+    el.classList.add("entra");
+    puestas.push({ el, retraso });
+  });
+
+  // La clase se quita al terminar cada pieza y, por si la animacion no llega a
+  // disparar animationend, tambien con un plazo de seguridad: asi nunca queda
+  // una seccion a medio aparecer.
+  clearTimeout(_limpiezaEntrada);
+  const plazo = Math.max(...puestas.map((x) => x.retraso), 0) + ENTRADA_MS + 150;
+  _limpiezaEntrada = setTimeout(() => {
+    for (const { el } of puestas) {
+      el.classList.remove("entra");
+      el.style.removeProperty("--entra-retraso");
+    }
+  }, plazo);
+}
+
+// Cambiar de pestaña: un fundido muy corto de la vista entera, sin escalonar.
+function _fundir(vista) {
+  if (!vista || _sinAnimacion()) return;
+  vista.classList.remove("entra-rapido");
+  void vista.offsetWidth;
+  vista.classList.add("entra-rapido");
+  vista.addEventListener("animationend", () => vista.classList.remove("entra-rapido"), { once: true });
+  // Igual que en el escalonado: si la animacion no corre (pestaña en segundo
+  // plano), el plazo de seguridad devuelve la vista a la normalidad.
+  clearTimeout(_limpiezaFundido);
+  _limpiezaFundido = setTimeout(() => vista.classList.remove("entra-rapido"), 400);
+}
+
+function _sinAnimacion() {
+  return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+}
+
+// La entrada se lanza al analizar y se retoma si el repintado de los iconos
+// rehace el HTML antes de que termine.
+// La entrada se lanza al analizar. Si el repintado de los iconos rehace el HTML
+// antes de que termine, se retoma donde iba en vez de cortarla o repetirla.
+function _animarEntrada() {
+  const primera = _primeraPintada;
+  _primeraPintada = false;
+  if (_sinAnimacion()) return;
+
+  const vista = document.querySelector(".vista:not([hidden])");
+  if (!vista) return;
+
+  if (primera) {
+    _entrada = { inicio: performance.now() };
+  } else if (!_entrada || performance.now() - _entrada.inicio > ENTRADA_TOPE + ENTRADA_MS + 200) {
+    return;                                      // ya termino: el repintado va directo
+  }
+  _animarPiezas(vista, _entrada.inicio);
 }
 
 // El mapa de ids de objetos y hechizos pesa, asi que se carga aparte. Cuando
@@ -941,9 +1049,10 @@ function _altoNatural(tarjeta) {
 // habilidades. Lado a lado no vale medir la tarjeta tal cual: si la lista de
 // reputaciones crece, estira la fila y la de al lado con ella (medida circular),
 // asi que se suma el contenido. Apiladas no hay estiron: manda su alto real.
+// Se comparan posiciones con offsetTop (no cambia con las animaciones de
+// entrada) en lugar de rects.
 function _altoObjetivo(tarjeta, hermana) {
-  const apiladas = Math.abs(hermana.getBoundingClientRect().top -
-                            tarjeta.getBoundingClientRect().top) > 1;
+  const apiladas = Math.abs(hermana.offsetTop - tarjeta.offsetTop) > 1;
   return apiladas ? hermana.getBoundingClientRect().height : _altoNatural(hermana);
 }
 

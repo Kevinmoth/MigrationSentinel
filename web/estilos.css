@@ -374,8 +374,31 @@ button:active { transform: translateY(1px); }
 }
 .pestana.activa .contador { color: var(--sospechoso); }
 
-.perfil { display: grid; gap: 14px; }
+/* Entrada de las secciones al analizar: un fundido corto con un desplazamiento
+   minimo hacia arriba, escalonado para que no aparezca todo de golpe. app.js
+   pone la clase .entra y el retraso de cada pieza; al terminar se retira sola. */
+@keyframes entra-seccion {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: none; }
+}
+.entra {
+  /* `backwards` y no `both`: si la animacion no llega a correr (pestaña en
+     segundo plano, animaciones congeladas), al no haber relleno final el
+     elemento se queda visible en vez de invisible. */
+  animation: entra-seccion .26s cubic-bezier(.22, .61, .36, 1) backwards;
+  animation-delay: var(--entra-retraso, 0ms);
+}
+/* Cambiar de pestaña: la vista entera con un fundido muy corto, sin escalonar. */
+.entra-rapido { animation: entra-fundido .18s ease backwards; }
+@keyframes entra-fundido {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .entra, .entra-rapido { animation: none; }
+}
 
+.perfil { display: grid; gap: 14px; }
 .ficha {
   position: relative;
   display: grid;
